@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import {
   Facebook,
@@ -37,10 +38,13 @@ const footerLinks = {
 };
 
 export function Footer() {
+  const pathname = usePathname();
   const [isDark, setIsDark] = useState(false);
 
   const [email, setEmail] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  if (pathname?.startsWith("/admin")) return null;
 
   const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();

@@ -115,15 +115,17 @@ function FeaturedBlogsCarousel({ blogs }: { blogs: any[] }) {
                                 </h2>
                                 <p className="text-muted-foreground text-sm md:text-base mb-4 line-clamp-2 md:line-clamp-3 pointer-events-auto">{post.excerpt}</p>
                                 {tags.length > 0 && (
-                                    <div className="flex flex-wrap gap-1 mb-4 pointer-events-auto">
+                                    <div className="flex flex-wrap gap-2 mb-6 pointer-events-auto">
                                         {tags.slice(0, 3).map((t: string) => (
-                                            <span key={t} className="px-2 py-0.5 rounded-full text-xs bg-white/5 border border-white/10 text-white/50">{t}</span>
+                                            <span key={t} className="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-bizz-primary/10 border border-bizz-primary/20 text-bizz-primary/80 transition-colors">
+                                                {t}
+                                            </span>
                                         ))}
                                     </div>
                                 )}
-                                <div className="flex items-center gap-4 text-xs font-medium text-muted-foreground mt-auto pointer-events-auto">
-                                    <div className="flex items-center gap-1"><User className="w-3.5 h-3.5 text-bizz-primary" />{post.author}</div>
-                                    <div className="flex items-center gap-1"><Calendar className="w-3.5 h-3.5" />{formatDate(post.createdAt)}</div>
+                                <div className="flex flex-wrap items-center gap-6 text-[10px] font-bold uppercase tracking-widest text-muted-foreground mt-auto pointer-events-auto">
+                                    <div className="flex items-center gap-2"><div className="w-6 h-6 rounded-full bg-bizz-primary/20 flex items-center justify-center text-[10px] text-bizz-primary">{post.author.charAt(0)}</div>{post.author}</div>
+                                    <div className="flex items-center gap-2"><Calendar className="w-3.5 h-3.5" />{formatDate(post.createdAt)}</div>
                                 </div>
                             </div>
                         </motion.div>
@@ -237,38 +239,51 @@ export default function BlogsPage() {
                                         viewport={{ once: true }}
                                         transition={{ delay: Math.min(i * 0.05, 0.3) }}
                                     >
-                                        <Link href={`/blogs/${post.slug}`} className="block h-full cursor-pointer">
-                                            <Card className="h-full flex flex-col glass-dark border-border hover:border-bizz-primary/40 hover:shadow-xl transition-all group overflow-hidden">
+                                        <Link href={`/blogs/${post.slug}`} className="block h-full cursor-pointer group">
+                                            <Card className="h-full flex flex-col bg-card border-border/50 hover:border-bizz-primary/40 hover:shadow-2xl hover:shadow-bizz-primary/5 transition-all duration-300 group overflow-hidden rounded-[2rem]">
                                                 {/* Cover image or gradient */}
-                                                <div className="h-24 md:h-48 relative flex items-center justify-center border-b border-border/50 shrink-0 overflow-hidden bg-secondary">
+                                                <div className="h-40 md:h-56 relative flex items-center justify-center shrink-0 overflow-hidden bg-muted/30">
                                                     {post.imageUrl ? (
-                                                        <img src={post.imageUrl} alt={post.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
+                                                        <img src={post.imageUrl} alt={post.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                                                     ) : (
-                                                        <div className={`absolute inset-0 ${GRADIENT_VARIANTS[i % GRADIENT_VARIANTS.length]} group-hover:scale-105 transition-transform`} />
+                                                        <div className={`absolute inset-0 ${GRADIENT_VARIANTS[i % GRADIENT_VARIANTS.length]} opacity-60 group-hover:scale-110 transition-transform duration-500`} />
                                                     )}
-                                                </div>
-                                                <CardContent className="p-3 md:p-6 flex-1 flex flex-col">
-                                                    <div className="flex items-center gap-2 mb-2 md:mb-3">
-                                                        <Badge variant="outline" className="text-[10px] md:text-xs px-2 py-0 md:py-1">{post.category}</Badge>
-                                                        {post.readTime && <span className="text-[10px] md:text-xs text-muted-foreground flex items-center gap-1"><Clock className="w-3 h-3" />{post.readTime}m</span>}
+                                                    {/* Category Overlay for Mobile */}
+                                                    <div className="absolute top-4 left-4 z-10">
+                                                        <Badge className="bg-white/90 dark:bg-black/50 backdrop-blur-md text-foreground border-none text-[10px] font-bold uppercase tracking-wider px-3 py-1">
+                                                            {post.category}
+                                                        </Badge>
                                                     </div>
-                                                    <h3 className="text-sm md:text-xl font-bold mb-2 md:mb-3 group-hover:text-bizz-primary transition-colors line-clamp-2 leading-tight">
+                                                </div>
+                                                <CardContent className="p-5 md:p-8 flex-1 flex flex-col">
+                                                    <div className="flex items-center gap-3 mb-4">
+                                                        {post.readTime && (
+                                                            <div className="flex items-center gap-1.5 text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
+                                                                <Clock className="w-3.5 h-3.5 text-bizz-primary" strokeWidth={3} />
+                                                                {post.readTime} min read
+                                                            </div>
+                                                        )}
+                                                    </div>
+
+                                                    <h3 className="text-lg md:text-2xl font-black mb-3 group-hover:text-bizz-primary transition-colors line-clamp-2 leading-[1.2] tracking-tight text-foreground">
                                                         {post.title}
                                                     </h3>
-                                                    <p className="text-muted-foreground text-[11px] md:text-sm line-clamp-2 md:line-clamp-3 mb-3 md:mb-4 flex-1 leading-relaxed">{post.excerpt}</p>
-                                                    {/* Tags */}
-                                                    {tags.length > 0 && (
-                                                        <div className="hidden md:flex flex-wrap gap-1 mb-3">
-                                                            {tags.slice(0, 3).map(t => (
-                                                                <span key={t} className="flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] bg-bizz-primary/5 border border-bizz-primary/20 text-bizz-primary/70">
-                                                                    <Tag className="w-2.5 h-2.5" />{t}
-                                                                </span>
-                                                            ))}
+
+                                                    <p className="text-muted-foreground text-sm md:text-base line-clamp-3 mb-6 flex-1 leading-relaxed font-medium opacity-80">
+                                                        {post.excerpt}
+                                                    </p>
+
+                                                    <div className="flex items-center justify-between gap-4 pt-6 border-t border-border/40 mt-auto">
+                                                        <div className="flex items-center gap-3 shrink-0">
+                                                            <div className="w-8 h-8 rounded-full bg-bizz-primary/10 flex items-center justify-center text-bizz-primary font-bold text-[10px]">
+                                                                {post.author.charAt(0)}
+                                                            </div>
+                                                            <span className="text-xs font-bold text-foreground/70 truncate max-w-[100px]">{post.author}</span>
                                                         </div>
-                                                    )}
-                                                    <div className="flex flex-wrap items-center justify-between gap-1 text-[9px] sm:text-[10px] md:text-xs font-semibold text-muted-foreground pt-3 md:pt-4 border-t border-border/50">
-                                                        <span className="truncate max-w-[60%] flex items-center gap-1"><User className="w-3 h-3" />{post.author}</span>
-                                                        <span className="shrink-0 flex items-center gap-1"><Calendar className="w-3 h-3" />{formatDate(post.createdAt)}</span>
+                                                        <div className="flex items-center gap-1.5 text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
+                                                            <Calendar className="w-3 h-3" />
+                                                            {formatDate(post.createdAt)}
+                                                        </div>
                                                     </div>
                                                 </CardContent>
                                             </Card>
@@ -284,9 +299,9 @@ export default function BlogsPage() {
             {/* 3. Newsletter Signup */}
             <section className="py-24 bg-card/50 border-t border-border">
                 <div className="container px-4 mx-auto">
-                    <div className="max-w-3xl mx-auto glass-dark rounded-3xl p-8 md:p-12 border border-border relative overflow-hidden text-center shadow-xl hover:shadow-[0_0_40px_rgba(45,198,83,0.1)] transition-all">
-                        <div className="absolute top-0 right-0 w-32 h-32 bg-bizz-accent/10 rounded-full blur-[40px] pointer-events-none" />
-                        <div className="absolute bottom-0 left-0 w-32 h-32 bg-bizz-primary/10 rounded-full blur-[40px] pointer-events-none" />
+                    <div className="max-w-4xl mx-auto bg-card rounded-[3rem] p-10 md:p-16 border border-border/50 relative overflow-hidden text-center shadow-2xl transition-all group">
+                        <div className="absolute top-0 right-0 w-64 h-64 bg-bizz-accent/5 rounded-full blur-[80px] pointer-events-none group-hover:scale-110 transition-transform duration-700" />
+                        <div className="absolute bottom-0 left-0 w-64 h-64 bg-bizz-primary/5 rounded-full blur-[80px] pointer-events-none group-hover:scale-110 transition-transform duration-700" />
                         <div className="w-16 h-16 rounded-full bg-gradient-brand flex items-center justify-center mx-auto mb-6 relative z-10 shadow-lg">
                             <Mail className="w-8 h-8 text-white" />
                         </div>

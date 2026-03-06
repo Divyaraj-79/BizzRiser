@@ -21,12 +21,17 @@ export class CaseStudiesService {
     });
   }
 
-  async findOne(id: string) {
-    const caseStudy = await this.prisma.caseStudy.findUnique({
-      where: { id },
+  async findOne(idOrSlug: string) {
+    const caseStudy = await this.prisma.caseStudy.findFirst({
+      where: {
+        OR: [
+          { id: idOrSlug },
+          { slug: idOrSlug },
+        ],
+      },
     });
     if (!caseStudy) {
-      throw new NotFoundException(`Case study with ID ${id} not found`);
+      throw new NotFoundException(`Case study with ID or Slug ${idOrSlug} not found`);
     }
     return caseStudy;
   }

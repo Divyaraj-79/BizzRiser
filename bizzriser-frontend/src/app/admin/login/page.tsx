@@ -41,55 +41,83 @@ export default function AdminLoginPage() {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
-            <div className="max-w-md w-full space-y-8 bg-white dark:bg-gray-800 p-8 rounded-xl shadow-lg">
-                <div>
-                    <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900 dark:text-white">
-                        BizzRiser Admin Login
-                    </h2>
-                </div>
-                <form className="mt-8 space-y-6" onSubmit={handleLogin}>
-                    <div className="rounded-md shadow-sm -space-y-px">
-                        <div>
-                            <label htmlFor="email-address" className="sr-only">Email address</label>
-                            <input
-                                id="email-address"
-                                name="email"
-                                type="email"
-                                required
-                                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:bg-gray-700 dark:text-white rounded-t-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-                                placeholder="Admin Email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
+        <div className="min-h-screen flex items-center justify-center bg-[#0f1117] py-12 px-4 relative overflow-hidden">
+            {/* Background Effects */}
+            <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-bizz-primary/5 blur-[120px] rounded-full" />
+            <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-blue-500/5 blur-[120px] rounded-full" />
+
+            <div className="max-w-md w-full relative z-10 transition-all duration-700 animate-in fade-in slide-in-from-bottom-8">
+                <div className="bg-[#151820] border border-white/5 p-10 rounded-[2.5rem] shadow-2xl relative overflow-hidden group">
+                    {/* Decorative Gradient Overlay */}
+                    <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-brand opacity-80" />
+
+                    <div className="text-center mb-10">
+                        <div className="inline-block relative mb-6">
+                            <div className="absolute -inset-4 bg-bizz-primary/10 blur-2xl rounded-full scale-110" />
+                            <img
+                                src="/logolight.png"
+                                alt="BizzRiser"
+                                className="h-14 w-auto object-contain relative drop-shadow-[0_0_15px_rgba(255,255,255,0.2)] mx-auto"
                             />
                         </div>
-                        <div>
-                            <label htmlFor="password" className="sr-only">Password</label>
-                            <input
-                                id="password"
-                                name="password"
-                                type="password"
-                                required
-                                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:bg-gray-700 dark:text-white rounded-b-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-                                placeholder="Password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                            />
-                        </div>
+                        <h2 className="text-2xl font-black text-white tracking-tight mb-2">Partner Portal</h2>
+                        <p className="text-white/40 text-sm font-medium uppercase tracking-widest">Secure Admin Access</p>
                     </div>
 
-                    {error && <p className="text-red-500 text-sm text-center">{error}</p>}
+                    <form className="space-y-6" onSubmit={handleLogin}>
+                        <div className="space-y-4">
+                            <div>
+                                <label className="block text-[10px] font-black text-white/20 uppercase tracking-widest mb-2 ml-4">Email Address</label>
+                                <input
+                                    type="email"
+                                    required
+                                    className="w-full px-6 py-4 bg-[#1a1d26] border border-white/5 rounded-2xl text-white placeholder-white/10 focus:outline-none focus:ring-2 focus:ring-bizz-primary/50 focus:border-bizz-primary/30 transition-all"
+                                    placeholder="admin@bizzriser.com"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-[10px] font-black text-white/20 uppercase tracking-widest mb-2 ml-4">Access Secret</label>
+                                <input
+                                    type="password"
+                                    required
+                                    className="w-full px-6 py-4 bg-[#1a1d26] border border-white/5 rounded-2xl text-white placeholder-white/10 focus:outline-none focus:ring-2 focus:ring-bizz-primary/50 focus:border-bizz-primary/30 transition-all"
+                                    placeholder="••••••••"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                />
+                            </div>
+                        </div>
 
-                    <div>
+                        {error && (
+                            <div className="bg-red-500/10 border border-red-500/20 px-4 py-3 rounded-xl text-red-400 text-xs font-bold text-center">
+                                {error}
+                            </div>
+                        )}
+
                         <button
                             type="submit"
                             disabled={loading}
-                            className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
+                            className="w-full h-14 bg-gradient-brand text-white text-sm font-black uppercase tracking-widest rounded-2xl shadow-[0_10px_20px_-10px_rgba(45,198,83,0.4)] hover:shadow-[0_15px_30px_-10px_rgba(45,198,83,0.5)] transition-all hover:-translate-y-1 active:scale-95 disabled:opacity-50 disabled:translate-y-0"
                         >
-                            {loading ? "Signing in..." : "Sign in"}
+                            {loading ? (
+                                <div className="flex items-center justify-center gap-2">
+                                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                                    <span>Verifying...</span>
+                                </div>
+                            ) : "Enter Dashboard"}
                         </button>
+                    </form>
+
+                    <div className="mt-10 text-center">
+                        <p className="text-[10px] font-bold text-white/10 uppercase tracking-[0.2em] flex items-center justify-center gap-3">
+                            <span className="w-8 h-px bg-white/5" />
+                            Authorized Users Only
+                            <span className="w-8 h-px bg-white/5" />
+                        </p>
                     </div>
-                </form>
+                </div>
             </div>
         </div>
     );

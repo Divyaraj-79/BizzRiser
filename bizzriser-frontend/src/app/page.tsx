@@ -1,7 +1,10 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, Bot, CheckCircle2, MessageSquare, Shield, TrendingUp, Users, Play, Star, ChevronLeft, ChevronRight, Plane } from "lucide-react";
+import {
+  ArrowRight, Bot, CheckCircle2, MessageSquare, Shield, TrendingUp, Users, Play, Star,
+  ChevronLeft, ChevronRight, Plane, Video, Phone, MoreVertical, Search, Mic, Camera, Paperclip, Send
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -81,35 +84,7 @@ const DEMO_CONVERSATIONS: Record<string, { sender: 'bot' | 'user', text: string 
   ],
 };
 
-function SwipeTestimonials() {
-
-  const testimonials = [
-    {
-      text: "BizzRiser completely transformed how we handle customer conversations. Our response time dropped from hours to seconds.",
-      name: "Emily Clark",
-      role: "Founder, StartUpHub",
-      avatar: "/avatars/1.jpg"
-    },
-    {
-      text: "Automation flows helped us recover abandoned leads we never knew existed.",
-      name: "Sarah Jenkins",
-      role: "CMO, TechGrowth",
-      avatar: "/avatars/2.jpg"
-    },
-    {
-      text: "Customer engagement increased dramatically after integrating BizzRiser.",
-      name: "John Doe",
-      role: "CEO, InnovateX",
-      avatar: "/avatars/3.jpg"
-    },
-    {
-      text: "The support team is incredibly responsive and understands real business needs.",
-      name: "Michael Lee",
-      role: "Head of Growth, SaaSly",
-      avatar: "/avatars/4.jpg"
-    }
-  ]
-
+function SwipeTestimonials({ testimonials }: { testimonials: any[] }) {
   const [index, setIndex] = useState(0)
 
   const next = () => {
@@ -172,22 +147,18 @@ function SwipeTestimonials() {
                 {/* Card content */}
 
                 <div className="flex gap-4 items-start">
-
-                  <img
-                    src={t.avatar}
-                    className="w-12 h-12 md:w-14 md:h-14 rounded-full object-cover"
-                  />
+                  <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-gradient-brand flex items-center justify-center text-white font-bold text-xl shadow-lg shrink-0">
+                    {t.author.charAt(0)}
+                  </div>
 
                   <div>
-
                     <p className="text-muted-foreground text-sm md:text-base leading-relaxed mb-4">
-                      "{t.text}"
+                      "{t.content}"
                     </p>
 
                     <div>
-
                       <p className="font-semibold text-foreground text-sm">
-                        {t.name}
+                        {t.author}
                       </p>
 
                       <p className="text-xs text-muted-foreground">
@@ -229,34 +200,7 @@ function SwipeTestimonials() {
   )
 }
 
-function HorizontalTestimonials() {
-  const testimonials = [
-    {
-      text: "BizzRiser completely transformed how we handle customer support. We recovered 30% more abandoned carts within the first week.",
-      name: "Sarah Jenkins",
-      role: "CMO, TechGrowth",
-    },
-    {
-      text: "BizzRiser completely transformed how we handle customer support. We recovered 30% more abandoned carts within the first week.",
-      name: "Sarah Jenkins",
-      role: "CMO, TechGrowth",
-    },
-    {
-      text: "BizzRiser completely transformed how we handle customer support. We recovered 30% more abandoned carts within the first week.",
-      name: "Sarah Jenkins",
-      role: "CMO, TechGrowth",
-    },
-    {
-      text: "BizzRiser completely transformed how we handle customer support. We recovered 30% more abandoned carts within the first week.",
-      name: "Sarah Jenkins",
-      role: "CMO, TechGrowth",
-    },
-    {
-      text: "BizzRiser completely transformed how we handle customer support. We recovered 30% more abandoned carts within the first week.",
-      name: "Sarah Jenkins",
-      role: "CMO, TechGrowth",
-    }
-  ];
+function HorizontalTestimonials({ testimonials }: { testimonials: any[] }) {
 
   const [index, setIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
@@ -344,13 +288,17 @@ function HorizontalTestimonials() {
               }}
             >
               <div className="flex gap-1 mb-4">
-                {[1, 2, 3, 4, 5].map(star => <Star key={star} className="w-5 h-5 fill-yellow-400 text-yellow-400" />)}
+                {Array.from({ length: t.rating || 5 }).map((_, star) => (
+                  <Star key={star} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
+                ))}
               </div>
-              <p className="text-foreground italic mb-6 text-sm md:text-base">"{t.text}"</p>
+              <p className="text-foreground italic mb-6 text-sm md:text-base">"{t.content}"</p>
               <div className="flex items-center gap-4 mt-auto">
-                <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-secondary shrink-0" />
+                <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gradient-brand flex items-center justify-center text-white font-bold shadow-lg shrink-0">
+                  {t.author.charAt(0)}
+                </div>
                 <div className="min-w-0">
-                  <h4 className="font-semibold text-sm truncate">{t.name}</h4>
+                  <h4 className="font-semibold text-sm truncate">{t.author}</h4>
                   <p className="text-xs text-muted-foreground truncate">{t.role}</p>
                 </div>
               </div>
@@ -367,8 +315,15 @@ export default function Home() {
   const [brandName, setBrandName] = useState("Travel X");
   const [activeDemo, setActiveDemo] = useState({ industry: "travel", brand: "Travel X", key: 0 });
   const [stats, setStats] = useState(FALLBACK_STATS);
+  const [testimonials, setTestimonials] = useState<any[]>([]);
 
   useEffect(() => {
+    fetchApi("/testimonials/published")
+      .then((data: any[]) => {
+        if (data?.length) setTestimonials(data);
+      })
+      .catch((err) => console.error("Testimonials fetch failed:", err));
+
     fetchApi("/home-stats")
       .then((data: any[]) => {
         if (data?.length) {
@@ -583,82 +538,112 @@ export default function Home() {
               <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-zinc-900 dark:bg-zinc-800 rounded-b-3xl z-30" />
 
               {/* WhatsApp Header */}
-              <div className="bg-[#008069] dark:bg-[#202c33] text-white p-4 pt-8 flex items-center gap-3 relative z-20 shadow-sm">
+              <div className="bg-[#008069] dark:bg-[#202c33] text-white p-3 pt-9 flex items-center justify-between relative z-20 shadow-md shrink-0">
                 <div className="flex items-center gap-2">
                   <ArrowRight className="w-5 h-5 rotate-180" />
                   <div className="relative">
-                    <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center overflow-hidden">
-                      <div className="text-sm font-bold">{activeDemo.brand.substring(0, 2).toUpperCase()}</div>
+                    <div className="w-9 h-9 bg-[#d1d7db] dark:bg-[#667781] rounded-full flex items-center justify-center overflow-hidden">
+                      <div className="text-sm font-bold text-white uppercase">{activeDemo.brand.substring(0, 2)}</div>
                     </div>
                   </div>
                   <div>
-                    <h3 className="text-base font-semibold leading-tight">{activeDemo.brand}</h3>
-                    <p className="text-xs text-white/80">Active now</p>
+                    <h3 className="text-[15px] font-semibold leading-tight">{activeDemo.brand}</h3>
+                    <p className="text-[11px] text-white/90 dark:text-[#8696a0]">online</p>
                   </div>
+                </div>
+                <div className="flex items-center gap-4 text-white/90 mr-1">
+                  <Video className="w-5 h-5 opacity-90" />
+                  <Phone className="w-4.5 h-4.5 opacity-90" />
+                  <MoreVertical className="w-5 h-5 opacity-90" />
                 </div>
               </div>
 
               {/* Scrollable Chat Area */}
-              <div className="flex-1 p-4 space-y-4 overflow-y-auto w-full relative z-10" id="chat-box" key={activeDemo.key}>
-                <div className="text-center my-4">
-                  <span className="bg-white/90 dark:bg-[#182229] px-3 py-1 rounded-lg text-xs text-muted-foreground shadow-sm inline-block">Today</span>
-                </div>
+              <div className="flex-1 overflow-y-auto w-full relative z-10 bg-[#efeae2] dark:bg-[#0b141a]" id="chat-box" key={activeDemo.key}>
+                {/* Wallpaper Overlay - Fainter in dark mode */}
+                <div className="absolute inset-0 opacity-[0.06] dark:opacity-[0.04] pointer-events-none" style={{ backgroundImage: `url("https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png")`, backgroundSize: '400px' }} />
 
-                {DEMO_CONVERSATIONS[activeDemo.industry || 'travel']?.map((msg, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    transition={{ delay: index * 1.5 + 0.5, duration: 0.3 }}
-                    className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'} mb-2 w-full`}
-                  >
-                    <div
-                      className={`relative px-3 py-2 text-[14.5px] shadow-sm max-w-[85%] ${msg.sender === 'user'
-                        ? 'bg-[#d9fdd3] dark:bg-[#005c4b] text-zinc-900 dark:text-zinc-100 rounded-lg rounded-tr-none ml-auto'
-                        : 'bg-white dark:bg-[#202c33] text-zinc-900 dark:text-zinc-100 rounded-lg rounded-tl-none mr-auto'
-                        }`}
-                      style={{ borderTopLeftRadius: msg.sender === 'bot' ? 0 : '0.5rem', borderTopRightRadius: msg.sender === 'user' ? 0 : '0.5rem' }}
+                <div className="relative z-10 p-3 space-y-3">
+                  <div className="text-center mb-4 mt-2">
+                    <span className="bg-[#d1f4ff] dark:bg-[#182229] px-2.5 py-1 rounded-[7px] text-[11px] text-[#54656f] dark:text-[#8696a0] font-medium shadow-sm uppercase tracking-wide">Today</span>
+                  </div>
+
+                  {DEMO_CONVERSATIONS[activeDemo.industry || 'travel']?.map((msg, index) => (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      transition={{ delay: index * 1.5 + 0.5, duration: 0.4, ease: "easeOut" }}
+                      className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'} w-full mb-1`}
                     >
-                      {/* Tail for bot */}
-                      {msg.sender === 'bot' && (
-                        <div className="absolute top-0 -left-2 w-4 h-4 text-white dark:text-[#202c33]">
-                          <svg viewBox="0 0 8 13" fill="currentColor"><path d="M5.188 1H0v11.193l6.467-8.625C7.526 2.156 6.958 1 5.188 1z" /></svg>
-                        </div>
-                      )}
-                      {/* Tail for user */}
-                      {msg.sender === 'user' && (
-                        <div className="absolute top-0 -right-2 w-4 h-4 text-[#d9fdd3] dark:text-[#005c4b]">
-                          <svg viewBox="0 0 8 13" fill="currentColor"><path d="M5.188 1H0v11.193l6.467-8.625C7.526 2.156 6.958 1 5.188 1z" /></svg>
-                        </div>
-                      )}
+                      <div className="relative group max-w-[85%] filter drop-shadow-[0_1px_0.5px_rgba(0,0,0,0.13)]">
+                        <div
+                          className={`relative px-2.5 py-1.5 text-[14.2px] min-w-[100px] flex flex-col ${msg.sender === 'user'
+                            ? 'bg-[#d9fdd3] dark:bg-[#005c4b] text-[#111b21] dark:text-[#e9edef]'
+                            : 'bg-white dark:bg-[#202c33] text-[#111b21] dark:text-[#e9edef]'
+                            }`}
+                          style={{
+                            borderRadius: '8px',
+                            borderTopLeftRadius: msg.sender === 'bot' ? 0 : '8px',
+                            borderTopRightRadius: msg.sender === 'user' ? 0 : '8px'
+                          }}
+                        >
+                          {/* Tail for bot */}
+                          {msg.sender === 'bot' && (
+                            <div className="absolute top-0 -left-[8px] w-[10px] h-3 text-white dark:text-[#202c33]">
+                              <svg viewBox="0 0 8 13" className="w-full h-full" fill="currentColor">
+                                <path d="M1.533 3.568 8 12.193V1H2.812C1.042 1 .474 2.156 1.533 3.568z" />
+                              </svg>
+                            </div>
+                          )}
 
-                      <span className="inline-block break-words pe-10">{msg.text.replace('{brand}', activeDemo.brand)}</span>
+                          {/* Tail for user */}
+                          {msg.sender === 'user' && (
+                            <div className="absolute top-0 -right-[8px] w-[10px] h-3 text-[#d9fdd3] dark:text-[#005c4b] scale-x-[-1]">
+                              <svg viewBox="0 0 8 13" className="w-full h-full" fill="currentColor">
+                                <path d="M1.533 3.568 8 12.193V1H2.812C1.042 1 .474 2.156 1.533 3.568z" />
+                              </svg>
+                            </div>
+                          )}
 
-                      <span className="float-right text-[11px] text-zinc-500 dark:text-zinc-400 mt-2 ml-2 -mb-1 flex items-center gap-1 absolute bottom-1.5 right-2">
-                        {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                        {msg.sender === 'user' && (
-                          <svg className="w-[16px] h-[11px] text-[#53bdeb]" viewBox="0 0 16 11" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M11.4582 1.25L4.85408 7.85417L2.04158 5.04167L1.10408 5.97917L4.85408 9.72917L12.3957 2.1875L11.4582 1.25Z" fill="currentColor" />
-                            <path d="M15.0423 1.25L8.43815 7.85417L7.00065 6.41667L6.06315 7.35417L8.43815 9.72917L15.9798 2.1875L15.0423 1.25Z" fill="currentColor" />
-                          </svg>
-                        )}
-                      </span>
-                    </div>
-                  </motion.div>
-                ))}
+                          <div className="leading-[1.4] break-words pr-12 pb-2 mt-0.5">
+                            {msg.text.replace('{brand}', activeDemo.brand)}
+                          </div>
+
+                          <div className="absolute bottom-1 right-1.5 flex items-center gap-1">
+                            <span className="text-[10px] text-[#667781] dark:text-[#8696a0] font-normal leading-none mb-0.5">
+                              11:34 pm
+                            </span>
+                            {msg.sender === 'user' && (
+                              <div className="flex -space-x-1.5 leading-none">
+                                <svg className="w-[15.5px] h-[10.5px] text-[#53bdeb]" viewBox="0 0 16 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                  <path d="M11.4582 1.25L4.85408 7.85417L2.04158 5.04167L1.10408 5.97917L4.85408 9.72917L12.3957 2.1875L11.4582 1.25Z" fill="currentColor" />
+                                  <path d="M15.0423 1.25L8.43815 7.85417L7.00065 6.41667L6.06315 7.35417L8.43815 9.72917L15.9798 2.1875L15.0423 1.25Z" fill="currentColor" />
+                                </svg>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
               </div>
 
               {/* Chat Input Mockup */}
-              <div className="bg-[#f0f2f5] dark:bg-[#202c33] p-3 flex items-center gap-2 z-20">
-                <div className="w-8 h-8 rounded-full flex items-center justify-center text-zinc-500">
-                  {/* Simulating attachment icon */}
-                  <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M11.816 16.945c-2.348 2.352-6.16 2.352-8.508 0-2.348-2.349-2.348-6.164 0-8.513l8.69-8.707c1.789-1.792 4.694-1.792 6.483 0 1.788 1.792 1.788 4.697 0 6.488l-9.141 9.158c-1.102 1.104-2.89 1.104-3.992 0-1.102-1.105-1.102-2.895 0-4.001l6.784-6.797 1.391 1.393-6.784 6.798c-.334.335-.334.877 0 1.212.333.334.873.334 1.207 0l9.14-9.158c1.02-1.022 1.02-2.68 0-3.701-1.019-1.022-2.673-1.022-3.693 0l-8.692 8.707c-1.583 1.586-1.583 4.155 0 5.742 1.583 1.585 4.148 1.585 5.731 0l7.592-7.608 1.391 1.393-7.59 7.605z"></path></svg>
+              <div className="bg-[#f0f2f5] dark:bg-[#0b141a] p-2 flex items-center gap-2 z-20 shrink-0">
+                <div className="flex-1 bg-white dark:bg-[#2a3942] rounded-[24px] h-[44px] px-3.5 flex items-center justify-between text-[#8696a0] shadow-sm">
+                  <div className="flex items-center gap-3">
+                    <MessageSquare className="w-5.5 h-5.5 opacity-50" />
+                    <span className="text-[15.5px] opacity-70">Type a message</span>
+                  </div>
+                  <div className="flex items-center gap-4">
+                    <Paperclip className="w-5 h-5 opacity-50 rotate-[225deg]" />
+                    <Camera className="w-5.5 h-5.5 opacity-50" />
+                  </div>
                 </div>
-                <div className="flex-1 bg-white dark:bg-[#2a3942] rounded-full h-10 px-4 flex items-center text-sm text-zinc-500 dark:text-zinc-400">
-                  Type a message
-                </div>
-                <div className="w-10 h-10 rounded-full bg-[#00a884] flex items-center justify-center text-white shrink-0">
-                  <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M11.999 14.942c2.001 0 3.531-1.53 3.531-3.531V4.35c0-2.001-1.53-3.531-3.531-3.531S8.469 2.35 8.469 4.35v7.061c0 2.001 1.53 3.531 3.53 3.531zm6.238-3.53c0 3.531-2.942 6.002-6.237 6.002s-6.237-2.471-6.237-6.002H3.761c0 4.001 3.178 7.297 7.061 7.885v3.884h2.354v-3.884c3.884-.588 7.061-3.884 7.061-7.885h-2.001z"></path></svg>
+                <div className="w-[45px] h-[45px] rounded-full bg-[#00a884] flex items-center justify-center text-white shrink-0 shadow-sm">
+                  <Mic className="w-6 h-6" />
                 </div>
               </div>
             </div>
@@ -746,7 +731,7 @@ export default function Home() {
             <h2 className="text-3xl md:text-4xl font-bold mb-4">Loved by 10,000+ Growth Teams</h2>
           </div>
 
-          <HorizontalTestimonials />
+          <HorizontalTestimonials testimonials={testimonials.length > 0 ? testimonials : FALLBACK_TESTIMONIALS.map(t => ({ author: t.name, role: t.role, content: t.text, rating: 5 }))} />
         </div>
       </section>
 
@@ -764,7 +749,7 @@ export default function Home() {
             Swipe Up ↑
           </p>
 
-          <SwipeTestimonials />
+          <SwipeTestimonials testimonials={testimonials.length > 0 ? testimonials : FALLBACK_TESTIMONIALS.map(t => ({ author: t.name, role: t.role, content: t.text, rating: 5 }))} />
 
         </div>
 

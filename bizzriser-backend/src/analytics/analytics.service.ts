@@ -7,19 +7,20 @@ export class AnalyticsService {
 
   async getDashboardStats() {
     // Basic aggregated statistics for the admin dashboard
-    const totalLeads = await this.prisma.lead.count();
-    const totalSubscribers = await this.prisma.newsletterSubscriber.count({
-      where: { status: 'SUBSCRIBED' }
-    });
-    const newMessages = await this.prisma.contactMessage.count({
-      where: { status: 'NEW' }
-    });
+    const [totalLeads, activeSubscribers, unreadMessages, totalBlogs, totalCaseStudies] = await Promise.all([
+      this.prisma.lead.count(),
+      this.prisma.newsletterSubscriber.count({ where: { status: 'SUBSCRIBED' } }),
+      this.prisma.contactMessage.count({ where: { status: 'NEW' } }),
+      this.prisma.blog.count(),
+      this.prisma.caseStudy.count(),
+    ]);
 
-    // In a real app we'd also fetch conversation metrics, revenue, etc.
     return {
       totalLeads,
-      activeSubscribers: totalSubscribers,
-      unreadMessages: newMessages,
+      activeSubscribers,
+      unreadMessages,
+      totalBlogs,
+      totalCaseStudies,
       // mock data for charts
       revenueGrowth: 24.5,
       activeConversations: 1245,

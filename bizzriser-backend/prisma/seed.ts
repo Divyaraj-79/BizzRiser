@@ -251,6 +251,98 @@ async function main() {
     });
     console.log('✅ Newsletter Subscribers seeded');
 
+    // ─── Case Studies ──────────────────────────────────────────────────────────
+    await prisma.caseStudy.deleteMany();
+    await prisma.caseStudy.createMany({
+        data: [
+            {
+                company: 'FashionBrand X',
+                industry: 'E-Commerce',
+                slug: 'fashion-brand-x',
+                title: 'How FashionBrand X generated $1.2M during Black Friday via WhatsApp',
+                goal: 'Marketing',
+                metric: '+340%',
+                metricLabel: 'ROI on Black Friday',
+                excerpt: 'By switching from email blasts to personalized WhatsApp broadcasts, this leading fashion retailer saw unprecedented engagement rates.',
+                content: '## The Challenge\nFashionBrand X needed a more effective way to reach customers during the high-stakes holiday season...\n\n## The Solution\nBy moving their marketing to WhatsApp, they achieved much higher open and click rates compared to email...',
+                logoUrl: 'https://img.freepik.com/free-vector/shopping-bag-cart-icon_24877-51177.jpg',
+                bannerUrl: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&q=80&w=800',
+                published: true,
+            },
+            {
+                company: 'Metro Real Estate',
+                industry: 'Real Estate',
+                slug: 'metro-real-estate',
+                title: 'Qualifying high-intent property buyers automatically 24/7',
+                goal: 'Lead Gen',
+                metric: '45%',
+                metricLabel: 'Increase in Qualified Leads',
+                excerpt: 'Metro deployed a pre-qualification bot that captures requirements before handing off to human agents, saving 20 hours a week.',
+                content: '## Scaling Lead Qualification\nMetro was overwhelmed with low-quality inquiries. The automated WhatsApp bot now triages every prospect instantly...',
+                logoUrl: 'https://img.freepik.com/free-vector/modern-office-building-icon-design_24877-62024.jpg',
+                bannerUrl: 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&q=80&w=800',
+                published: true,
+            },
+            {
+                company: 'Global EdTech',
+                industry: 'Education',
+                slug: 'global-edtech',
+                title: 'Scaling student support across 15 countries with AI routing',
+                goal: 'Support',
+                metric: '-60%',
+                metricLabel: 'Reduction in Ticket Resolution Time',
+                excerpt: 'Handling thousands of enrollment queries simply wasn\'t scaling via email. BizzRiser\'s automated FAQ bot solved 70% of questions instantly.',
+                content: '## Instant Global Support\nWith students across multiple timezones, email support was too slow. Our AI bot now provides instant answers in 12 languages...',
+                logoUrl: 'https://img.freepik.com/free-vector/group-people-icon_24877-51147.jpg',
+                bannerUrl: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80&w=800',
+                published: true,
+            },
+            {
+                company: 'HealthPlus Clinics',
+                industry: 'Healthcare',
+                slug: 'health-plus-clinic',
+                title: 'Automating appointment reminders and follow-ups securely',
+                goal: 'Retention',
+                metric: '28%',
+                metricLabel: 'Fewer No-Show Appointments',
+                excerpt: 'Implementing a strict, compliant automated reminder system via WhatsApp significantly improved clinic efficiency and patient care.',
+                content: '## Secure Patient Communication\nHealthPlus needed a HIPAA-compliant way to remind patients of appointments. WhatsApp proved to be the most reliable channel...',
+                logoUrl: 'https://img.freepik.com/free-vector/target-icon-flat-design_24877-51167.jpg',
+                bannerUrl: 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&q=80&w=800',
+                published: true,
+            },
+            {
+                company: 'Fresh Grocer',
+                industry: 'Retail',
+                slug: 'fresh-grocer',
+                title: 'Managing explosive delivery query volume during holidays',
+                goal: 'Support',
+                metric: '1.2M',
+                metricLabel: 'Queries Handled Automatically',
+                excerpt: 'How a local grocery chain scaled their delivery update system using BizzRiser\'s Shopify integration and automated tracking flows.',
+                content: '## Handling Holiday Surges\nFresh Grocer avoids support meltdowns by automating delivery tracking. Customers can now check their status in 5 seconds on WhatsApp...',
+                logoUrl: 'https://img.freepik.com/free-vector/shopping-bag-cart-icon_24877-51177.jpg',
+                bannerUrl: 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&q=80&w=800',
+                published: true,
+            },
+            {
+                company: 'FinanceNow',
+                industry: 'Fintech',
+                slug: 'finance-now',
+                title: 'Creating a frictionless loan application process via chat',
+                goal: 'Lead Gen',
+                metric: '3x',
+                metricLabel: 'Faster Application Processing',
+                excerpt: 'Replacing cumbersome web forms with an interactive conversational flow increased loan application completion rates dramatically.',
+                content: '## The Future of Finance\nFinanceNow replaced boring forms with a friendly WhatsApp chat. Application completion rates tripled in the first month...',
+                logoUrl: 'https://img.freepik.com/free-vector/business-chart-icon-design_24877-51163.jpg',
+                bannerUrl: 'https://images.unsplash.com/photo-1551288049-bbbda536339a?auto=format&fit=crop&q=80&w=800',
+                published: true,
+            }
+        ],
+    });
+    console.log('✅ Case Studies seeded');
+
     console.log('🎉 Seeding complete!');
 }
 

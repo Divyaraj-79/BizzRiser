@@ -7,81 +7,29 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 
+import { useState, useEffect } from "react";
+import { adminFetch, ADMIN_API_BASE } from "@/lib/admin-api";
+
 const filters = {
-    industry: ["All Industries", "E-Commerce", "Real Estate", "Education", "Healthcare"],
+    industry: ["All Industries", "E-Commerce", "Real Estate", "Education", "Healthcare", "Retail", "Fintech"],
     goal: ["All Goals", "Lead Gen", "Support", "Marketing", "Retention"]
 };
 
-const caseStudies = [
-    {
-        id: "fashion-brand-x",
-        company: "FashionBrand X",
-        industry: "E-Commerce",
-        goal: "Marketing",
-        metric: "+340%",
-        metricLabel: "ROI on Black Friday",
-        title: "How FashionBrand X generated $1.2M during Black Friday via WhatsApp",
-        excerpt: "By switching from email blasts to personalized WhatsApp broadcasts, this leading fashion retailer saw unprecedented engagement rates.",
-        logo: <ShoppingBag className="w-8 h-8 text-bizz-primary" />
-    },
-    {
-        id: "metro-real-estate",
-        company: "Metro Real Estate",
-        industry: "Real Estate",
-        goal: "Lead Gen",
-        metric: "45%",
-        metricLabel: "Increase in Qualified Leads",
-        title: "Qualifying high-intent property buyers automatically 24/7",
-        excerpt: "Metro deployed a pre-qualification bot that captures requirements before handing off to human agents, saving 20 hours a week.",
-        logo: <Building2 className="w-8 h-8 text-blue-500" />
-    },
-    {
-        id: "global-edtech",
-        company: "Global EdTech",
-        industry: "Education",
-        goal: "Support",
-        metric: "-60%",
-        metricLabel: "Reduction in Ticket Resolution Time",
-        title: "Scaling student support across 15 countries with AI routing",
-        excerpt: "Handling thousands of enrollment queries simply wasn't scaling via email. BizzRiser's automated FAQ bot solved 70% of questions instantly.",
-        logo: <Users className="w-8 h-8 text-orange-500" />
-    },
-    {
-        id: "health-plus-clinic",
-        company: "HealthPlus Clinics",
-        industry: "Healthcare",
-        goal: "Retention",
-        metric: "28%",
-        metricLabel: "Fewer No-Show Appointments",
-        title: "Automating appointment reminders and follow-ups securely",
-        excerpt: "Implementing a strict, compliant automated reminder system via WhatsApp significantly improved clinic efficiency and patient care.",
-        logo: <Target className="w-8 h-8 text-rose-500" />
-    },
-    {
-        id: "fresh-grocer",
-        company: "Fresh Grocer",
-        industry: "Retail",
-        goal: "Support",
-        metric: "1.2M",
-        metricLabel: "Queries Handled Automatically",
-        title: "Managing explosive delivery query volume during holidays",
-        excerpt: "How a local grocery chain scaled their delivery update system using BizzRiser's Shopify integration and automated tracking flows.",
-        logo: <ShoppingBag className="w-8 h-8 text-cyan-500" />
-    },
-    {
-        id: "finance-now",
-        company: "FinanceNow",
-        industry: "Fintech",
-        goal: "Lead Gen",
-        metric: "3x",
-        metricLabel: "Faster Application Processing",
-        title: "Creating a frictionless loan application process via chat",
-        excerpt: "Replacing cumbersome web forms with an interactive conversational flow increased loan application completion rates dramatically.",
-        logo: <TrendingUp className="w-8 h-8 text-emerald-500" />
-    }
-];
-
 export default function CaseStudiesPage() {
+    const [caseStudies, setCaseStudies] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        fetch(`${ADMIN_API_BASE}/case-studies`)
+            .then(res => res.json())
+            .then(data => {
+                // Filter for published ones if backend doesn't already
+                setCaseStudies(data.filter((cs: any) => cs.published));
+            })
+            .catch(err => console.error("Failed to fetch case studies:", err))
+            .finally(() => setLoading(false));
+    }, []);
+
     return (
         <div className="pt-20 min-h-screen bg-background">
             {/* 1. Hero Section */}
@@ -126,52 +74,84 @@ export default function CaseStudiesPage() {
                     </div>
 
                     {/* Grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {caseStudies.map((study, i) => (
-                            <motion.div
-                                key={study.id}
-                                initial={{ opacity: 0, y: 30 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ delay: i * 0.1 }}
-                                className="group"
-                            >
-                                <Link href={`/case-studies/${study.id}`} className="block h-full cursor-pointer">
-                                    <Card className="h-full flex flex-col bg-gradient-to-br from-accent/10 to-bizz-primary/10 border-accent/20 hover:border-accent/40 hover:shadow-xl transition-all overflow-hidden">
-                                        {/* Top Metric Header */}
-                                        <div className="p-6 border-b border-accent/30 bg-accent/5 flex flex-col justify-center items-center text-center relative overflow-hidden h-40">
-                                            <div className="absolute inset-0 bg-bizz-primary/5 opacity-0 group-hover:opacity-100 transition-opacity" />
-                                            <div className="text-4xl font-extrabold text-foreground mb-2 group-hover:scale-105 transition-transform">{study.metric}</div>
-                                            <div className="text-sm font-medium text-muted-foreground">{study.metricLabel}</div>
-                                        </div>
+                    {loading ? (
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                            {[1, 2, 3].map(i => (
+                                <div key={i} className="h-[400px] rounded-2xl bg-white/5 animate-pulse" />
+                            ))}
+                        </div>
+                    ) : (
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                            {caseStudies.map((study, i) => (
+                                <motion.div
+                                    key={study.id}
+                                    initial={{ opacity: 0, y: 30 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{ delay: i * 0.1 }}
+                                    className="group"
+                                >
+                                    <Link href={`/case-studies/${study.slug || study.id}`} className="block h-full cursor-pointer">
+                                        <Card className="h-full flex flex-col bg-gradient-to-br from-accent/10 to-bizz-primary/10 border-accent/20 hover:border-accent/40 hover:shadow-xl transition-all overflow-hidden">
+                                            {/* Top Banner / Metric Header */}
+                                            <div className="relative h-48 overflow-hidden group/banner border-b border-accent/20">
+                                                {study.bannerUrl ? (
+                                                    <>
+                                                        <img
+                                                            src={study.bannerUrl}
+                                                            alt={study.company}
+                                                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                                        />
+                                                        <div className="absolute inset-0 bg-black/60 group-hover:bg-black/40 transition-colors duration-500" />
+                                                    </>
+                                                ) : (
+                                                    <div className="w-full h-full bg-accent/5 flex items-center justify-center">
+                                                        <div className="absolute inset-0 bg-gradient-to-br from-accent/5 to-bizz-primary/5" />
+                                                    </div>
+                                                )}
 
-                                        <CardContent className="p-6 flex-1 flex flex-col relative z-10">
-                                            <div className="flex justify-between items-start mb-6">
-                                                <div className="w-12 h-12 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center p-2 shadow-sm">
-                                                    {study.logo}
-                                                </div>
-                                                <div className="flex flex-col items-end gap-2">
-                                                    <Badge variant="outline" className="text-xs">{study.industry}</Badge>
-                                                    <Badge className="bg-bizz-primary/10 text-bizz-primary hover:bg-bizz-primary/20 hover:text-bizz-primary border-0 text-xs">{study.goal}</Badge>
+                                                <div className="absolute inset-0 flex flex-col justify-center items-center text-center p-6 z-10">
+                                                    <div className={`text-4xl font-extrabold mb-1 drop-shadow-lg transition-transform duration-500 group-hover:scale-110 ${study.bannerUrl ? 'text-white' : 'text-foreground'}`}>
+                                                        {study.metric}
+                                                    </div>
+                                                    <div className={`text-sm font-semibold uppercase tracking-wider ${study.bannerUrl ? 'text-white/90' : 'text-muted-foreground'}`}>
+                                                        {study.metricLabel}
+                                                    </div>
                                                 </div>
                                             </div>
 
-                                            <h3 className="text-xl font-bold mb-3 text-foreground group-hover:text-accent transition-colors line-clamp-2">
-                                                {study.title}
-                                            </h3>
-                                            <p className="text-muted-foreground text-sm line-clamp-3 mb-6 flex-1">
-                                                {study.excerpt}
-                                            </p>
+                                            <CardContent className="p-6 flex-1 flex flex-col relative z-10">
+                                                <div className="flex justify-between items-start mb-6">
+                                                    <div className="w-12 h-12 rounded-xl bg-white border border-accent/20 flex items-center justify-center p-2 shadow-sm overflow-hidden">
+                                                        {study.logoUrl ? (
+                                                            <img src={study.logoUrl} alt={study.company} className="w-full h-full object-contain" />
+                                                        ) : (
+                                                            <Building2 className="w-8 h-8 text-accent" />
+                                                        )}
+                                                    </div>
+                                                    <div className="flex flex-col items-end gap-2">
+                                                        <Badge variant="outline" className="text-xs">{study.industry}</Badge>
+                                                        <Badge className="bg-bizz-primary/10 text-bizz-primary hover:bg-bizz-primary/20 hover:text-bizz-primary border-0 text-xs">{study.goal}</Badge>
+                                                    </div>
+                                                </div>
 
-                                            <div className="flex items-center text-sm font-bold text-foreground group-hover:text-bizz-primary transition-colors mt-auto">
-                                                Read full story <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
-                                            </div>
-                                        </CardContent>
-                                    </Card>
-                                </Link>
-                            </motion.div>
-                        ))}
-                    </div>
+                                                <h3 className="text-xl font-bold mb-3 text-foreground group-hover:text-accent transition-colors line-clamp-2">
+                                                    {study.title}
+                                                </h3>
+                                                <p className="text-muted-foreground text-sm line-clamp-3 mb-6 flex-1">
+                                                    {study.excerpt}
+                                                </p>
+
+                                                <div className="flex items-center text-sm font-bold text-foreground group-hover:text-bizz-primary transition-colors mt-auto">
+                                                    Read full story <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                                                </div>
+                                            </CardContent>
+                                        </Card>
+                                    </Link>
+                                </motion.div>
+                            ))}
+                        </div>
+                    )}
 
                     <div className="mt-16 text-center">
                         <Button variant="outline" className="rounded-full h-12 px-8">Load More Stories</Button>
