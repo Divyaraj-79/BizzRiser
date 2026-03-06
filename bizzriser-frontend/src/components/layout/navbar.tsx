@@ -70,11 +70,10 @@ export function Navbar() {
       initial={{ y: -80 }}
       animate={{ y: 0 }}
       transition={{ type: "spring", stiffness: 120, damping: 20 }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled
-          ? "bg-background/70 backdrop-blur-md border-b border-white/10 shadow-sm"
-          : "bg-transparent"
-      }`}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled
+        ? "bg-background/70 backdrop-blur-md border-b border-white/10 shadow-sm"
+        : "bg-transparent"
+        }`}
     >
       <div className="container mx-auto px-4 h-20 flex items-center justify-between">
         {/* Logo */}
@@ -95,11 +94,10 @@ export function Navbar() {
             <Link
               key={link.name}
               href={link.href}
-              className={`text-sm font-medium transition-colors hover:text-bizz-primary ${
-                pathname === link.href
-                  ? "text-bizz-primary"
-                  : "text-muted-foreground"
-              }`}
+              className={`text-sm font-medium transition-colors hover:text-bizz-primary ${pathname === link.href
+                ? "text-bizz-primary"
+                : "text-muted-foreground"
+                }`}
             >
               {link.name}
             </Link>
@@ -137,7 +135,7 @@ export function Navbar() {
 
             <SheetContent
               side="right"
-              className="w-[85%] bg-background/95 backdrop-blur-xl border-l border-white/10"
+              className="w-[60%] bg-background/95 backdrop-blur-xl border-l border-white/10"
             >
               <SheetTitle className="sr-only">
                 Navigation Menu
@@ -151,11 +149,10 @@ export function Navbar() {
                       key={link.name}
                       href={link.href}
                       onClick={() => setOpen(false)}
-                      className={`text-lg font-medium transition-colors ${
-                        pathname === link.href
-                          ? "text-bizz-primary"
-                          : "text-muted-foreground"
-                      }`}
+                      className={`text-lg font-medium transition-colors ${pathname === link.href
+                        ? "text-bizz-primary"
+                        : "text-muted-foreground"
+                        }`}
                     >
                       {link.name}
                     </Link>
