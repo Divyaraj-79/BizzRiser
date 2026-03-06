@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, Bot, CheckCircle2, MessageSquare, Shield, TrendingUp, Users, Play, Star, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowRight, Bot, CheckCircle2, MessageSquare, Shield, TrendingUp, Users, Play, Star, ChevronLeft, ChevronRight, Plane } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -27,11 +27,50 @@ const results = [
 ];
 
 const industries = [
+  { id: "travel", label: "Travel & Hospitality", icon: <Plane className="w-5 h-5" /> },
   { id: "ecommerce", label: "E-Commerce", icon: <TrendingUp className="w-5 h-5" /> },
-  { id: "realadmin", label: "Real Estate", icon: <Users className="w-5 h-5" /> },
+  { id: "realestate", label: "Real Estate", icon: <Users className="w-5 h-5" /> },
   { id: "education", label: "Education", icon: <Bot className="w-5 h-5" /> },
   { id: "healthcare", label: "Healthcare", icon: <Shield className="w-5 h-5" /> },
 ];
+
+const DEMO_CONVERSATIONS: Record<string, { sender: 'bot' | 'user', text: string }[]> = {
+  travel: [
+    { sender: 'bot', text: 'Hi! Planning your next getaway with {brand}?' },
+    { sender: 'user', text: 'Yes, looking for a beach resort.' },
+    { sender: 'bot', text: 'Great choice! Checkout our top 3 Maldives packages \uD83C\uDFDD️' },
+    { sender: 'user', text: 'Can I see the itinerary for the first one?' },
+    { sender: 'bot', text: 'Sure! Here is the detailed 5-day itinerary...' },
+  ],
+  ecommerce: [
+    { sender: 'bot', text: 'Hey there! Your cart at {brand} is waiting for you.' },
+    { sender: 'user', text: 'I forgot to apply the discount code.' },
+    { sender: 'bot', text: 'No worries! Use code SAVE20 for 20% off. Checkout now?' },
+    { sender: 'user', text: 'Yes, applied it. Processing payment now.' },
+    { sender: 'bot', text: 'Awesome! We\'ve received your order. Tracking link sent! \uD83D\uDE80' },
+  ],
+  realestate: [
+    { sender: 'bot', text: 'Welcome to {brand} Real Estate! Looking to buy or rent?' },
+    { sender: 'user', text: 'Buy a 2 BHK apartment.' },
+    { sender: 'bot', text: 'Got it. Here are 3 premium 2 BHKs in your preferred location.' },
+    { sender: 'user', text: 'The second one looks good. Can I schedule a visit?' },
+    { sender: 'bot', text: 'Absolutely! I have scheduled a visit for tomorrow at 10 AM. See you!' },
+  ],
+  education: [
+    { sender: 'bot', text: 'Hello from {brand}! Interested in our new courses?' },
+    { sender: 'user', text: 'Yes, details about the Data Science bootcamp.' },
+    { sender: 'bot', text: 'It\'s a 12-week intensive course. Next batch starts next week.' },
+    { sender: 'user', text: 'What is the fee structure?' },
+    { sender: 'bot', text: 'The fee is $999. You can pay in 3 installments too. Register now?' },
+  ],
+  healthcare: [
+    { sender: 'bot', text: 'Hi! How can {brand} assist you with your health today?' },
+    { sender: 'user', text: 'I need to book a consultation with Dr. Smith.' },
+    { sender: 'bot', text: 'Dr. Smith is available tomorrow at 4 PM. Should I book?' },
+    { sender: 'user', text: 'Yes, please.' },
+    { sender: 'bot', text: 'Consultation booked successfully. Your token number is 42.' },
+  ],
+};
 
 function SwipeTestimonials() {
 
@@ -315,11 +354,12 @@ function HorizontalTestimonials() {
 }
 
 export default function Home() {
-  const [selectedIndustry, setSelectedIndustry] = useState("ecommerce");
-  const [brandName, setBrandName] = useState("");
+  const [selectedIndustry, setSelectedIndustry] = useState("travel");
+  const [brandName, setBrandName] = useState("Travel X");
+  const [activeDemo, setActiveDemo] = useState({ industry: "travel", brand: "Travel X", key: 0 });
 
   function handleExampleInteractions() {
-    // Logic to update messages dynamically based on selected industry and brand name
+    setActiveDemo({ industry: selectedIndustry, brand: brandName || "Your Brand", key: activeDemo.key + 1 });
   }
 
   return (
@@ -492,7 +532,8 @@ export default function Home() {
                 <label htmlFor="industry" className="block text-sm font-medium text-foreground mb-2">Select Your Industry</label>
                 <select
                   id="industry"
-                  className="w-full p-3 border border-border rounded-lg"
+                  className="w-full p-3 border border-border rounded-lg bg-background"
+                  value={selectedIndustry}
                   onChange={(e) => setSelectedIndustry(e.target.value)}
                 >
                   {industries.map(ind => (
@@ -506,60 +547,104 @@ export default function Home() {
                   id="brand"
                   type="text"
                   placeholder="Enter your brand name"
-                  className="w-full p-3 border border-border rounded-lg"
+                  className="w-full p-3 border border-border rounded-lg bg-background"
+                  value={brandName}
                   onChange={(e) => setBrandName(e.target.value)}
                 />
               </div>
             </div>
-            <Button className="w-full py-3 bg-bizz-primary text-white rounded-lg" onClick={handleExampleInteractions}>See Example Interactions</Button>
+            <Button className="w-full py-3 bg-bizz-primary text-white rounded-lg hover:opacity-90" onClick={handleExampleInteractions}>See Example Interactions</Button>
           </div>
 
           <div className="mt-12">
-            <div className="bg-[#ECE5DD] dark:bg-[#1E1E1E] rounded-lg border border-[#E5DDD5] dark:border-[#3A3A3A] p-4 shadow-xl relative w-[360px] mx-auto">
-              <div className="bg-[#075E54] dark:bg-[#2A2F32] text-white p-3 rounded-t-lg flex items-center gap-3">
-                <div className="w-8 h-8 bg-white rounded-full" />
-                <h3 className="text-lg font-bold">{brandName || "Your Brand"}</h3>
+            <div className="bg-[#efeae2] dark:bg-[#0b141a] rounded-[2rem] border-[8px] border-zinc-900 dark:border-zinc-800 shadow-2xl relative w-full sm:w-[380px] mx-auto overflow-hidden h-[600px] flex flex-col">
+
+              {/* Notched / Top header of phone */}
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-zinc-900 dark:bg-zinc-800 rounded-b-3xl z-30" />
+
+              {/* WhatsApp Header */}
+              <div className="bg-[#008069] dark:bg-[#202c33] text-white p-4 pt-8 flex items-center gap-3 relative z-20 shadow-sm">
+                <div className="flex items-center gap-2">
+                  <ArrowRight className="w-5 h-5 rotate-180" />
+                  <div className="relative">
+                    <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center overflow-hidden">
+                      <div className="text-sm font-bold">{activeDemo.brand.substring(0, 2).toUpperCase()}</div>
+                    </div>
+                  </div>
+                  <div>
+                    <h3 className="text-base font-semibold leading-tight">{activeDemo.brand}</h3>
+                    <p className="text-xs text-white/80">Active now</p>
+                  </div>
+                </div>
               </div>
-              <div className="p-4 space-y-4" id="chat-box">
-                {[
-                  { sender: 'bot', text: `Hey! Planning your next ${selectedIndustry} project with ${brandName || "Your Brand"}?` },
-                  { sender: 'user', text: 'Yes! Tell me more about your services.' },
-                  { sender: 'bot', text: `We offer tailored solutions for ${selectedIndustry} to help you grow your business.` },
-                  { sender: 'user', text: 'That sounds great! How do I get started?' },
-                  { sender: 'bot', text: 'You can book a free demo with us today!' },
-                ].map((message, index) => (
+
+              {/* Scrollable Chat Area */}
+              <div className="flex-1 p-4 space-y-4 overflow-y-auto w-full relative z-10" id="chat-box" key={activeDemo.key}>
+                <div className="text-center my-4">
+                  <span className="bg-white/90 dark:bg-[#182229] px-3 py-1 rounded-lg text-xs text-muted-foreground shadow-sm inline-block">Today</span>
+                </div>
+
+                {DEMO_CONVERSATIONS[activeDemo.industry || 'travel']?.map((msg, index) => (
                   <motion.div
                     key={index}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 1 }}
-                    className={`flex items-start gap-3 ${message.sender === 'user' ? 'justify-end' : ''}`}
+                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    transition={{ delay: index * 1.5 + 0.5, duration: 0.3 }}
+                    className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'} mb-2 w-full`}
                   >
-                    {message.sender === 'bot' && (
-                      <div className="w-8 h-8 rounded-full bg-[#DCF8C6] dark:bg-[#3A3A3A] shrink-0" />
-                    )}
                     <div
-                      className={`p-3 rounded-lg max-w-[75%] ${message.sender === 'bot' ? 'bg-white dark:bg-[#3A3A3A] text-black dark:text-white' : 'bg-[#DCF8C6] dark:bg-[#056162] text-black dark:text-white'
+                      className={`relative px-3 py-2 text-[14.5px] shadow-sm max-w-[85%] ${msg.sender === 'user'
+                          ? 'bg-[#d9fdd3] dark:bg-[#005c4b] text-zinc-900 dark:text-zinc-100 rounded-lg rounded-tr-none ml-auto'
+                          : 'bg-white dark:bg-[#202c33] text-zinc-900 dark:text-zinc-100 rounded-lg rounded-tl-none mr-auto'
                         }`}
+                      style={{ borderTopLeftRadius: msg.sender === 'bot' ? 0 : '0.5rem', borderTopRightRadius: msg.sender === 'user' ? 0 : '0.5rem' }}
                     >
-                      {message.text}
+                      {/* Tail for bot */}
+                      {msg.sender === 'bot' && (
+                        <div className="absolute top-0 -left-2 w-4 h-4 text-white dark:text-[#202c33]">
+                          <svg viewBox="0 0 8 13" fill="currentColor"><path d="M5.188 1H0v11.193l6.467-8.625C7.526 2.156 6.958 1 5.188 1z" /></svg>
+                        </div>
+                      )}
+                      {/* Tail for user */}
+                      {msg.sender === 'user' && (
+                        <div className="absolute top-0 -right-2 w-4 h-4 text-[#d9fdd3] dark:text-[#005c4b]">
+                          <svg viewBox="0 0 8 13" fill="currentColor"><path d="M5.188 1H0v11.193l6.467-8.625C7.526 2.156 6.958 1 5.188 1z" /></svg>
+                        </div>
+                      )}
+
+                      <span className="inline-block break-words pe-10">{msg.text.replace('{brand}', activeDemo.brand)}</span>
+
+                      <span className="float-right text-[11px] text-zinc-500 dark:text-zinc-400 mt-2 ml-2 -mb-1 flex items-center gap-1 absolute bottom-1.5 right-2">
+                        {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                        {msg.sender === 'user' && (
+                          <svg className="w-[16px] h-[11px] text-[#53bdeb]" viewBox="0 0 16 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M11.4582 1.25L4.85408 7.85417L2.04158 5.04167L1.10408 5.97917L4.85408 9.72917L12.3957 2.1875L11.4582 1.25Z" fill="currentColor" />
+                            <path d="M15.0423 1.25L8.43815 7.85417L7.00065 6.41667L6.06315 7.35417L8.43815 9.72917L15.9798 2.1875L15.0423 1.25Z" fill="currentColor" />
+                          </svg>
+                        )}
+                      </span>
                     </div>
                   </motion.div>
                 ))}
+              </div>
+
+              {/* Chat Input Mockup */}
+              <div className="bg-[#f0f2f5] dark:bg-[#202c33] p-3 flex items-center gap-2 z-20">
+                <div className="w-8 h-8 rounded-full flex items-center justify-center text-zinc-500">
+                  {/* Simulating attachment icon */}
+                  <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M11.816 16.945c-2.348 2.352-6.16 2.352-8.508 0-2.348-2.349-2.348-6.164 0-8.513l8.69-8.707c1.789-1.792 4.694-1.792 6.483 0 1.788 1.792 1.788 4.697 0 6.488l-9.141 9.158c-1.102 1.104-2.89 1.104-3.992 0-1.102-1.105-1.102-2.895 0-4.001l6.784-6.797 1.391 1.393-6.784 6.798c-.334.335-.334.877 0 1.212.333.334.873.334 1.207 0l9.14-9.158c1.02-1.022 1.02-2.68 0-3.701-1.019-1.022-2.673-1.022-3.693 0l-8.692 8.707c-1.583 1.586-1.583 4.155 0 5.742 1.583 1.585 4.148 1.585 5.731 0l7.592-7.608 1.391 1.393-7.59 7.605z"></path></svg>
+                </div>
+                <div className="flex-1 bg-white dark:bg-[#2a3942] rounded-full h-10 px-4 flex items-center text-sm text-zinc-500 dark:text-zinc-400">
+                  Type a message
+                </div>
+                <div className="w-10 h-10 rounded-full bg-[#00a884] flex items-center justify-center text-white shrink-0">
+                  <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M11.999 14.942c2.001 0 3.531-1.53 3.531-3.531V4.35c0-2.001-1.53-3.531-3.531-3.531S8.469 2.35 8.469 4.35v7.061c0 2.001 1.53 3.531 3.53 3.531zm6.238-3.53c0 3.531-2.942 6.002-6.237 6.002s-6.237-2.471-6.237-6.002H3.761c0 4.001 3.178 7.297 7.061 7.885v3.884h2.354v-3.884c3.884-.588 7.061-3.884 7.061-7.885h-2.001z"></path></svg>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </section>
-
-      <script>
-        const [selectedIndustry, setSelectedIndustry] = React.useState("ecommerce");
-        const [brandName, setBrandName] = React.useState("");
-
-        function handleExampleInteractions() {
-          // Logic to update messages dynamically based on selected industry and brand name
-        }
-      </script>
 
       <style jsx>{`
         .animate-continuous-scroll {
