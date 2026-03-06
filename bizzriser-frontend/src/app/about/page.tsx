@@ -84,7 +84,7 @@ export default function AboutPage() {
             </section>
 
             {/* 3. By Selten Infotech Highlights */}
-            <section className="py-24 bg-card/50 border-y border-border relative overflow-hidden">
+            <section className="py-24 md:py-24 bg-card/50 border-y border-border relative overflow-hidden">
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-bizz-primary/5 blur-[120px] rounded-full pointer-events-none" />
 
                 <div className="container px-4 mx-auto relative z-10">
@@ -150,7 +150,7 @@ export default function AboutPage() {
             </section>
 
             {/* 5. Proud Numbers / Impact */}
-            <section className="py-24 relative overflow-hidden">
+            {/* <section className="py-24 relative overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-brand/20" />
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-bizz-primary/10 blur-[150px] rounded-full pointer-events-none" />
 
@@ -183,7 +183,7 @@ export default function AboutPage() {
                         ))}
                     </div>
                 </div>
-            </section>
+            </section> */}
         </div>
     );
 }
