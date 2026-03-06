@@ -133,38 +133,68 @@ export default function Home() {
       </section>
 
       {/* 3. Results Section */}
-      <section className="py-24 bg-background">
-        <div className="container px-4 mx-auto">
-          <div className="text-center mb-16">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="space-y-4"
-            >
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">Numbers That Speak For Themselves</h2>
-              <p className="text-muted-foreground max-w-2xl mx-auto">We deliver measurable impact for businesses that demand high conversion rates.</p>
-            </motion.div>
-          </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-5xl mx-auto">
-            {results.map((stat, i) => (
-              <motion.div
-                key={stat.label}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-              >
-                <Card className="card-stat hover:shadow-[0_0_30px_rgba(37,99,235,0.25)] transition-all text-center h-full group">
-                  <CardContent className="p-8">
-                    <Counter value={stat.value} label={stat.label} duration={2500} />
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
+<section className="py-20 md:py-24 bg-background">
+  <div className="container px-4 mx-auto">
+
+    <div className="text-center mb-12 md:mb-16">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        className="space-y-4 max-w-2xl mx-auto"
+      >
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold">
+          Numbers That Speak For Themselves
+        </h2>
+
+        <p className="text-muted-foreground text-sm sm:text-base">
+          We deliver measurable impact for businesses that demand high conversion rates.
+        </p>
+      </motion.div>
+    </div>
+
+    {/* Stats Grid */}
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 max-w-lg sm:max-w-2xl md:max-w-5xl mx-auto">
+
+      {results.map((stat, i) => (
+        <motion.div
+          key={stat.label}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: i * 0.1 }}
+          className="h-full"
+        >
+
+          <Card className="card-stat text-center h-full hover:shadow-[0_0_30px_rgba(37,99,235,0.25)] transition-all group">
+
+            <CardContent className="flex flex-col items-center justify-center p-5 sm:p-6 md:p-8">
+
+              {/* Animated Counter */}
+              <div className="text-2xl sm:text-3xl md:text-4xl font-bold whitespace-nowrap">
+                <Counter
+                  value={stat.value}
+                  label=""
+                  duration={2500}
+                />
+              </div>
+
+              {/* Label */}
+              <p className="text-xs sm:text-sm text-muted-foreground mt-2 leading-snug text-center">
+                {stat.label}
+              </p>
+
+            </CardContent>
+
+          </Card>
+
+        </motion.div>
+      ))}
+
+    </div>
+
+  </div>
+</section>
 
       {/* 4. Industry Automation Preview */}
       <section className="py-24 bg-card/30">

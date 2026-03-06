@@ -250,7 +250,7 @@ export function Footer() {
             <div>
               <h3 className="font-semibold text-sm mb-3">Contact</h3>
               <ul className="space-y-2 text-xs text-muted-foreground">
-                <li>+91 98799</li>
+                <li>+91 98799 66997</li>
                 <li>hello@bizzriser.com</li>
               </ul>
             </div>
