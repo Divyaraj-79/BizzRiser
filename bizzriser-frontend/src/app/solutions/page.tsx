@@ -1,10 +1,12 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowRight, Bot, Target, Headphones, Megaphone, ShoppingBag, GraduationCap, Building2, Stethoscope, ChevronRight } from "lucide-react";
+import { useState, useEffect } from "react";
+import { ArrowRight, Bot, Target, Headphones, Megaphone, ShoppingBag, GraduationCap, Building2, Stethoscope, ChevronRight, TrendingUp, Plane, ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import Link from "next/link";
+import { fetchApi } from "@/lib/api";
 
 const goalSolutions = [
     {
@@ -45,14 +47,43 @@ const goalSolutions = [
     }
 ];
 
-const industrySolutions = [
+const FALLBACK_INDUSTRIES = [
     { id: "retail", name: "Retail & E-commerce", icon: <ShoppingBag className="w-6 h-6" />, link: "#" },
     { id: "realestate", name: "Real Estate", icon: <Building2 className="w-6 h-6" />, link: "#" },
     { id: "edtech", name: "Education", icon: <GraduationCap className="w-6 h-6" />, link: "#" },
     { id: "health", name: "Healthcare", icon: <Stethoscope className="w-6 h-6" />, link: "#" },
 ];
 
+const ICON_MAP: Record<string, React.ReactNode> = {
+    ShoppingCart: <ShoppingCart className="w-6 h-6" />,
+    Building2: <Building2 className="w-6 h-6" />,
+    Stethoscope: <Stethoscope className="w-6 h-6" />,
+    GraduationCap: <GraduationCap className="w-6 h-6" />,
+    Plane: <Plane className="w-6 h-6" />,
+    TrendingUp: <TrendingUp className="w-6 h-6" />,
+    ShoppingBag: <ShoppingBag className="w-6 h-6" />,
+    Bot: <Bot className="w-6 h-6" />,
+};
+
 export default function SolutionsPage() {
+    type IndustrySolution = { id: string; name: string; icon: React.ReactNode; link: string; };
+    const [industrySolutions, setIndustrySolutions] = useState<IndustrySolution[]>(FALLBACK_INDUSTRIES);
+
+    useEffect(() => {
+        fetchApi("/solution-industries")
+            .then((data: any[]) => {
+                if (data?.length) {
+                    setIndustrySolutions(data.map((ind: any) => ({
+                        id: ind.id,
+                        name: ind.title,
+                        icon: ICON_MAP[ind.icon] ?? <Bot className="w-6 h-6" />,
+                        link: "#",
+                    })));
+                }
+            })
+            .catch(() => { });
+    }, []);
+
     return (
         <div className="pt-20 min-h-screen bg-background">
             {/* 1. Hero Section */}

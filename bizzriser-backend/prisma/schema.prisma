@@ -21,17 +21,24 @@ model AdminUser {
 }
 
 model Blog {
-  id        String   @id @default(uuid())
-  title     String
-  slug      String   @unique
-  excerpt   String
-  content   String
-  category  String
-  author    String
-  imageUrl  String?
-  published Boolean  @default(false)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id              String   @id @default(uuid())
+  title           String
+  slug            String   @unique
+  excerpt         String
+  content         String
+  category        String
+  author          String
+  imageUrl        String?
+  tags            Json?    // JSON array of tags e.g. ["WhatsApp", "Marketing"]
+  readTime        Int?     // estimated read time in minutes
+  featured        Boolean  @default(false)
+  published       Boolean  @default(false)
+  // SEO fields
+  metaTitle       String?
+  metaDescription String?
+  metaKeywords    String?  // comma separated keywords
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }
 
 model CaseStudy {
@@ -90,4 +97,55 @@ model Lead {
   email     String?
   metadata  Json?    // Optional JSON for additional context
   createdAt DateTime @default(now())
+}
+
+model HomeStat {
+  id        String   @id @default(uuid())
+  value     String
+  label     String
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model IndustryChatbot {
+  id        String   @id @default(uuid())
+  industry  String   @unique
+  brand     String
+  flowSteps Json     // JSON array of chatbot steps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Testimonial {
+  id        String   @id @default(uuid())
+  author    String
+  role      String
+  content   String
+  rating    Int      @default(5)
+  published Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model SolutionIndustry {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  icon        String   // String referring to an icon name
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model PricingPlan {
+  id           String   @id @default(uuid())
+  name         String
+  price        String
+  description  String
+  features     Json     // JSON array of feature strings
+  recommended  Boolean  @default(false)
+  billingCycle String   @default("monthly") // 'monthly' or 'yearly'
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Plus, Edit, Trash2 } from "lucide-react";
+import { Plus, Edit, Trash2, Star, Eye, EyeOff } from "lucide-react";
 import { adminFetch } from "@/lib/admin-api";
 
 export default function AdminBlogsPage() {
@@ -20,12 +20,10 @@ export default function AdminBlogsPage() {
         }
     };
 
-    useEffect(() => {
-        fetchBlogs();
-    }, []);
+    useEffect(() => { fetchBlogs(); }, []);
 
     const handleDelete = async (id: string, title: string) => {
-        if (confirm(`Are you sure you want to delete "${title}"?`)) {
+        if (confirm(`Delete "${title}"? This cannot be undone.`)) {
             try {
                 await adminFetch(`/blogs/${id}`, { method: "DELETE" });
                 setBlogs(blogs.filter((b) => b.id !== id));
@@ -35,85 +33,120 @@ export default function AdminBlogsPage() {
         }
     };
 
-    if (loading) return <div className="p-8">Loading blogs...</div>;
+    const togglePublish = async (blog: any) => {
+        try {
+            const updated = await adminFetch(`/blogs/${blog.id}`, {
+                method: "PATCH",
+                body: JSON.stringify({ published: !blog.published }),
+            });
+            setBlogs(prev => prev.map(b => b.id === blog.id ? { ...b, published: updated.published } : b));
+        } catch (e) {
+            alert("Failed to update: " + e);
+        }
+    };
+
+    const toggleFeatured = async (blog: any) => {
+        try {
+            const updated = await adminFetch(`/blogs/${blog.id}`, {
+                method: "PATCH",
+                body: JSON.stringify({ featured: !blog.featured }),
+            });
+            setBlogs(prev => prev.map(b => b.id === blog.id ? { ...b, featured: updated.featured } : b));
+        } catch (e) {
+            alert("Failed to update: " + e);
+        }
+    };
 
     return (
-        <div className="space-y-6 animate-in fade-in duration-500">
-            <div className="flex justify-between items-center">
+        <div className="space-y-6">
+            {/* Header */}
+            <div className="flex items-center justify-between">
                 <div>
-                    <h1 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white">Blogs Management</h1>
-                    <p className="text-gray-500 mt-2">Create, edit, and manage blog posts.</p>
+                    <h2 className="text-xl font-bold text-white">Blogs Management</h2>
+                    <p className="text-sm text-white/40 mt-1">Create, edit, and manage blog posts with full SEO control.</p>
                 </div>
                 <Link
                     href="/admin/blogs/new"
-                    className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors shadow-sm"
+                    className="flex items-center gap-2 px-4 py-2 bg-green-500 hover:bg-green-400 text-black font-semibold rounded-lg text-sm transition"
                 >
-                    <Plus size={20} />
-                    <span>New Blog</span>
+                    <Plus size={16} />
+                    New Blog
                 </Link>
             </div>
 
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
-                <div className="overflow-x-auto">
-                    <table className="w-full text-left">
-                        <thead className="bg-gray-50 dark:bg-gray-700/50 text-gray-500 dark:text-gray-400 border-b border-gray-200 dark:border-gray-700">
+            {/* Table */}
+            <div className="bg-white/5 border border-white/10 rounded-xl overflow-hidden">
+                {loading ? (
+                    <div className="p-10 text-center text-white/30 text-sm">Loading…</div>
+                ) : blogs.length === 0 ? (
+                    <div className="p-10 text-center text-white/30 text-sm">
+                        No blogs yet. <Link href="/admin/blogs/new" className="text-green-400 hover:text-green-300">Create your first one →</Link>
+                    </div>
+                ) : (
+                    <table className="w-full text-sm">
+                        <thead className="border-b border-white/10 bg-white/3">
                             <tr>
-                                <th className="px-6 py-4 font-medium">Title</th>
-                                <th className="px-6 py-4 font-medium">Category</th>
-                                <th className="px-6 py-4 font-medium">Author</th>
-                                <th className="px-6 py-4 font-medium">Status</th>
-                                <th className="px-6 py-4 font-medium text-right">Actions</th>
+                                <th className="px-5 py-3 text-left text-xs text-white/40 font-medium w-1/3">Title</th>
+                                <th className="px-5 py-3 text-left text-xs text-white/40 font-medium">Category</th>
+                                <th className="px-5 py-3 text-left text-xs text-white/40 font-medium">Author</th>
+                                <th className="px-5 py-3 text-left text-xs text-white/40 font-medium">Tags</th>
+                                <th className="px-5 py-3 text-left text-xs text-white/40 font-medium">Status</th>
+                                <th className="px-5 py-3 text-right text-xs text-white/40 font-medium">Actions</th>
                             </tr>
                         </thead>
-                        <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
-                            {blogs.map((blog) => (
-                                <tr key={blog.id} className="hover:bg-gray-50 dark:hover:bg-gray-700/25 transition-colors">
-                                    <td className="px-6 py-4">
-                                        <p className="font-medium text-gray-900 dark:text-white">{blog.title}</p>
-                                        <p className="text-sm text-gray-500">{blog.slug}</p>
-                                    </td>
-                                    <td className="px-6 py-4 text-gray-600 dark:text-gray-300">
-                                        <span className="bg-gray-100 dark:bg-gray-700 px-2.5 py-1 rounded-full text-xs font-medium">
-                                            {blog.category}
-                                        </span>
-                                    </td>
-                                    <td className="px-6 py-4 text-gray-600 dark:text-gray-300">{blog.author}</td>
-                                    <td className="px-6 py-4">
-                                        <span
-                                            className={`px-2.5 py-1 rounded-full text-xs font-medium ${blog.published
-                                                    ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
-                                                    : "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400"
-                                                }`}
-                                        >
-                                            {blog.published ? "Published" : "Draft"}
-                                        </span>
-                                    </td>
-                                    <td className="px-6 py-4 text-right space-x-3">
-                                        <Link
-                                            href={`/admin/blogs/${blog.id}`}
-                                            className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 transition-colors inline-block"
-                                        >
-                                            <Edit size={18} />
-                                        </Link>
-                                        <button
-                                            onClick={() => handleDelete(blog.id, blog.title)}
-                                            className="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300 transition-colors inline-block"
-                                        >
-                                            <Trash2 size={18} />
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))}
-                            {blogs.length === 0 && (
-                                <tr>
-                                    <td colSpan={5} className="px-6 py-12 text-center text-gray-500">
-                                        No blogs found. Create your first blog to get started.
-                                    </td>
-                                </tr>
-                            )}
+                        <tbody className="divide-y divide-white/5">
+                            {blogs.map(blog => {
+                                const tags = typeof blog.tags === "string" ? JSON.parse(blog.tags) : (blog.tags ?? []);
+                                return (
+                                    <tr key={blog.id} className="hover:bg-white/3 transition">
+                                        <td className="px-5 py-4">
+                                            <div className="flex items-center gap-2">
+                                                {blog.featured && <Star size={12} className="text-yellow-400 shrink-0" />}
+                                                <div>
+                                                    <p className="font-semibold text-white line-clamp-1">{blog.title}</p>
+                                                    <p className="text-xs text-white/30 mt-0.5">/blogs/{blog.slug}</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td className="px-5 py-4">
+                                            <span className="px-2 py-0.5 rounded-full bg-white/10 text-xs text-white/70">{blog.category}</span>
+                                        </td>
+                                        <td className="px-5 py-4 text-white/60">{blog.author}</td>
+                                        <td className="px-5 py-4">
+                                            <div className="flex flex-wrap gap-1">
+                                                {tags.slice(0, 2).map((t: string) => (
+                                                    <span key={t} className="px-1.5 py-0.5 rounded text-[10px] bg-green-500/10 text-green-400 border border-green-500/20">{t}</span>
+                                                ))}
+                                                {tags.length > 2 && <span className="text-[10px] text-white/30">+{tags.length - 2}</span>}
+                                            </div>
+                                        </td>
+                                        <td className="px-5 py-4">
+                                            <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${blog.published ? "bg-green-500/20 text-green-400" : "bg-yellow-500/20 text-yellow-400"}`}>
+                                                {blog.published ? "Published" : "Draft"}
+                                            </span>
+                                        </td>
+                                        <td className="px-5 py-4">
+                                            <div className="flex items-center gap-3 justify-end">
+                                                <button onClick={() => toggleFeatured(blog)} title={blog.featured ? "Remove from featured" : "Mark as featured"} className={`text-xs transition ${blog.featured ? "text-yellow-400 hover:text-yellow-300" : "text-white/30 hover:text-yellow-400"}`}>
+                                                    <Star size={15} />
+                                                </button>
+                                                <button onClick={() => togglePublish(blog)} title={blog.published ? "Unpublish" : "Publish"} className="text-white/30 hover:text-green-400 transition">
+                                                    {blog.published ? <EyeOff size={15} /> : <Eye size={15} />}
+                                                </button>
+                                                <Link href={`/admin/blogs/${blog.id}`} className="text-white/30 hover:text-white transition">
+                                                    <Edit size={15} />
+                                                </Link>
+                                                <button onClick={() => handleDelete(blog.id, blog.title)} className="text-white/30 hover:text-red-400 transition">
+                                                    <Trash2 size={15} />
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                );
+                            })}
                         </tbody>
                     </table>
-                </div>
+                )}
             </div>
         </div>
     );

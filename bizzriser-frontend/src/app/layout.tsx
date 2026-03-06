@@ -6,6 +6,7 @@ import { Footer } from "@/components/layout/footer";
 import { FloatingWhatsApp } from "@/components/ui/floating-whatsapp";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
+import { Toaster } from "sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -54,6 +55,7 @@ export default function RootLayout({
           <Footer />
           <FloatingWhatsApp />
           <ThemeToggle />
+          <Toaster position="bottom-right" richColors />
         </ThemeProvider>
       </body>
     </html>

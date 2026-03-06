@@ -9,6 +9,7 @@ import { Counter } from "@/components/ui/counter";
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import { fetchApi } from "@/lib/api";
 
 // Dummy data for sections
 const partners = [
@@ -19,11 +20,19 @@ const partners = [
   { name: "AWS", logo: "/logos/aws.svg" },
 ];
 
-const results = [
+// Fallback static data (used when API is unreachable)
+const FALLBACK_STATS = [
   { label: "Clients Served", value: "10,000+" },
   { label: "Messages Delivered", value: "500M+" },
   { label: "Campaigns Automated", value: "25M+" },
   { label: "Revenue Generated", value: "$2B+" },
+];
+
+const FALLBACK_TESTIMONIALS = [
+  { text: "BizzRiser completely transformed how we handle customer support. We recovered 30% more abandoned carts within the first week.", name: "Sarah Jenkins", role: "CMO, TechGrowth", avatar: "/avatars/2.jpg" },
+  { text: "The WhatsApp automation is incredible. Our response time went from hours to seconds.", name: "Alex Patel", role: "Founder, ShopNow", avatar: "/avatars/3.jpg" },
+  { text: "We were skeptical at first but the chatbot handles 80% of our inquiries without any human intervention. Game changer.", name: "Meera Nair", role: "Head of CX, WealthWise", avatar: "/avatars/1.jpg" },
+  { text: "BizzRiser has reduced our support team workload by 60%. The ROI in just 2 months is remarkable.", name: "Rohan Shah", role: "Growth Lead, FinEdge", avatar: "/avatars/4.jpg" },
 ];
 
 const industries = [
@@ -357,6 +366,17 @@ export default function Home() {
   const [selectedIndustry, setSelectedIndustry] = useState("travel");
   const [brandName, setBrandName] = useState("Travel X");
   const [activeDemo, setActiveDemo] = useState({ industry: "travel", brand: "Travel X", key: 0 });
+  const [stats, setStats] = useState(FALLBACK_STATS);
+
+  useEffect(() => {
+    fetchApi("/home-stats")
+      .then((data: any[]) => {
+        if (data?.length) {
+          setStats(data.map((s: any) => ({ label: s.label, value: s.value })));
+        }
+      })
+      .catch(() => { }); // Silently fall back to static data
+  }, []);
 
   function handleExampleInteractions() {
     setActiveDemo({ industry: selectedIndustry, brand: brandName || "Your Brand", key: activeDemo.key + 1 });
@@ -478,7 +498,7 @@ export default function Home() {
           {/* Stats Grid */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 max-w-lg sm:max-w-2xl md:max-w-5xl mx-auto">
 
-            {results.map((stat, i) => (
+            {stats.map((stat: any, i: number) => (
               <motion.div
                 key={stat.label}
                 initial={{ opacity: 0, y: 20 }}

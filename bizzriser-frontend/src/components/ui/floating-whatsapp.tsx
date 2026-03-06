@@ -34,7 +34,7 @@ export function FloatingWhatsApp() {
                         href="https://wa.me/919879966997"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center justify-center w-14 h-14 bg-[#25D366] text-white rounded-full shadow-[0_4px_20px_rgba(37,211,102,0.4)] hover:shadow-[0_4px_25px_rgba(37,211,102,0.6)] hover:-translate-y-1 transition-all duration-300 relative"
+                        className="flex items-center justify-center w-14 h-14 bg-[#25D366] text-white rounded-full shadow-[0_4px_20px_rgba(37,211,102,0.4)] hover:shadow-[0_4px_25px_rgba(37,211,102,0.6)] hover:-translate-y-1 transition-all duration-300 relative z-30"
                     >
                         {/* Pulsing ring */}
                         <span className="absolute w-full h-full rounded-full bg-[#25D366] opacity-40 animate-ping" />

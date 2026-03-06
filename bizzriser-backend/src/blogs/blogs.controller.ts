@@ -18,9 +18,19 @@ export class BlogsController {
   }
 
   @Get()
-  findAll(@Query('all') all?: boolean) {
-    const publishedOnly = all ? false : true;
+  findAll(@Query('all') all?: string) {
+    const publishedOnly = all === 'true' ? false : true;
     return this.blogsService.findAll(publishedOnly);
+  }
+
+  @Get('featured')
+  findFeatured() {
+    return this.blogsService.findFeatured();
+  }
+
+  @Get('id/:id')
+  findById(@Param('id') id: string) {
+    return this.blogsService.findById(id);
   }
 
   @Get(':slug')

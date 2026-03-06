@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Check, X, Building2, Zap, Rocket } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -13,6 +13,8 @@ import {
     CardTitle,
 } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { fetchApi } from "@/lib/api";
+
 
 const pricingPlans = [
     {
@@ -73,10 +75,25 @@ const pricingPlans = [
 ];
 
 export default function PricingPage() {
-    const [billingCycle, setBillingCycle] =
-        useState<"monthly" | "yearly">("yearly");
-
+    const [billingCycle, setBillingCycle] = useState<"monthly" | "yearly">("yearly");
     const [selectedPlan, setSelectedPlan] = useState(1);
+    const [apiPlans, setApiPlans] = useState<any[]>([]);
+
+    useEffect(() => {
+        fetchApi("/pricing-plans")
+            .then((data: any[]) => {
+                if (data?.length) setApiPlans(data);
+            })
+            .catch(() => { });
+    }, []);
+
+    // If we have API plans, show them; otherwise fall back to static plans
+    const isApiMode = apiPlans.length > 0;
+
+    // Filter plans based on billing cycle if in API mode
+    const displayPlans = isApiMode
+        ? apiPlans.filter(plan => (plan.billingCycle || "monthly") === billingCycle)
+        : pricingPlans;
 
     return (
         <div className="pt-20 min-h-screen bg-background">
@@ -140,7 +157,7 @@ export default function PricingPage() {
 
                         <div className="md:hidden grid grid-cols-3 gap-2 max-w-sm mx-auto mb-12">
 
-                            {pricingPlans.map((plan, i) => (
+                            {displayPlans.map((plan, i) => (
 
                                 <button
                                     key={plan.name}
@@ -164,16 +181,25 @@ ${selectedPlan === i
 
                     <div className="grid grid-cols-1 md:grid-cols-3 m-15 gap-8 max-w-6xl mx-auto">
 
-                        {pricingPlans.map((plan, i) => {
+                        {displayPlans.map((plan, i) => {
 
                             const mobileHidden =
                                 i !== selectedPlan ? "hidden md:block" : "";
 
+                            const planPrice = isApiMode ? plan.price : plan.price[billingCycle];
+                            const planIcon = isApiMode ? (
+                                plan.name === "Growth" ? <Rocket className="w-6 h-6 text-white" /> :
+                                    plan.name === "Enterprise" ? <Building2 className="w-6 h-6 text-bizz-primary" /> :
+                                        <Zap className="w-6 h-6 text-bizz-primary" />
+                            ) : plan.icon;
+
+                            const isPopular = isApiMode ? plan.recommended : plan.isPopular;
+
                             return (
 
                                 <motion.div
-                                    key={plan.name}
-                                    className={`${mobileHidden} ${plan.isPopular
+                                    key={plan.name + i}
+                                    className={`${mobileHidden} ${isPopular
                                         ? "relative -mt-4 mb-4 md:-mt-8 md:mb-8"
                                         : "relative"
                                         }`}
@@ -182,12 +208,12 @@ ${selectedPlan === i
                                     transition={{ duration: 0.5, delay: i * 0.1 }}
                                 >
 
-                                    <Card className={`h-full flex flex-col ${plan.isPopular
+                                    <Card className={`h-full flex flex-col ${isPopular
                                         ? "bg-accent/5 border-accent shadow-[0_0_40px_rgba(37,99,235,0.15)] ring-2 ring-accent"
                                         : "bg-card border-border hover:border-bizz-primary/50"
                                         }`}>
 
-                                        {plan.isPopular && (
+                                        {isPopular && (
 
                                             <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-gradient-brand text-white px-4 py-1 rounded-full text-sm font-bold">
                                                 Most Popular
@@ -197,9 +223,9 @@ ${selectedPlan === i
 
                                         <CardHeader className="text-left pt-8">
 
-                                            <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 ${plan.isPopular ? "bg-gradient-brand" : "bg-secondary"
+                                            <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 ${isPopular ? "bg-gradient-brand" : "bg-secondary"
                                                 }`}>
-                                                {plan.icon}
+                                                {planIcon}
                                             </div>
 
                                             <CardTitle className="text-2xl font-bold">
@@ -214,23 +240,23 @@ ${selectedPlan === i
 
                                         <CardContent className="flex-1 text-left">
 
-                                            <div className="mb-8 flex items-baseline text-5xl font-extrabold">
-                                                ${plan.price[billingCycle]}
-                                                <span className="text-xl text-muted-foreground ml-2">
-                                                    /mo
+                                            <div className="mb-8 flex items-baseline text-4xl font-extrabold truncate">
+                                                {typeof planPrice === "number" ? `$${planPrice}` : planPrice}
+                                                <span className="text-base text-muted-foreground ml-2 font-normal">
+                                                    {plan.name === "Enterprise" ? "" : billingCycle === "monthly" ? "/mo" : "/yr"}
                                                 </span>
                                             </div>
 
                                             <div className="space-y-4">
 
-                                                {plan.features.map((feature) => (
+                                                {plan.features.map((feature: string) => (
                                                     <div key={feature} className="flex items-start gap-3">
                                                         <Check className="w-5 h-5 shrink-0 text-bizz-primary" />
                                                         <span className="text-muted-foreground">{feature}</span>
                                                     </div>
                                                 ))}
 
-                                                {plan.notIncluded.map((feature) => (
+                                                {plan.notIncluded?.map((feature: string) => (
                                                     <div key={feature} className="flex items-start gap-3 opacity-50">
                                                         <X className="w-5 h-5 shrink-0" />
                                                         <span className="line-through text-muted-foreground">
@@ -245,7 +271,7 @@ ${selectedPlan === i
 
                                         <CardFooter>
 
-                                            <Button className={`w-full h-12 rounded-full font-bold ${plan.isPopular
+                                            <Button className={`w-full h-12 rounded-full font-bold ${isPopular
                                                 ? "bg-gradient-brand text-white"
                                                 : "bg-secondary"
                                                 }`}>

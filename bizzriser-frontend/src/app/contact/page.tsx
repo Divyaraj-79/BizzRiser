@@ -10,12 +10,10 @@ import { fetchApi } from "@/lib/api";
 
 export default function ContactPage() {
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [statusMessage, setStatusMessage] = useState({ type: '', text: '' });
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setIsSubmitting(true);
-        setStatusMessage({ type: '', text: '' });
 
         const formData = new FormData(e.currentTarget);
         const data = {
@@ -33,10 +31,12 @@ export default function ContactPage() {
                 method: 'POST',
                 body: JSON.stringify(data),
             });
-            setStatusMessage({ type: 'success', text: 'Message sent successfully! We will be in touch.' });
+            const { toast } = await import("sonner");
+            toast.success("Message sent successfully! We will be in touch.");
             (e.target as HTMLFormElement).reset();
         } catch (error: any) {
-            setStatusMessage({ type: 'error', text: error.message || 'Failed to send message.' });
+            const { toast } = await import("sonner");
+            toast.error(error.message || "Failed to send message. Please try again.");
         } finally {
             setIsSubmitting(false);
         }
@@ -198,11 +198,6 @@ export default function ContactPage() {
                                             />
                                         </div>
 
-                                        {statusMessage.text && (
-                                            <div className={`p-4 rounded-md ${statusMessage.type === 'success' ? 'bg-green-500/10 text-green-500' : 'bg-red-500/10 text-red-500'}`}>
-                                                {statusMessage.text}
-                                            </div>
-                                        )}
 
                                         <Button type="submit" disabled={isSubmitting} className="w-full h-12 text-base font-bold bg-gradient-brand text-white shadow-lg hover:shadow-xl hover:opacity-90 transition-all gap-2">
                                             {isSubmitting ? 'Sending...' : 'Send Message'}

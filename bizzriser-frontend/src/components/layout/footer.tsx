@@ -12,9 +12,11 @@ import {
   MapPin,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { fetchApi } from "@/lib/api";
 
 const footerLinks = {
   solutions: [
+    { name: "Solutions", href: "/solutions" },
     { name: "WhatsApp API", href: "/solutions/whatsapp-api" },
     { name: "Lead Generation", href: "/solutions/lead-generation" },
     { name: "Customer Support", href: "/solutions/customer-support" },
@@ -24,6 +26,7 @@ const footerLinks = {
     { name: "About Us", href: "/about" },
     { name: "Careers", href: "/careers" },
     { name: "Case Studies", href: "/case-studies" },
+    { name: "Blogs", href: "/blogs" },
     { name: "Contact", href: "/contact" },
   ],
   legal: [
@@ -35,6 +38,31 @@ const footerLinks = {
 
 export function Footer() {
   const [isDark, setIsDark] = useState(false);
+
+  const [email, setEmail] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubscribe = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email) return;
+
+    setIsSubmitting(true);
+    try {
+      await fetchApi("/newsletters", {
+        method: "POST",
+        body: JSON.stringify({ email }),
+      });
+
+      const { toast } = await import("sonner");
+      toast.success("Thanks for subscribing! Check your email soon.");
+      setEmail("");
+    } catch (err: any) {
+      const { toast } = await import("sonner");
+      toast.error(err.message || "Something went wrong. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   useEffect(() => {
     setIsDark(document.documentElement.classList.contains("dark"));
@@ -89,15 +117,22 @@ export function Footer() {
                 Subscribe to our newsletter
               </h4>
 
-              <form className="flex gap-2 max-w-sm">
+              <form className="flex gap-2 max-w-sm" onSubmit={handleSubscribe}>
                 <input
                   type="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter your email"
-                  className="flex-1 rounded-md border border-input bg-background/50 px-3 py-2 text-sm"
+                  className="flex-1 rounded-md border border-input bg-background/50 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-bizz-primary"
                 />
 
-                <Button className="bg-gradient-brand text-white">
-                  Subscribe
+                <Button
+                  type="submit"
+                  className="bg-gradient-brand text-white"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? "..." : "Subscribe"}
                 </Button>
               </form>
             </div>
@@ -168,10 +203,10 @@ export function Footer() {
             {/* Social */}
             <div className="flex items-center gap-4 mt-6">
 
-              <Link href="#"><Facebook className="w-4 h-4"/></Link>
-              <Link href="#"><Twitter className="w-4 h-4"/></Link>
-              <Link href="#"><Instagram className="w-4 h-4"/></Link>
-              <Link href="#"><Linkedin className="w-4 h-4"/></Link>
+              <Link href="#"><Facebook className="w-4 h-4" /></Link>
+              <Link href="#"><Twitter className="w-4 h-4" /></Link>
+              <Link href="#"><Instagram className="w-4 h-4" /></Link>
+              <Link href="#"><Linkedin className="w-4 h-4" /></Link>
 
             </div>
           </div>
@@ -199,15 +234,22 @@ export function Footer() {
               Subscribe to our newsletter
             </h4>
 
-            <form className="flex flex-col gap-2">
+            <form className="flex flex-col gap-2" onSubmit={handleSubscribe}>
               <input
                 type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your email"
-                className="rounded-md border border-input px-3 py-2 text-sm"
+                className="rounded-md border border-input px-3 py-2 text-sm bg-background/50"
               />
 
-              <Button className="bg-gradient-brand text-white">
-                Subscribe
+              <Button
+                type="submit"
+                className="bg-gradient-brand text-white w-full"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? "Subscribing..." : "Subscribe"}
               </Button>
             </form>
           </div>
@@ -260,10 +302,10 @@ export function Footer() {
           {/* Social */}
           <div className="flex justify-center gap-5">
 
-            <Link href="#"><Facebook size={18}/></Link>
-            <Link href="#"><Twitter size={18}/></Link>
-            <Link href="#"><Instagram size={18}/></Link>
-            <Link href="#"><Linkedin size={18}/></Link>
+            <Link href="#"><Facebook size={18} /></Link>
+            <Link href="#"><Twitter size={18} /></Link>
+            <Link href="#"><Instagram size={18} /></Link>
+            <Link href="#"><Linkedin size={18} /></Link>
 
           </div>
 
