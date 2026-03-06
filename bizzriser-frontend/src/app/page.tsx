@@ -1,14 +1,14 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { ArrowRight, Bot, CheckCircle2, MessageSquare, Shield, TrendingUp, Users, Play, Star } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ArrowRight, Bot, CheckCircle2, MessageSquare, Shield, TrendingUp, Users, Play, Star, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Counter } from "@/components/ui/counter";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 // Dummy data for sections
 const partners = [
@@ -33,6 +33,287 @@ const industries = [
   { id: "healthcare", label: "Healthcare", icon: <Shield className="w-5 h-5" /> },
 ];
 
+function SwipeTestimonials() {
+
+  const testimonials = [
+    {
+      text: "BizzRiser completely transformed how we handle customer conversations. Our response time dropped from hours to seconds.",
+      name: "Emily Clark",
+      role: "Founder, StartUpHub",
+      avatar: "/avatars/1.jpg"
+    },
+    {
+      text: "Automation flows helped us recover abandoned leads we never knew existed.",
+      name: "Sarah Jenkins",
+      role: "CMO, TechGrowth",
+      avatar: "/avatars/2.jpg"
+    },
+    {
+      text: "Customer engagement increased dramatically after integrating BizzRiser.",
+      name: "John Doe",
+      role: "CEO, InnovateX",
+      avatar: "/avatars/3.jpg"
+    },
+    {
+      text: "The support team is incredibly responsive and understands real business needs.",
+      name: "Michael Lee",
+      role: "Head of Growth, SaaSly",
+      avatar: "/avatars/4.jpg"
+    }
+  ]
+
+  const [index, setIndex] = useState(0)
+
+  const next = () => {
+    setIndex((prev) => (prev + 1) % testimonials.length)
+  }
+
+  useEffect(() => {
+    const interval = setInterval(next, 6000)
+    return () => clearInterval(interval)
+  }, [])
+
+  return (
+
+    <div className="flex flex-col items-center">
+
+      <div className="relative w-full max-w-3xl h-[340px]">
+
+        <AnimatePresence>
+
+          {[0, 1, 2].map((offset) => {
+
+            const i = (index + offset) % testimonials.length
+            const t = testimonials[i]
+
+            const isFront = offset === 0
+
+            return (
+
+              <motion.div
+                key={i}
+
+                drag={isFront ? "y" : false}
+
+                dragConstraints={{ top: -120, bottom: 0 }}
+
+                onDragEnd={(e, info) => {
+                  if (info.offset.y < -80) next()
+                }}
+
+                initial={{ y: 50, opacity: 0 }}
+
+                animate={{
+                  y: offset * 16,
+                  scale: 1 - (offset * 0.05),
+                  opacity: 1 - (offset * 0.2),
+                  zIndex: 10 - offset
+                }}
+
+                exit={{ opacity: 0, y: -120 }}
+
+                transition={{
+                  type: "spring",
+                  stiffness: 260,
+                  damping: 25
+                }}
+
+                className="absolute w-full bg-card border border-border rounded-2xl shadow-xl p-6 md:p-8"
+              >
+
+                {/* Card content */}
+
+                <div className="flex gap-4 items-start">
+
+                  <img
+                    src={t.avatar}
+                    className="w-12 h-12 md:w-14 md:h-14 rounded-full object-cover"
+                  />
+
+                  <div>
+
+                    <p className="text-muted-foreground text-sm md:text-base leading-relaxed mb-4">
+                      "{t.text}"
+                    </p>
+
+                    <div>
+
+                      <p className="font-semibold text-foreground text-sm">
+                        {t.name}
+                      </p>
+
+                      <p className="text-xs text-muted-foreground">
+                        {t.role}
+                      </p>
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </motion.div>
+
+            )
+
+          })}
+
+        </AnimatePresence>
+
+      </div>
+
+      {/* progress dots */}
+
+      <div className="flex gap-2 mt-8">
+
+        {testimonials.map((_, i) => (
+          <div
+            key={i}
+            className={`h-2 rounded-full transition-all ${i === index ? "w-6 bg-bizz-primary" : "w-2 bg-muted"
+              }`}
+          />
+        ))}
+
+      </div>
+
+    </div>
+
+  )
+}
+
+function HorizontalTestimonials() {
+  const testimonials = [
+    {
+      text: "BizzRiser completely transformed how we handle customer support. We recovered 30% more abandoned carts within the first week.",
+      name: "Sarah Jenkins",
+      role: "CMO, TechGrowth",
+    },
+    {
+      text: "BizzRiser completely transformed how we handle customer support. We recovered 30% more abandoned carts within the first week.",
+      name: "Sarah Jenkins",
+      role: "CMO, TechGrowth",
+    },
+    {
+      text: "BizzRiser completely transformed how we handle customer support. We recovered 30% more abandoned carts within the first week.",
+      name: "Sarah Jenkins",
+      role: "CMO, TechGrowth",
+    },
+    {
+      text: "BizzRiser completely transformed how we handle customer support. We recovered 30% more abandoned carts within the first week.",
+      name: "Sarah Jenkins",
+      role: "CMO, TechGrowth",
+    },
+    {
+      text: "BizzRiser completely transformed how we handle customer support. We recovered 30% more abandoned carts within the first week.",
+      name: "Sarah Jenkins",
+      role: "CMO, TechGrowth",
+    }
+  ];
+
+  const [index, setIndex] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    handleResize(); // Initial check
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIndex((prev) => (prev + 1) % testimonials.length);
+    }, 4000); // Increased slightly for better reading experience on mobile
+    return () => clearInterval(interval);
+  }, [index, testimonials.length]);
+
+  const handleDragEnd = (event: any, info: any) => {
+    if (info.offset.x < -40) {
+      setIndex((prev) => (prev + 1) % testimonials.length);
+    } else if (info.offset.x > 40) {
+      setIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
+    }
+  };
+
+  const handleNext = () => setIndex((prev) => (prev + 1) % testimonials.length);
+  const handlePrev = () => setIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
+
+  const getOffset = (i: number) => {
+    const diff = i - index;
+    const half = Math.floor(testimonials.length / 2);
+    if (diff > half) return diff - testimonials.length;
+    if (diff < -half) return diff + testimonials.length;
+    return diff;
+  };
+
+  return (
+    <div className="relative w-full max-w-[1240px] mx-auto h-[350px] flex items-center justify-center overflow-hidden">
+
+      <Button
+        variant="outline"
+        size="icon"
+        className="absolute left-1 sm:left-4 md:left-8 z-20 rounded-full bg-background/50 hover:bg-background/80 backdrop-blur-sm border-border w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 flex"
+        onClick={handlePrev}
+      >
+        <ChevronLeft className="w-4 h-4 md:w-6 md:h-6 text-foreground" />
+      </Button>
+
+      <Button
+        variant="outline"
+        size="icon"
+        className="absolute right-1 sm:right-4 md:right-8 z-20 rounded-full bg-background/50 hover:bg-background/80 backdrop-blur-sm border-border w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 flex"
+        onClick={handleNext}
+      >
+        <ChevronRight className="w-4 h-4 md:w-6 md:h-6 text-foreground" />
+      </Button>
+
+      <AnimatePresence>
+        {testimonials.map((t, i) => {
+          const offset = getOffset(i);
+          const isCenter = offset === 0;
+          const isVisible = Math.abs(offset) <= 1;
+
+          if (Math.abs(offset) > 2) return null;
+
+          return (
+            <motion.div
+              key={i}
+              drag="x"
+              dragConstraints={{ left: 0, right: 0 }}
+              onDragEnd={handleDragEnd}
+              animate={{
+                opacity: isCenter ? 1 : isVisible ? 0.4 : 0,
+                scale: isCenter ? (isMobile ? 1 : 1.05) : 0.85,
+                x: isMobile ? `${offset * 86}%` : `${offset * 105}%`,
+                y: isCenter ? -15 : 0,
+                zIndex: isCenter ? 10 : isVisible ? 5 : 0,
+                boxShadow: isCenter ? "0 10px 40px rgba(59, 130, 246, 0.15)" : "none",
+              }}
+              transition={{ duration: 0.5, type: "spring", stiffness: 300, damping: 30 }}
+              className="absolute w-[75vw] sm:w-[65vw] md:w-[380px] bg-background border border-border rounded-xl p-6 cursor-grab active:cursor-grabbing hover:cursor-grab"
+              style={{
+                pointerEvents: isVisible ? 'auto' : 'none',
+              }}
+            >
+              <div className="flex gap-1 mb-4">
+                {[1, 2, 3, 4, 5].map(star => <Star key={star} className="w-5 h-5 fill-yellow-400 text-yellow-400" />)}
+              </div>
+              <p className="text-foreground italic mb-6 text-sm md:text-base">"{t.text}"</p>
+              <div className="flex items-center gap-4 mt-auto">
+                <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-secondary shrink-0" />
+                <div className="min-w-0">
+                  <h4 className="font-semibold text-sm truncate">{t.name}</h4>
+                  <p className="text-xs text-muted-foreground truncate">{t.role}</p>
+                </div>
+              </div>
+            </motion.div>
+          );
+        })}
+      </AnimatePresence>
+    </div>
+  );
+}
+
 export default function Home() {
   const [selectedIndustry, setSelectedIndustry] = useState("ecommerce");
   const [brandName, setBrandName] = useState("");
@@ -45,6 +326,7 @@ export default function Home() {
     <div className="flex flex-col min-h-screen">
       {/* 1. Hero Section */}
       <section className="relative pt-32 pb-20 md:pt-48 md:pb-32 overflow-hidden bg-background">
+
         {/* Animated Background Elements */}
         <div className="absolute inset-0 z-0">
           <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-bizz-primary/10 blur-[120px] rounded-full mix-blend-screen animate-pulse" />
@@ -133,68 +415,68 @@ export default function Home() {
       </section>
 
       {/* 3. Results Section */}
-<section className="py-20 md:py-24 bg-background">
-  <div className="container px-4 mx-auto">
+      <section className="py-20 md:py-24 bg-background">
+        <div className="container px-4 mx-auto">
 
-    <div className="text-center mb-12 md:mb-16">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        className="space-y-4 max-w-2xl mx-auto"
-      >
-        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold">
-          Numbers That Speak For Themselves
-        </h2>
+          <div className="text-center mb-12 md:mb-16">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="space-y-4 max-w-2xl mx-auto"
+            >
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold">
+                Numbers That Speak For Themselves
+              </h2>
 
-        <p className="text-muted-foreground text-sm sm:text-base">
-          We deliver measurable impact for businesses that demand high conversion rates.
-        </p>
-      </motion.div>
-    </div>
-
-    {/* Stats Grid */}
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 max-w-lg sm:max-w-2xl md:max-w-5xl mx-auto">
-
-      {results.map((stat, i) => (
-        <motion.div
-          key={stat.label}
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: i * 0.1 }}
-          className="h-full"
-        >
-
-          <Card className="card-stat text-center h-full hover:shadow-[0_0_30px_rgba(37,99,235,0.25)] transition-all group">
-
-            <CardContent className="flex flex-col items-center justify-center p-5 sm:p-6 md:p-8">
-
-              {/* Animated Counter */}
-              <div className="text-2xl sm:text-3xl md:text-4xl font-bold whitespace-nowrap">
-                <Counter
-                  value={stat.value}
-                  label=""
-                  duration={2500}
-                />
-              </div>
-
-              {/* Label */}
-              <p className="text-xs sm:text-sm text-muted-foreground mt-2 leading-snug text-center">
-                {stat.label}
+              <p className="text-muted-foreground text-sm sm:text-base">
+                We deliver measurable impact for businesses that demand high conversion rates.
               </p>
+            </motion.div>
+          </div>
 
-            </CardContent>
+          {/* Stats Grid */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 max-w-lg sm:max-w-2xl md:max-w-5xl mx-auto">
 
-          </Card>
+            {results.map((stat, i) => (
+              <motion.div
+                key={stat.label}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                className="h-full"
+              >
 
-        </motion.div>
-      ))}
+                <Card className="card-stat text-center h-full hover:shadow-[0_0_30px_rgba(37,99,235,0.25)] transition-all group">
 
-    </div>
+                  <CardContent className="flex flex-col items-center justify-center p-5 sm:p-6 md:p-8">
 
-  </div>
-</section>
+                    {/* Animated Counter */}
+                    <div className="text-2xl sm:text-3xl md:text-4xl font-bold whitespace-nowrap">
+                      <Counter
+                        value={stat.value}
+                        label=""
+                        duration={2500}
+                      />
+                    </div>
+
+                    {/* Label */}
+                    <p className="text-xs sm:text-sm text-muted-foreground mt-2 leading-snug text-center">
+                      {stat.label}
+                    </p>
+
+                  </CardContent>
+
+                </Card>
+
+              </motion.div>
+            ))}
+
+          </div>
+
+        </div>
+      </section>
 
       {/* 4. Industry Automation Preview */}
       <section className="py-24 bg-card/30">
@@ -257,9 +539,8 @@ export default function Home() {
                       <div className="w-8 h-8 rounded-full bg-[#DCF8C6] dark:bg-[#3A3A3A] shrink-0" />
                     )}
                     <div
-                      className={`p-3 rounded-lg max-w-[75%] ${
-                        message.sender === 'bot' ? 'bg-white dark:bg-[#3A3A3A] text-black dark:text-white' : 'bg-[#DCF8C6] dark:bg-[#056162] text-black dark:text-white'
-                      }`}
+                      className={`p-3 rounded-lg max-w-[75%] ${message.sender === 'bot' ? 'bg-white dark:bg-[#3A3A3A] text-black dark:text-white' : 'bg-[#DCF8C6] dark:bg-[#056162] text-black dark:text-white'
+                        }`}
                     >
                       {message.text}
                     </div>
@@ -360,132 +641,29 @@ export default function Home() {
             <h2 className="text-3xl md:text-4xl font-bold mb-4">Loved by 10,000+ Growth Teams</h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[1, 2, 3].map(i => (
-              <Card key={i} className="bg-background border-border">
-                <CardContent className="p-6">
-                  <div className="flex gap-1 mb-4">
-                    {[1, 2, 3, 4, 5].map(star => <Star key={star} className="w-5 h-5 fill-yellow-400 text-yellow-400" />)}
-                  </div>
-                  <p className="text-foreground italic mb-6">"BizzRiser completely transformed how we handle customer support. We recovered 30% more abandoned carts within the first week."</p>
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-full bg-secondary" />
-                    <div>
-                      <h4 className="font-semibold text-sm">Sarah Jenkins</h4>
-                      <p className="text-xs text-muted-foreground">CMO, TechGrowth</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+          <HorizontalTestimonials />
         </div>
       </section>
 
       {/* 7. Review Section */}
-      <section className="relative py-16 bg-background overflow-hidden">
-        {/* Fading effect at the top */}
-        <div className="absolute top-0 left-0 right-0 h-16 bg-gradient-to-b from-background to-transparent pointer-events-none z-10" />
-        {/* Fading effect at the bottom */}
-        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-background to-transparent pointer-events-none z-10" />
+      {/* 7. Review Section */}
+      {/* <section className="relative py-24 bg-background overflow-hidden">
 
-        <div className="container mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">What Our Clients Say</h2>
-          <div className="grid grid-cols-3 gap-6 relative h-[400px] overflow-hidden">
-            {/* Column 1 */}
-            <div className="space-y-8 animate-continuous-scroll" data-scroll-direction="up">
-              {[...Array(5), ...Array(5)].map((_, i) => (
-                <div key={`col1-card-${i}`} className="p-8 bg-card rounded-lg shadow-lg flex flex-col items-center text-center">
-                  <div className="flex items-center mb-4">
-                    {Array(5).fill(0).map((_, starIndex) => (
-                      <Star key={starIndex} className="w-5 h-5 text-yellow-400" />
-                    ))}
-                  </div>
-                  <p className="text-lg text-muted-foreground mb-4">"Amazing service! Highly recommend."</p>
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 bg-muted rounded-full" />
-                    <div className="text-left">
-                      <span className="block text-sm font-semibold text-foreground">Sarah Jenkins</span>
-                      <span className="block text-xs text-muted-foreground">CMO, TechGrowth</span>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-            {/* Column 2 */}
-            <div className="space-y-8 animate-continuous-scroll" data-scroll-direction="down">
-              {[...Array(5), ...Array(5)].map((_, i) => (
-                <div key={`col2-card-${i}`} className="p-8 bg-card rounded-lg shadow-lg flex flex-col items-center text-center">
-                  <div className="flex items-center mb-4">
-                    {Array(5).fill(0).map((_, starIndex) => (
-                      <Star key={starIndex} className="w-5 h-5 text-yellow-400" />
-                    ))}
-                  </div>
-                  <p className="text-lg text-muted-foreground mb-4">"Exceptional quality and support."</p>
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 bg-muted rounded-full" />
-                    <div className="text-left">
-                      <span className="block text-sm font-semibold text-foreground">John Doe</span>
-                      <span className="block text-xs text-muted-foreground">CEO, InnovateX</span>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-            {/* Column 3 */}
-            <div className="space-y-8 animate-continuous-scroll" data-scroll-direction="up">
-              {[...Array(5), ...Array(5)].map((_, i) => (
-                <div key={`col3-card-${i}`} className="p-8 bg-card rounded-lg shadow-lg flex flex-col items-center text-center">
-                  <div className="flex items-center mb-4">
-                    {Array(5).fill(0).map((_, starIndex) => (
-                      <Star key={starIndex} className="w-5 h-5 text-yellow-400" />
-                    ))}
-                  </div>
-                  <p className="text-lg text-muted-foreground mb-4">"Transformed our business!"</p>
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 bg-muted rounded-full" />
-                    <div className="text-left">
-                      <span className="block text-sm font-semibold text-foreground">Emily Clark</span>
-                      <span className="block text-xs text-muted-foreground">Founder, StartUpHub</span>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+        <div className="container mx-auto px-4">
+
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">
+            What Our Clients Say
+          </h2>
+
+          <p className="text-center text-sm text-muted-foreground mb-10">
+            Swipe Up ↑
+          </p>
+
+          <SwipeTestimonials />
+
         </div>
-      </section>
 
-      <style jsx>{`
-        .animate-continuous-scroll {
-          position: relative;
-          display: flex;
-          flex-direction: column;
-          animation: continuous-scroll 15s linear infinite;
-        }
-        .animate-continuous-scroll[data-scroll-direction="up"] {
-          animation-name: continuous-scroll-up;
-        }
-        .animate-continuous-scroll[data-scroll-direction="down"] {
-          animation-name: continuous-scroll-down;
-        }
-        @keyframes continuous-scroll-up {
-          0% {
-            transform: translateY(0);
-          }
-          100% {
-            transform: translateY(-50%);
-          }
-        }
-        @keyframes continuous-scroll-down {
-          0% {
-            transform: translateY(-50%);
-          }
-          100% {
-            transform: translateY(0);
-          }
-        }
-      `}</style>
+      </section> */}
 
       {/* 8. Final Call to Action */}
       <section className="py-32 relative overflow-hidden">

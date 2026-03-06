@@ -91,6 +91,18 @@
   --sidebar-ring: #2DC653;
 }
 
+.motion-carousel > div {
+  opacity: 0.45;
+  transform: scale(0.92);
+  transition: all 0.4s ease;
+}
+
+.motion-carousel > div:nth-child(3),
+.motion-carousel > div:nth-child(8) {
+  opacity: 1;
+  transform: scale(1.05);
+}
+
 .dark {
   --background: #0F172A;
   --foreground: #F8FAFC;
