@@ -557,7 +557,7 @@ export default function Home() {
           </div>
 
           <div className="mt-12">
-            <div className="bg-[#efeae2] dark:bg-[#0b141a] rounded-[2rem] border-[8px] border-zinc-900 dark:border-zinc-800 shadow-2xl relative w-full sm:w-[380px] mx-auto overflow-hidden h-[600px] flex flex-col">
+            <div className="bg-[#efeae2] dark:bg-[#0b141a] rounded-[2.5rem] border-[10px] border-zinc-900 dark:border-zinc-800 shadow-2xl relative w-full max-w-[340px] mx-auto overflow-hidden h-[700px] flex flex-col">
 
               {/* Notched / Top header of phone */}
               <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-zinc-900 dark:bg-zinc-800 rounded-b-3xl z-30" />
@@ -594,8 +594,8 @@ export default function Home() {
                   >
                     <div
                       className={`relative px-3 py-2 text-[14.5px] shadow-sm max-w-[85%] ${msg.sender === 'user'
-                          ? 'bg-[#d9fdd3] dark:bg-[#005c4b] text-zinc-900 dark:text-zinc-100 rounded-lg rounded-tr-none ml-auto'
-                          : 'bg-white dark:bg-[#202c33] text-zinc-900 dark:text-zinc-100 rounded-lg rounded-tl-none mr-auto'
+                        ? 'bg-[#d9fdd3] dark:bg-[#005c4b] text-zinc-900 dark:text-zinc-100 rounded-lg rounded-tr-none ml-auto'
+                        : 'bg-white dark:bg-[#202c33] text-zinc-900 dark:text-zinc-100 rounded-lg rounded-tl-none mr-auto'
                         }`}
                       style={{ borderTopLeftRadius: msg.sender === 'bot' ? 0 : '0.5rem', borderTopRightRadius: msg.sender === 'user' ? 0 : '0.5rem' }}
                     >
