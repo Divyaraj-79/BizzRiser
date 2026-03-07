@@ -5,6 +5,10 @@ import { useRouter, useParams } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, Save, X, Plus, Eye } from "lucide-react";
 import { adminFetch } from "@/lib/admin-api";
+import dynamic from "next/dynamic";
+import "easymde/dist/easymde.min.css";
+
+const SimpleMdeReact = dynamic(() => import("react-simplemde-editor"), { ssr: false });
 
 const CATEGORIES = ["Marketing", "Sales", "Support", "E-Commerce", "Product", "News", "Education", "Technology"];
 
@@ -177,13 +181,17 @@ export default function BlogEditorPage() {
                             <h3 className="text-sm font-semibold text-white">Content</h3>
                             <span className="text-xs text-white/30">Supports Markdown & HTML</span>
                         </div>
-                        <textarea
-                            className={`${INPUT} h-64 font-mono text-xs resize-y`}
-                            value={form.content}
-                            onChange={e => set("content", e.target.value)}
-                            required
-                            placeholder={`## Introduction\n\nStart writing your blog content here...\n\n## Key Takeaways\n\n- Point 1\n- Point 2`}
-                        />
+                        <div className="markdown-editor-wrapper">
+                            <SimpleMdeReact
+                                value={form.content}
+                                onChange={(value) => set("content", value)}
+                                options={{
+                                    spellChecker: false,
+                                    placeholder: `## Introduction\n\nStart writing your blog content here...\n\n## Key Takeaways\n\n- Point 1\n- Point 2`,
+                                    hideIcons: ["guide", "fullscreen", "side-by-side"]
+                                }}
+                            />
+                        </div>
                     </div>
 
                     {/* SEO Section */}
@@ -298,6 +306,42 @@ export default function BlogEditorPage() {
                     </div>
                 </div>
             </form>
+
+            <style jsx global>{`
+                .markdown-editor-wrapper .editor-toolbar {
+                    border-color: rgba(255, 255, 255, 0.1);
+                    background: rgba(255, 255, 255, 0.05);
+                    border-radius: 8px 8px 0 0;
+                    opacity: 1;
+                }
+                .markdown-editor-wrapper .editor-toolbar button {
+                    color: rgba(255, 255, 255, 0.7) !important;
+                }
+                .markdown-editor-wrapper .editor-toolbar button:hover,
+                .markdown-editor-wrapper .editor-toolbar button.active {
+                    background: rgba(255, 255, 255, 0.1);
+                    color: white !important;
+                }
+                .markdown-editor-wrapper .editor-toolbar i.separator {
+                    border-left: 1px solid rgba(255, 255, 255, 0.1);
+                    border-right: 1px solid rgba(255, 255, 255, 0.1);
+                }
+                .markdown-editor-wrapper .CodeMirror {
+                    background: rgba(255, 255, 255, 0.02);
+                    border-color: rgba(255, 255, 255, 0.1);
+                    border-radius: 0 0 8px 8px;
+                    color: rgba(255, 255, 255, 0.9);
+                    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+                    font-size: 0.875rem;
+                    min-height: 300px;
+                }
+                .markdown-editor-wrapper .CodeMirror-cursor {
+                    border-left: 1px solid white;
+                }
+                .markdown-editor-wrapper .CodeMirror-placeholder {
+                    color: rgba(255, 255, 255, 0.2);
+                }
+            `}</style>
         </div>
     );
 }

@@ -21,6 +21,8 @@ import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import Link from "next/link";
 import { fetchApi } from "@/lib/api";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 export default function CaseStudyDetailPage() {
     const params = useParams();
@@ -159,10 +161,11 @@ export default function CaseStudyDetailPage() {
                                 </div>
                             )}
 
-                            <div
-                                className="case-study-content prose prose-lg dark:prose-invert prose-headings:font-bold prose-p:leading-relaxed prose-a:text-bizz-primary max-w-none"
-                                dangerouslySetInnerHTML={{ __html: study.content }}
-                            />
+                            <div className="case-study-content prose prose-lg dark:prose-invert prose-headings:font-bold prose-p:leading-relaxed prose-a:text-bizz-primary max-w-none">
+                                <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                                    {study.content}
+                                </ReactMarkdown>
+                            </div>
                         </motion.article>
 
                         <aside className="lg:w-80 shrink-0">

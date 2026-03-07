@@ -5,6 +5,10 @@ import { useRouter, useParams } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, Save, Briefcase, Eye, Image as ImageIcon } from "lucide-react";
 import { adminFetch } from "@/lib/admin-api";
+import dynamic from "next/dynamic";
+import "easymde/dist/easymde.min.css";
+
+const SimpleMdeReact = dynamic(() => import("react-simplemde-editor"), { ssr: false });
 
 const INPUT = "w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2.5 text-sm text-white placeholder-white/20 focus:outline-none focus:border-green-500 transition";
 const LABEL = "block text-xs text-white/50 mb-1.5 font-medium";
@@ -177,7 +181,17 @@ export default function CaseStudyEditorPage() {
                         </div>
                         <div>
                             <label className={LABEL}>Full Content (Markdown/HTML Support)</label>
-                            <textarea className={`${INPUT} h-64 font-mono text-xs resize-y`} value={form.content} onChange={e => set("content", e.target.value)} required placeholder="## Challenge\n...\n## Solution\n..." />
+                            <div className="markdown-editor-wrapper">
+                                <SimpleMdeReact
+                                    value={form.content}
+                                    onChange={(value) => set("content", value)}
+                                    options={{
+                                        spellChecker: false,
+                                        placeholder: "## Challenge\n...\n## Solution\n...",
+                                        hideIcons: ["guide", "fullscreen", "side-by-side"]
+                                    }}
+                                />
+                            </div>
                         </div>
                     </div>
 
@@ -258,6 +272,42 @@ export default function CaseStudyEditorPage() {
                     </div>
                 </div>
             </form>
+
+            <style jsx global>{`
+                .markdown-editor-wrapper .editor-toolbar {
+                    border-color: rgba(255, 255, 255, 0.1);
+                    background: rgba(255, 255, 255, 0.05);
+                    border-radius: 8px 8px 0 0;
+                    opacity: 1;
+                }
+                .markdown-editor-wrapper .editor-toolbar button {
+                    color: rgba(255, 255, 255, 0.7) !important;
+                }
+                .markdown-editor-wrapper .editor-toolbar button:hover,
+                .markdown-editor-wrapper .editor-toolbar button.active {
+                    background: rgba(255, 255, 255, 0.1);
+                    color: white !important;
+                }
+                .markdown-editor-wrapper .editor-toolbar i.separator {
+                    border-left: 1px solid rgba(255, 255, 255, 0.1);
+                    border-right: 1px solid rgba(255, 255, 255, 0.1);
+                }
+                .markdown-editor-wrapper .CodeMirror {
+                    background: rgba(255, 255, 255, 0.02);
+                    border-color: rgba(255, 255, 255, 0.1);
+                    border-radius: 0 0 8px 8px;
+                    color: rgba(255, 255, 255, 0.9);
+                    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+                    font-size: 0.875rem;
+                    min-height: 300px;
+                }
+                .markdown-editor-wrapper .CodeMirror-cursor {
+                    border-left: 1px solid white;
+                }
+                .markdown-editor-wrapper .CodeMirror-placeholder {
+                    color: rgba(255, 255, 255, 0.2);
+                }
+            `}</style>
         </div>
     );
 }

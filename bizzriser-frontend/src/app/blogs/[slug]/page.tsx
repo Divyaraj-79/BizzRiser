@@ -22,6 +22,8 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { fetchApi } from "@/lib/api";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 // ──────────────────── HELPERS ────────────────────
 function formatDate(dateStr: string) {
@@ -203,11 +205,12 @@ export default function BlogContentPage() {
                                 </div>
                             )}
 
-                            {/* Blog Body - Using prose for better typography */}
-                            <div
-                                className="blog-content prose prose-lg dark:prose-invert prose-headings:font-bold prose-headings:tracking-tight prose-p:leading-relaxed prose-a:text-bizz-primary hover:prose-a:underline prose-img:rounded-2xl max-w-none"
-                                dangerouslySetInnerHTML={{ __html: blog.content }}
-                            />
+                            {/* Blog Body - Using React Markdown for secure rich text */}
+                            <div className="blog-content prose prose-lg dark:prose-invert prose-headings:font-bold prose-headings:tracking-tight prose-p:leading-relaxed prose-a:text-bizz-primary hover:prose-a:underline prose-img:rounded-2xl max-w-none">
+                                <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                                    {blog.content}
+                                </ReactMarkdown>
+                            </div>
 
                             {/* Tags Footer */}
                             {tags.length > 0 && (
