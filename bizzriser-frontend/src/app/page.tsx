@@ -373,11 +373,11 @@ export default function Home() {
               />
             </div>
 
-            {/* Floating Chat Bubble */}
+            {/* Floating Chat Bubble 1 (Top Right) */}
             <motion.div
               animate={{ y: [0, -10, 0] }}
-              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute -right-2 sm:-right-6 md:-right-12 top-1/4 glass bg-background p-2.5 md:p-4 rounded-xl md:rounded-2xl shadow-xl flex items-center gap-2 md:gap-3 border border-border z-20"
+              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 0 }}
+              className="absolute -right-2 sm:-right-6 md:-right-10 top-[15%] glass bg-background p-2.5 md:p-4 rounded-xl md:rounded-2xl shadow-xl flex items-center gap-2 md:gap-3 border border-border z-20"
             >
               <div className="w-8 h-8 md:w-10 md:h-10 shrink-0 rounded-full bg-[#25D366] flex items-center justify-center">
                 <MessageSquare className="w-4 h-4 md:w-5 md:h-5 text-white" />
@@ -385,6 +385,51 @@ export default function Home() {
               <div className="flex flex-col text-left">
                 <span className="text-xs md:text-sm font-semibold text-foreground">Payment Received</span>
                 <span className="text-[10px] md:text-xs text-muted-foreground whitespace-nowrap">Automated message sent</span>
+              </div>
+            </motion.div>
+
+            {/* Floating Chat Bubble 2 (Bottom Right) */}
+            <motion.div
+              animate={{ y: [0, -12, 0] }}
+              transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+              className="absolute -right-4 sm:-right-8 md:-right-14 bottom-[20%] glass bg-background p-2.5 md:p-4 rounded-xl md:rounded-2xl shadow-xl flex items-center gap-2 md:gap-3 border border-border z-20"
+            >
+              <div className="w-8 h-8 md:w-10 md:h-10 shrink-0 rounded-full bg-blue-500 flex items-center justify-center">
+                <CheckCircle2 className="w-4 h-4 md:w-5 md:h-5 text-white" />
+              </div>
+              <div className="flex flex-col text-left">
+                <span className="text-xs md:text-sm font-semibold text-foreground">Order Confirmed</span>
+                <span className="text-[10px] md:text-xs text-muted-foreground whitespace-nowrap">Tracking link sent</span>
+              </div>
+            </motion.div>
+
+            {/* Floating Chat Bubble 3 (Top Left) */}
+            <motion.div
+              animate={{ y: [0, -8, 0] }}
+              transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+              className="absolute -left-2 sm:-left-6 md:-left-12 top-[25%] glass bg-background p-2.5 md:p-4 rounded-xl md:rounded-2xl shadow-xl flex items-center gap-2 md:gap-3 border border-border z-20"
+            >
+              <div className="w-8 h-8 md:w-10 md:h-10 shrink-0 rounded-full bg-purple-500 flex items-center justify-center">
+                <Bot className="w-4 h-4 md:w-5 md:h-5 text-white" />
+              </div>
+              <div className="flex flex-col text-left">
+                <span className="text-xs md:text-sm font-semibold text-foreground">Lead Qualified</span>
+                <span className="text-[10px] md:text-xs text-muted-foreground whitespace-nowrap">New CRM entry created</span>
+              </div>
+            </motion.div>
+
+            {/* Floating Chat Bubble 4 (Bottom Left) */}
+            <motion.div
+              animate={{ y: [0, -10, 0] }}
+              transition={{ duration: 4.2, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
+              className="absolute -left-4 sm:-left-10 md:-left-16 bottom-[10%] glass bg-background p-2.5 md:p-4 rounded-xl md:rounded-2xl shadow-xl flex items-center gap-2 md:gap-3 border border-border z-20"
+            >
+              <div className="w-8 h-8 md:w-10 md:h-10 shrink-0 rounded-full bg-orange-500 flex items-center justify-center">
+                <Users className="w-4 h-4 md:w-5 md:h-5 text-white" />
+              </div>
+              <div className="flex flex-col text-left">
+                <span className="text-xs md:text-sm font-semibold text-foreground">Support Ticket Resolved</span>
+                <span className="text-[10px] md:text-xs text-muted-foreground whitespace-nowrap">Customer rated 5 stars</span>
               </div>
             </motion.div>
           </motion.div>
