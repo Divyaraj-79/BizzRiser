@@ -3,10 +3,10 @@
 import { useState, useEffect } from "react";
 import { fetchApi } from "@/lib/api";
 
-interface ChatStep { role: "user" | "bot"; message: string; }
+interface ChatStep { sender: "user" | "bot"; text: string; }
 interface Chatbot { id: string; industry: string; brand: string; flowSteps: ChatStep[]; }
 
-const EMPTY_STEP: ChatStep = { role: "bot", message: "" };
+const EMPTY_STEP: ChatStep = { sender: "bot", text: "" };
 
 export default function IndustryChatbotsAdmin() {
     const [items, setItems] = useState<Chatbot[]>([]);
@@ -15,7 +15,7 @@ export default function IndustryChatbotsAdmin() {
     const [apiIndustries, setApiIndustries] = useState<{ id: string, title: string }[]>([]);
     const [industry, setIndustry] = useState("");
     const [brand, setBrand] = useState("");
-    const [steps, setSteps] = useState<ChatStep[]>([{ role: "bot", message: "" }]);
+    const [steps, setSteps] = useState<ChatStep[]>([{ sender: "bot", text: "" }]);
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
     const token = typeof window !== "undefined" ? localStorage.getItem("admin_token") : null;
@@ -40,11 +40,11 @@ export default function IndustryChatbotsAdmin() {
 
     const open = (item?: Chatbot) => {
         if (item) { setEditing(item); setIndustry(item.industry); setBrand(item.brand); setSteps(item.flowSteps); }
-        else { setEditing(null); setIndustry(apiIndustries.length > 0 ? apiIndustries[0].id : ""); setBrand(""); setSteps([{ role: "bot", message: "" }]); }
+        else { setEditing(null); setIndustry(apiIndustries.length > 0 ? apiIndustries[0].id : ""); setBrand(""); setSteps([{ sender: "bot", text: "" }]); }
         setShowForm(true);
     };
 
-    const addStep = () => setSteps(prev => [...prev, { role: "user", message: "" }]);
+    const addStep = () => setSteps(prev => [...prev, { sender: "user", text: "" }]);
     const removeStep = (i: number) => setSteps(prev => prev.filter((_, idx) => idx !== i));
     const updateStep = (i: number, field: keyof ChatStep, val: string) =>
         setSteps(prev => prev.map((s, idx) => idx === i ? { ...s, [field]: val } : s));
@@ -101,11 +101,11 @@ export default function IndustryChatbotsAdmin() {
                         </div>
                         {steps.map((step, i) => (
                             <div key={i} className="flex gap-3 items-start">
-                                <select value={step.role} onChange={e => updateStep(i, "role", e.target.value as any)} className="bg-white/5 border border-white/10 rounded-lg px-2 py-2 text-xs text-white shrink-0 focus:outline-none focus:border-green-500">
+                                <select value={step.sender} onChange={e => updateStep(i, "sender", e.target.value as any)} className="bg-white/5 border border-white/10 rounded-lg px-2 py-2 text-xs text-white shrink-0 focus:outline-none focus:border-green-500">
                                     <option value="bot">🤖 Bot</option>
                                     <option value="user">👤 User</option>
                                 </select>
-                                <input className="flex-1 bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-green-500" value={step.message} onChange={e => updateStep(i, "message", e.target.value)} placeholder="Message..." />
+                                <input className="flex-1 bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-green-500" value={step.text} onChange={e => updateStep(i, "text", e.target.value)} placeholder="Message..." />
                                 <button onClick={() => removeStep(i)} className="text-red-400 hover:text-red-300 text-xs pt-2">✕</button>
                             </div>
                         ))}
@@ -135,9 +135,9 @@ export default function IndustryChatbotsAdmin() {
                                 </div>
                                 <div className="space-y-1.5 max-h-40 overflow-y-auto pr-1">
                                     {cb.flowSteps.map((s, i) => (
-                                        <div key={i} className={`flex gap-2 text-xs ${s.role === "bot" ? "text-green-400" : "text-blue-400"}`}>
-                                            <span className="shrink-0">{s.role === "bot" ? "🤖" : "👤"}</span>
-                                            <span className="text-white/60">{s.message}</span>
+                                        <div key={i} className={`flex gap-2 text-xs ${s.sender === "bot" ? "text-green-400" : "text-blue-400"}`}>
+                                            <span className="shrink-0">{s.sender === "bot" ? "🤖" : "👤"}</span>
+                                            <span className="text-white/60">{s.text}</span>
                                         </div>
                                     ))}
                                 </div>

@@ -277,8 +277,11 @@ export default function Home() {
       .then((data: any[]) => {
         if (data && data.length > 0) {
           setApiIndustries(data);
-          setSelectedIndustry(data[0].id);
-          setActiveDemo({ industry: data[0].id, brand: "Travel X", key: 0 });
+          const firstId = data[0].id;
+          const firstTitle = data[0].title || "Travel X";
+          setSelectedIndustry(firstId);
+          setBrandName(firstTitle);
+          setActiveDemo({ industry: firstId, brand: firstTitle, key: 0 });
         }
       })
       .catch(() => { });
@@ -531,7 +534,12 @@ export default function Home() {
                   id="industry"
                   className="w-full p-3 border border-border rounded-lg bg-background"
                   value={selectedIndustry}
-                  onChange={(e) => setSelectedIndustry(e.target.value)}
+                  onChange={(e) => {
+                    const id = e.target.value;
+                    setSelectedIndustry(id);
+                    const ind = apiIndustries.find(i => i.id === id);
+                    if (ind) setBrandName(ind.title);
+                  }}
                 >
                   {apiIndustries.map(ind => (
                     <option key={ind.id} value={ind.id}>{ind.title}</option>
@@ -590,65 +598,70 @@ export default function Home() {
                     <span className="bg-[#d1f4ff] dark:bg-[#182229] px-2.5 py-1 rounded-[7px] text-[11px] text-[#54656f] dark:text-[#8696a0] font-medium shadow-sm uppercase tracking-wide">Today</span>
                   </div>
 
-                  {apiChatbots[activeDemo.industry]?.map((msg, index) => (
-                    <motion.div
-                      key={index}
-                      initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
-                      transition={{ delay: index * 1.5 + 0.5, duration: 0.4, ease: "easeOut" }}
-                      className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'} w-full mb-1`}
-                    >
-                      <div className="relative group max-w-[85%] filter drop-shadow-[0_1px_0.5px_rgba(0,0,0,0.13)]">
-                        <div
-                          className={`relative px-2.5 py-1.5 text-[14.2px] min-w-[100px] flex flex-col ${msg.sender === 'user'
-                            ? 'bg-[#d9fdd3] dark:bg-[#005c4b] text-[#111b21] dark:text-[#e9edef]'
-                            : 'bg-white dark:bg-[#202c33] text-[#111b21] dark:text-[#e9edef]'
-                            }`}
-                          style={{
-                            borderRadius: '8px',
-                            borderTopLeftRadius: msg.sender === 'bot' ? 0 : '8px',
-                            borderTopRightRadius: msg.sender === 'user' ? 0 : '8px'
-                          }}
-                        >
-                          {/* Tail for bot */}
-                          {msg.sender === 'bot' && (
-                            <div className="absolute top-0 -left-[8px] w-[10px] h-3 text-white dark:text-[#202c33]">
-                              <svg viewBox="0 0 8 13" className="w-full h-full" fill="currentColor">
-                                <path d="M1.533 3.568 8 12.193V1H2.812C1.042 1 .474 2.156 1.533 3.568z" />
-                              </svg>
-                            </div>
-                          )}
+                  {apiChatbots[activeDemo.industry]?.map((msg: any, index: number) => {
+                    const sender = msg.sender || msg.role || 'bot';
+                    const text = msg.text || msg.message || '';
 
-                          {/* Tail for user */}
-                          {msg.sender === 'user' && (
-                            <div className="absolute top-0 -right-[8px] w-[10px] h-3 text-[#d9fdd3] dark:text-[#005c4b] scale-x-[-1]">
-                              <svg viewBox="0 0 8 13" className="w-full h-full" fill="currentColor">
-                                <path d="M1.533 3.568 8 12.193V1H2.812C1.042 1 .474 2.156 1.533 3.568z" />
-                              </svg>
-                            </div>
-                          )}
-
-                          <div className="leading-[1.4] break-words pr-12 pb-2 mt-0.5">
-                            {(msg?.text || "").replace('{brand}', activeDemo?.brand || "BizzRiser")}
-                          </div>
-
-                          <div className="absolute bottom-1 right-1.5 flex items-center gap-1">
-                            <span className="text-[10px] text-[#667781] dark:text-[#8696a0] font-normal leading-none mb-0.5">
-                              11:34 pm
-                            </span>
-                            {msg?.sender === 'user' && (
-                              <div className="flex -space-x-1.5 leading-none">
-                                <svg className="w-[15.5px] h-[10.5px] text-[#53bdeb]" viewBox="0 0 16 11" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                  <path d="M11.4582 1.25L4.85408 7.85417L2.04158 5.04167L1.10408 5.97917L4.85408 9.72917L12.3957 2.1875L11.4582 1.25Z" fill="currentColor" />
-                                  <path d="M15.0423 1.25L8.43815 7.85417L7.00065 6.41667L6.06315 7.35417L8.43815 9.72917L15.9798 2.1875L15.0423 1.25Z" fill="currentColor" />
+                    return (
+                      <motion.div
+                        key={index}
+                        initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        transition={{ delay: index * 1.5 + 0.5, duration: 0.4, ease: "easeOut" }}
+                        className={`flex ${sender === 'user' ? 'justify-end' : 'justify-start'} w-full mb-1`}
+                      >
+                        <div className="relative group max-w-[85%] filter drop-shadow-[0_1px_0.5px_rgba(0,0,0,0.13)]">
+                          <div
+                            className={`relative px-2.5 py-1.5 text-[14.2px] min-w-[100px] flex flex-col ${sender === 'user'
+                              ? 'bg-[#d9fdd3] dark:bg-[#005c4b] text-[#111b21] dark:text-[#e9edef]'
+                              : 'bg-white dark:bg-[#202c33] text-[#111b21] dark:text-[#e9edef]'
+                              }`}
+                            style={{
+                              borderRadius: '8px',
+                              borderTopLeftRadius: sender === 'bot' ? 0 : '8px',
+                              borderTopRightRadius: sender === 'user' ? 0 : '8px'
+                            }}
+                          >
+                            {/* Tail for bot */}
+                            {sender === 'bot' && (
+                              <div className="absolute top-0 -left-[8px] w-[10px] h-3 text-white dark:text-[#202c33]">
+                                <svg viewBox="0 0 8 13" className="w-full h-full" fill="currentColor">
+                                  <path d="M1.533 3.568 8 12.193V1H2.812C1.042 1 .474 2.156 1.533 3.568z" />
                                 </svg>
                               </div>
                             )}
+
+                            {/* Tail for user */}
+                            {sender === 'user' && (
+                              <div className="absolute top-0 -right-[8px] w-[10px] h-3 text-[#d9fdd3] dark:text-[#005c4b] scale-x-[-1]">
+                                <svg viewBox="0 0 8 13" className="w-full h-full" fill="currentColor">
+                                  <path d="M1.533 3.568 8 12.193V1H2.812C1.042 1 .474 2.156 1.533 3.568z" />
+                                </svg>
+                              </div>
+                            )}
+
+                            <div className="leading-[1.4] break-words pr-12 pb-2 mt-0.5">
+                              {(text || "").replace('{brand}', activeDemo?.brand || "BizzRiser")}
+                            </div>
+
+                            <div className="absolute bottom-1 right-1.5 flex items-center gap-1">
+                              <span className="text-[10px] text-[#667781] dark:text-[#8696a0] font-normal leading-none mb-0.5">
+                                11:34 pm
+                              </span>
+                              {sender === 'user' && (
+                                <div className="flex -space-x-1.5 leading-none">
+                                  <svg className="w-[15.5px] h-[10.5px] text-[#53bdeb]" viewBox="0 0 16 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M11.4582 1.25L4.85408 7.85417L2.04158 5.04167L1.10408 5.97917L4.85408 9.72917L12.3957 2.1875L11.4582 1.25Z" fill="currentColor" />
+                                    <path d="M15.0423 1.25L8.43815 7.85417L7.00065 6.41667L6.06315 7.35417L8.43815 9.72917L15.9798 2.1875L15.0423 1.25Z" fill="currentColor" />
+                                  </svg>
+                                </div>
+                              )}
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </motion.div>
-                  ))}
+                      </motion.div>
+                    );
+                  })}
                 </div>
               </div>
 
