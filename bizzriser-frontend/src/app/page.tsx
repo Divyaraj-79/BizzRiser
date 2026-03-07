@@ -23,66 +23,7 @@ const partners = [
   { name: "AWS", logo: "/logos/aws.svg" },
 ];
 
-// Fallback static data (used when API is unreachable)
-const FALLBACK_STATS = [
-  { label: "Clients Served", value: "10,000+" },
-  { label: "Messages Delivered", value: "500M+" },
-  { label: "Campaigns Automated", value: "25M+" },
-  { label: "Revenue Generated", value: "$2B+" },
-];
-
-const FALLBACK_TESTIMONIALS = [
-  { text: "BizzRiser completely transformed how we handle customer support. We recovered 30% more abandoned carts within the first week.", name: "Sarah Jenkins", role: "CMO, TechGrowth", avatar: "/avatars/2.jpg" },
-  { text: "The WhatsApp automation is incredible. Our response time went from hours to seconds.", name: "Alex Patel", role: "Founder, ShopNow", avatar: "/avatars/3.jpg" },
-  { text: "We were skeptical at first but the chatbot handles 80% of our inquiries without any human intervention. Game changer.", name: "Meera Nair", role: "Head of CX, WealthWise", avatar: "/avatars/1.jpg" },
-  { text: "BizzRiser has reduced our support team workload by 60%. The ROI in just 2 months is remarkable.", name: "Rohan Shah", role: "Growth Lead, FinEdge", avatar: "/avatars/4.jpg" },
-];
-
-const industries = [
-  { id: "travel", label: "Travel & Hospitality", icon: <Plane className="w-5 h-5" /> },
-  { id: "ecommerce", label: "E-Commerce", icon: <TrendingUp className="w-5 h-5" /> },
-  { id: "realestate", label: "Real Estate", icon: <Users className="w-5 h-5" /> },
-  { id: "education", label: "Education", icon: <Bot className="w-5 h-5" /> },
-  { id: "healthcare", label: "Healthcare", icon: <Shield className="w-5 h-5" /> },
-];
-
-const DEMO_CONVERSATIONS: Record<string, { sender: 'bot' | 'user', text: string }[]> = {
-  travel: [
-    { sender: 'bot', text: 'Hi! Planning your next getaway with {brand}?' },
-    { sender: 'user', text: 'Yes, looking for a beach resort.' },
-    { sender: 'bot', text: 'Great choice! Checkout our top 3 Maldives packages \uD83C\uDFDD️' },
-    { sender: 'user', text: 'Can I see the itinerary for the first one?' },
-    { sender: 'bot', text: 'Sure! Here is the detailed 5-day itinerary...' },
-  ],
-  ecommerce: [
-    { sender: 'bot', text: 'Hey there! Your cart at {brand} is waiting for you.' },
-    { sender: 'user', text: 'I forgot to apply the discount code.' },
-    { sender: 'bot', text: 'No worries! Use code SAVE20 for 20% off. Checkout now?' },
-    { sender: 'user', text: 'Yes, applied it. Processing payment now.' },
-    { sender: 'bot', text: 'Awesome! We\'ve received your order. Tracking link sent! \uD83D\uDE80' },
-  ],
-  realestate: [
-    { sender: 'bot', text: 'Welcome to {brand} Real Estate! Looking to buy or rent?' },
-    { sender: 'user', text: 'Buy a 2 BHK apartment.' },
-    { sender: 'bot', text: 'Got it. Here are 3 premium 2 BHKs in your preferred location.' },
-    { sender: 'user', text: 'The second one looks good. Can I schedule a visit?' },
-    { sender: 'bot', text: 'Absolutely! I have scheduled a visit for tomorrow at 10 AM. See you!' },
-  ],
-  education: [
-    { sender: 'bot', text: 'Hello from {brand}! Interested in our new courses?' },
-    { sender: 'user', text: 'Yes, details about the Data Science bootcamp.' },
-    { sender: 'bot', text: 'It\'s a 12-week intensive course. Next batch starts next week.' },
-    { sender: 'user', text: 'What is the fee structure?' },
-    { sender: 'bot', text: 'The fee is $999. You can pay in 3 installments too. Register now?' },
-  ],
-  healthcare: [
-    { sender: 'bot', text: 'Hi! How can {brand} assist you with your health today?' },
-    { sender: 'user', text: 'I need to book a consultation with Dr. Smith.' },
-    { sender: 'bot', text: 'Dr. Smith is available tomorrow at 4 PM. Should I book?' },
-    { sender: 'user', text: 'Yes, please.' },
-    { sender: 'bot', text: 'Consultation booked successfully. Your token number is 42.' },
-  ],
-};
+// Dynamic API states for Chatbots and Industries will replace these placeholders.
 
 function SwipeTestimonials({ testimonials }: { testimonials: any[] }) {
   const [index, setIndex] = useState(0)
@@ -311,26 +252,48 @@ function HorizontalTestimonials({ testimonials }: { testimonials: any[] }) {
 }
 
 export default function Home() {
-  const [selectedIndustry, setSelectedIndustry] = useState("travel");
+  const [selectedIndustry, setSelectedIndustry] = useState("");
   const [brandName, setBrandName] = useState("Travel X");
-  const [activeDemo, setActiveDemo] = useState({ industry: "travel", brand: "Travel X", key: 0 });
-  const [stats, setStats] = useState(FALLBACK_STATS);
+  const [activeDemo, setActiveDemo] = useState({ industry: "", brand: "Travel X", key: 0 });
+  const [stats, setStats] = useState<any[]>([]);
   const [testimonials, setTestimonials] = useState<any[]>([]);
+  const [apiIndustries, setApiIndustries] = useState<any[]>([]);
+  const [apiChatbots, setApiChatbots] = useState<Record<string, { sender: 'bot' | 'user', text: string }[]>>({});
 
   useEffect(() => {
     fetchApi("/testimonials/published")
       .then((data: any[]) => {
-        if (data?.length) setTestimonials(data);
+        if (data) setTestimonials(data);
       })
       .catch((err) => console.error("Testimonials fetch failed:", err));
 
     fetchApi("/home-stats")
       .then((data: any[]) => {
-        if (data?.length) {
-          setStats(data.map((s: any) => ({ label: s.label, value: s.value })));
+        if (data) setStats(data.map((s: any) => ({ label: s.label, value: s.value })));
+      })
+      .catch(() => { });
+
+    fetchApi("/solution-industries")
+      .then((data: any[]) => {
+        if (data && data.length > 0) {
+          setApiIndustries(data);
+          setSelectedIndustry(data[0].id);
+          setActiveDemo({ industry: data[0].id, brand: "Travel X", key: 0 });
         }
       })
-      .catch(() => { }); // Silently fall back to static data
+      .catch(() => { });
+
+    fetchApi("/industry-chatbots")
+      .then((data: any[]) => {
+        if (data && data.length > 0) {
+          const map: Record<string, any[]> = {};
+          data.forEach((bot: any) => {
+            map[bot.industry] = typeof bot.flowSteps === "string" ? JSON.parse(bot.flowSteps) : bot.flowSteps;
+          });
+          setApiChatbots(map);
+        }
+      })
+      .catch(() => { });
   }, []);
 
   function handleExampleInteractions() {
@@ -511,8 +474,8 @@ export default function Home() {
                   value={selectedIndustry}
                   onChange={(e) => setSelectedIndustry(e.target.value)}
                 >
-                  {industries.map(ind => (
-                    <option key={ind.id} value={ind.id}>{ind.label}</option>
+                  {apiIndustries.map(ind => (
+                    <option key={ind.id} value={ind.id}>{ind.title}</option>
                   ))}
                 </select>
               </div>
@@ -568,7 +531,7 @@ export default function Home() {
                     <span className="bg-[#d1f4ff] dark:bg-[#182229] px-2.5 py-1 rounded-[7px] text-[11px] text-[#54656f] dark:text-[#8696a0] font-medium shadow-sm uppercase tracking-wide">Today</span>
                   </div>
 
-                  {DEMO_CONVERSATIONS[activeDemo.industry || 'travel']?.map((msg, index) => (
+                  {apiChatbots[activeDemo.industry]?.map((msg, index) => (
                     <motion.div
                       key={index}
                       initial={{ opacity: 0, y: 10, scale: 0.95 }}
@@ -731,7 +694,7 @@ export default function Home() {
             <h2 className="text-3xl md:text-4xl font-bold mb-4">Loved by 10,000+ Growth Teams</h2>
           </div>
 
-          <HorizontalTestimonials testimonials={testimonials.length > 0 ? testimonials : FALLBACK_TESTIMONIALS.map(t => ({ author: t.name, role: t.role, content: t.text, rating: 5 }))} />
+          <HorizontalTestimonials testimonials={testimonials} />
         </div>
       </section>
 

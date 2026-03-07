@@ -14,65 +14,12 @@ import {
 } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { fetchApi } from "@/lib/api";
-
-
-const pricingPlans = [
-    {
-        name: "Starter",
-        description:
-            "Perfect for small businesses getting started with WhatsApp automation.",
-        price: { monthly: 49, yearly: 39 },
-        icon: <Zap className="w-6 h-6 text-bizz-primary" />,
-        features: [
-            "1,000 Free Tier Conversations",
-            "Basic Chatbot Builder",
-            "Shared Inbox for 3 Agents",
-            "Standard Analytics",
-            "Email Support",
-        ],
-        notIncluded: [
-            "Advanced API Access",
-            "Dedicated Account Manager",
-            "Custom Integrations",
-        ],
-    },
-
-    {
-        name: "Growth",
-        description:
-            "Our most popular plan for scaling businesses that need advanced automation.",
-        price: { monthly: 99, yearly: 79 },
-        isPopular: true,
-        icon: <Rocket className="w-6 h-6 text-white" />,
-        features: [
-            "5,000 Free Tier Conversations",
-            "Advanced Chatbot Builder",
-            "Shared Inbox for 10 Agents",
-            "Advanced Analytics & Flow Builder",
-            "Priority Support 24/7",
-            "Basic API Access",
-        ],
-        notIncluded: ["Dedicated Account Manager", "Custom Integrations"],
-    },
-
-    {
-        name: "Enterprise",
-        description:
-            "Custom solutions for large organizations with complex communication needs.",
-        price: { monthly: 299, yearly: 249 },
-        icon: <Building2 className="w-6 h-6 text-bizz-primary" />,
-        features: [
-            "Unlimited Conversations",
-            "Custom Chatbot Development",
-            "Unlimited Agents",
-            "Custom Reporting",
-            "Dedicated Account Manager",
-            "Full API Access & Webhooks",
-            "Custom System Integrations",
-        ],
-        notIncluded: [],
-    },
-];
+// ──────────────────── HELPERS ────────────────────
+function getIcon(name: string) {
+    if (name === "Growth") return <Rocket className="w-6 h-6 text-white" />;
+    if (name === "Enterprise") return <Building2 className="w-6 h-6 text-bizz-primary" />;
+    return <Zap className="w-6 h-6 text-bizz-primary" />;
+}
 
 export default function PricingPage() {
     const [billingCycle, setBillingCycle] = useState<"monthly" | "yearly">("yearly");
@@ -82,18 +29,12 @@ export default function PricingPage() {
     useEffect(() => {
         fetchApi("/pricing-plans")
             .then((data: any[]) => {
-                if (data?.length) setApiPlans(data);
+                if (data) setApiPlans(data);
             })
             .catch(() => { });
     }, []);
 
-    // If we have API plans, show them; otherwise fall back to static plans
-    const isApiMode = apiPlans.length > 0;
-
-    // Filter plans based on billing cycle if in API mode
-    const displayPlans = isApiMode
-        ? apiPlans.filter(plan => (plan.billingCycle || "monthly") === billingCycle)
-        : pricingPlans;
+    const displayPlans = apiPlans.filter(plan => (plan.billingCycle || "monthly") === billingCycle);
 
     return (
         <div className="pt-20 min-h-screen bg-background">
@@ -186,14 +127,9 @@ ${selectedPlan === i
                             const mobileHidden =
                                 i !== selectedPlan ? "hidden md:block" : "";
 
-                            const planPrice = isApiMode ? plan.price : plan.price[billingCycle];
-                            const planIcon = isApiMode ? (
-                                plan.name === "Growth" ? <Rocket className="w-6 h-6 text-white" /> :
-                                    plan.name === "Enterprise" ? <Building2 className="w-6 h-6 text-bizz-primary" /> :
-                                        <Zap className="w-6 h-6 text-bizz-primary" />
-                            ) : plan.icon;
-
-                            const isPopular = isApiMode ? plan.recommended : plan.isPopular;
+                            const planPrice = plan.price;
+                            const planIcon = getIcon(plan.name);
+                            const isPopular = plan.recommended;
 
                             return (
 
@@ -249,12 +185,15 @@ ${selectedPlan === i
 
                                             <div className="space-y-4">
 
-                                                {plan.features.map((feature: string) => (
-                                                    <div key={feature} className="flex items-start gap-3">
-                                                        <Check className="w-5 h-5 shrink-0 text-bizz-primary" />
-                                                        <span className="text-muted-foreground">{feature}</span>
-                                                    </div>
-                                                ))}
+                                                {(() => {
+                                                    const features = typeof plan.features === "string" ? JSON.parse(plan.features) : (plan.features || []);
+                                                    return features.map((feature: string) => (
+                                                        <div key={feature} className="flex items-start gap-3">
+                                                            <Check className="w-5 h-5 shrink-0 text-bizz-primary" />
+                                                            <span className="text-muted-foreground">{feature}</span>
+                                                        </div>
+                                                    ));
+                                                })()}
 
                                                 {plan.notIncluded?.map((feature: string) => (
                                                     <div key={feature} className="flex items-start gap-3 opacity-50">

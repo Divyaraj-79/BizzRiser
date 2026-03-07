@@ -10,26 +10,6 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { fetchApi } from "@/lib/api";
 
-// ──────────────────── FALLBACK DATA ────────────────────
-const FALLBACK_FEATURED = [
-    { id: "whatsapp-marketing-2024", slug: "whatsapp-marketing-2024", title: "The Ultimate Guide to WhatsApp Marketing in 2024", excerpt: "Discover the latest trends, strategies, and templates for driving revenue through WhatsApp Business API this year.", category: "Marketing", createdAt: "2024-10-24", author: "Sarah Jenks", imageUrl: null, tags: ["WhatsApp", "Marketing"], readTime: 7 },
-    { id: "sales-funnel-whatsapp", slug: "sales-funnel-whatsapp", title: "Building an Automated WhatsApp Sales Funnel", excerpt: "Learn how to capture leads, nurture them with automated sequences, and close deals directly in WhatsApp.", category: "Sales", createdAt: "2024-11-02", author: "Mike Ross", imageUrl: null, tags: ["Sales", "Automation"], readTime: 9 },
-    { id: "customer-retention-strategies", slug: "customer-retention-strategies", title: "Mastering Customer Retention with Automated Support", excerpt: "Stop losing customers to slow support times. Implement AI-driven ticketing systems within WhatsApp.", category: "Support", createdAt: "2024-11-15", author: "Elena Davis", imageUrl: null, tags: ["Support", "Retention"], readTime: 6 },
-];
-
-const GRADIENT_VARIANTS = [
-    "bg-gradient-to-tr from-bizz-primary/20 to-bizz-accent/20",
-    "bg-gradient-to-br from-indigo-500/20 to-purple-500/20",
-    "bg-gradient-to-bl from-rose-500/20 to-orange-500/20",
-];
-
-const FALLBACK_BLOGS = [
-    { id: "1", slug: "reduce-cart-abandonment", title: "How to Reduce Cart Abandonment by 40% with WhatsApp", excerpt: "Learn the exact automated flow that top e-commerce brands use to recover lost sales instantly.", category: "E-Commerce", createdAt: "2024-10-15", author: "Mike Ross", tags: [], readTime: 5, imageUrl: null },
-    { id: "2", slug: "whatsapp-api-vs-business-app", title: "WhatsApp API vs. Business App: Which is Right for You?", excerpt: "A comprehensive breakdown of the features, limits, and pricing to help you choose the right solution.", category: "Product", createdAt: "2024-10-10", author: "Elena Davis", tags: [], readTime: 8, imageUrl: null },
-    { id: "3", slug: "customer-support-automation", title: "Streamlining Customer Support: AI Chatbots & Human Handoff", excerpt: "How to balance automation and human empathy to improve CSAT scores and reduce resolution times.", category: "Support", createdAt: "2024-10-02", author: "David Kim", tags: [], readTime: 6, imageUrl: null },
-    { id: "4", slug: "lead-qualification-templates", title: "5 WhatsApp Templates for Instant Lead Qualification", excerpt: "Stop wasting time on bad leads. Use these plug-and-play templates to qualify prospects automatically.", category: "Sales", createdAt: "2024-09-28", author: "Sarah Jenks", tags: [], readTime: 4, imageUrl: null },
-];
-
 // ──────────────────── HELPERS ────────────────────
 function formatDate(dateStr: string) {
     return new Date(dateStr).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
@@ -136,10 +116,16 @@ function FeaturedBlogsCarousel({ blogs }: { blogs: any[] }) {
     );
 }
 
+const GRADIENT_VARIANTS = [
+    "bg-gradient-to-tr from-bizz-primary/20 to-bizz-accent/20",
+    "bg-gradient-to-br from-indigo-500/20 to-purple-500/20",
+    "bg-gradient-to-bl from-rose-500/20 to-orange-500/20",
+];
+
 // ──────────────────── MAIN PAGE ────────────────────
 export default function BlogsPage() {
-    const [featuredBlogs, setFeaturedBlogs] = useState<any[]>(FALLBACK_FEATURED);
-    const [allBlogs, setAllBlogs] = useState<any[]>(FALLBACK_BLOGS);
+    const [featuredBlogs, setFeaturedBlogs] = useState<any[]>([]);
+    const [allBlogs, setAllBlogs] = useState<any[]>([]);
     const [activeCategory, setActiveCategory] = useState("All");
     const [searchQuery, setSearchQuery] = useState("");
     const [isSubscribing, setIsSubscribing] = useState(false);
@@ -147,9 +133,9 @@ export default function BlogsPage() {
 
     useEffect(() => {
         // Fetch featured blogs
-        fetchApi("/blogs/featured").then((data: any[]) => { if (data?.length) setFeaturedBlogs(data); }).catch(() => { });
+        fetchApi("/blogs/featured").then((data: any[]) => { if (data) setFeaturedBlogs(data); }).catch(() => { });
         // Fetch all published blogs
-        fetchApi("/blogs").then((data: any[]) => { if (data?.length) setAllBlogs(data); }).catch(() => { });
+        fetchApi("/blogs").then((data: any[]) => { if (data) setAllBlogs(data); }).catch(() => { });
     }, []);
 
     // Build categories from actual data

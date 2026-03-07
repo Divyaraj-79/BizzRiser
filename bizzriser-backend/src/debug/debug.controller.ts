@@ -94,6 +94,120 @@ export class DebugController {
                 log('✅ Case Study fashion-brand-x created');
             }
 
+            // 5. Force seed home stats if 0
+            if (counts.homeStats === 0) {
+                log('📈 Force seeding Home Stats...');
+                await this.prisma.homeStat.createMany({
+                    data: [
+                        { label: 'Clients Served', value: '10,000+', order: 1 },
+                        { label: 'Messages Delivered', value: '500M+', order: 2 },
+                        { label: 'Campaigns Automated', value: '25M+', order: 3 },
+                        { label: 'Revenue Generated', value: '$2B+', order: 4 },
+                    ]
+                });
+                log('✅ Home Stats created');
+            }
+
+            // 6. Force seed testimonials if 0
+            if (counts.testimonials === 0) {
+                log('🗣️ Force seeding Testimonials...');
+                await this.prisma.testimonial.createMany({
+                    data: [
+                        { content: "BizzRiser completely transformed how we handle customer support. We recovered 30% more abandoned carts within the first week.", author: "Sarah Jenkins", role: "CMO, TechGrowth", rating: 5, published: true },
+                        { content: "The WhatsApp automation is incredible. Our response time went from hours to seconds.", author: "Alex Patel", role: "Founder, ShopNow", rating: 5, published: true },
+                        { content: "We were skeptical at first but the chatbot handles 80% of our inquiries without any human intervention. Game changer.", author: "Meera Nair", role: "Head of CX, WealthWise", rating: 5, published: true },
+                        { content: "BizzRiser has reduced our support team workload by 60%. The ROI in just 2 months is remarkable.", author: "Rohan Shah", role: "Growth Lead, FinEdge", rating: 5, published: true },
+                    ]
+                });
+                log('✅ Testimonials created');
+            }
+
+            // 7. Force seed solution industries if 0
+            if (counts.solutionIndustries === 0) {
+                log('🏢 Force seeding Solution Industries...');
+                await this.prisma.solutionIndustry.createMany({
+                    data: [
+                        { id: "travel", title: 'Travel & Hospitality', description: '', icon: 'Plane', order: 1 },
+                        { id: "ecommerce", title: 'E-Commerce', description: '', icon: 'TrendingUp', order: 2 },
+                        { id: "realestate", title: 'Real Estate', description: '', icon: 'Users', order: 3 },
+                        { id: "education", title: 'Education', description: '', icon: 'Bot', order: 4 },
+                        { id: "healthcare", title: 'Healthcare', description: '', icon: 'Shield', order: 5 },
+                    ]
+                });
+                log('✅ Solution Industries created');
+            }
+
+            // 8. Force seed industry chatbots if 0
+            if (counts.industryChatbots === 0) {
+                log('🤖 Force seeding Industry Chatbots...');
+                await this.prisma.industryChatbot.createMany({
+                    data: [
+                        {
+                            industry: 'travel', brand: 'Travel X', flowSteps: JSON.stringify([
+                                { sender: 'bot', text: 'Hi! Planning your next getaway with {brand}?' },
+                                { sender: 'user', text: 'Yes, looking for a beach resort.' },
+                                { sender: 'bot', text: 'Great choice! Checkout our top 3 Maldives packages 🏝️' },
+                                { sender: 'user', text: 'Can I see the itinerary for the first one?' },
+                                { sender: 'bot', text: 'Sure! Here is the detailed 5-day itinerary...' }
+                            ])
+                        },
+                        {
+                            industry: 'ecommerce', brand: 'Shop X', flowSteps: JSON.stringify([
+                                { sender: 'bot', text: 'Hey there! Your cart at {brand} is waiting for you.' },
+                                { sender: 'user', text: 'I forgot to apply the discount code.' },
+                                { sender: 'bot', text: 'No worries! Use code SAVE20 for 20% off. Checkout now?' },
+                                { sender: 'user', text: 'Yes, applied it. Processing payment now.' },
+                                { sender: 'bot', text: 'Awesome! We\'ve received your order. Tracking link sent! 🚀' }
+                            ])
+                        },
+                        {
+                            industry: 'realestate', brand: 'Estates X', flowSteps: JSON.stringify([
+                                { sender: 'bot', text: 'Welcome to {brand} Real Estate! Looking to buy or rent?' },
+                                { sender: 'user', text: 'Buy a 2 BHK apartment.' },
+                                { sender: 'bot', text: 'Got it. Here are 3 premium 2 BHKs in your preferred location.' },
+                                { sender: 'user', text: 'The second one looks good. Can I schedule a visit?' },
+                                { sender: 'bot', text: 'Absolutely! I scheduled a visit for tomorrow at 10 AM. See you!' }
+                            ])
+                        },
+                        {
+                            industry: 'education', brand: 'Edu X', flowSteps: JSON.stringify([
+                                { sender: 'bot', text: 'Hello from {brand}! Interested in our new courses?' },
+                                { sender: 'user', text: 'Yes, details about the Data Science bootcamp.' },
+                                { sender: 'bot', text: 'It\'s a 12-week intensive course. Next batch starts next week.' },
+                                { sender: 'user', text: 'What is the fee structure?' },
+                                { sender: 'bot', text: 'The fee is $999. You can pay in 3 installments too. Register now?' }
+                            ])
+                        },
+                        {
+                            industry: 'healthcare', brand: 'Health X', flowSteps: JSON.stringify([
+                                { sender: 'bot', text: 'Hi! How can {brand} assist you with your health today?' },
+                                { sender: 'user', text: 'I need to book a consultation with Dr. Smith.' },
+                                { sender: 'bot', text: 'Dr. Smith is available tomorrow at 4 PM. Should I book?' },
+                                { sender: 'user', text: 'Yes, please.' },
+                                { sender: 'bot', text: 'Consultation booked successfully. Your token number is 42.' }
+                            ])
+                        }
+                    ]
+                });
+                log('✅ Industry Chatbots created');
+            }
+
+            // 9. Force seed pricing plans if 0
+            if (counts.pricingPlans === 0) {
+                log('💳 Force seeding Pricing Plans...');
+                await this.prisma.pricingPlan.createMany({
+                    data: [
+                        { name: "Starter", description: "Perfect for small businesses getting started with WhatsApp automation.", price: "49", billingCycle: "monthly", features: JSON.stringify(["1,000 Free Tier Conversations", "Basic Chatbot Builder", "Shared Inbox for 3 Agents", "Standard Analytics", "Email Support"]), recommended: false },
+                        { name: "Growth", description: "Our most popular plan for scaling businesses that need advanced automation.", price: "99", billingCycle: "monthly", features: JSON.stringify(["5,000 Free Tier Conversations", "Advanced Chatbot Builder", "Shared Inbox for 10 Agents", "Advanced Analytics & Flow Builder", "Priority Support 24/7", "Basic API Access"]), recommended: true },
+                        { name: "Enterprise", description: "Custom solutions for large organizations with complex communication needs.", price: "299", billingCycle: "monthly", features: JSON.stringify(["Unlimited Conversations", "Custom Chatbot Development", "Unlimited Agents", "Custom Reporting", "Dedicated Account Manager", "Full API Access & Webhooks", "Custom System Integrations"]), recommended: false },
+                        { name: "Starter", description: "Perfect for small businesses getting started with WhatsApp automation.", price: "39", billingCycle: "yearly", features: JSON.stringify(["1,000 Free Tier Conversations", "Basic Chatbot Builder", "Shared Inbox for 3 Agents", "Standard Analytics", "Email Support"]), recommended: false },
+                        { name: "Growth", description: "Our most popular plan for scaling businesses that need advanced automation.", price: "79", billingCycle: "yearly", features: JSON.stringify(["5,000 Free Tier Conversations", "Advanced Chatbot Builder", "Shared Inbox for 10 Agents", "Advanced Analytics & Flow Builder", "Priority Support 24/7", "Basic API Access"]), recommended: true },
+                        { name: "Enterprise", description: "Custom solutions for large organizations with complex communication needs.", price: "249", billingCycle: "yearly", features: JSON.stringify(["Unlimited Conversations", "Custom Chatbot Development", "Unlimited Agents", "Custom Reporting", "Dedicated Account Manager", "Full API Access & Webhooks", "Custom System Integrations"]), recommended: false }
+                    ]
+                });
+                log('✅ Pricing Plans created');
+            }
+
             log('🎉 Manual seeding complete!');
             return { success: true, logs, currentCounts: counts };
 
