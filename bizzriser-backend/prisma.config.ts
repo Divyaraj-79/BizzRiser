@@ -3,12 +3,20 @@
 import "dotenv/config";
 import { defineConfig } from "prisma/config";
 
+const databaseUrl = process.env["DATABASE_URL"];
+const isRender = process.env.RENDER === 'true' || !!process.env.RENDER;
+
+console.log(`[Prisma Config] RENDER=${isRender}, DATABASE_URL schema=${databaseUrl?.split(':')[0]}...`);
+
+// On Render, if we see a SQLite URL, it's likely a mistake from a local .env or misconfiguration
+const finalUrl = isRender && databaseUrl?.startsWith('file:') ? undefined : databaseUrl;
+
 export default defineConfig({
   schema: "prisma/schema.prisma",
   migrations: {
     path: "prisma/migrations",
   },
   datasource: {
-    url: process.env["DATABASE_URL"],
+    url: finalUrl,
   },
 });

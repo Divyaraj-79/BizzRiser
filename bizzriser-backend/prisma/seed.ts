@@ -360,6 +360,26 @@ async function main() {
         });
         console.log('✅ Case Studies seeded');
 
+        // ─── Admin User ────────────────────────────────────────────────────────────
+        const adminEmail = 'admin@bizzriser.com';
+        const existingAdmin = await prisma.adminUser.findUnique({ where: { email: adminEmail } });
+        if (!existingAdmin) {
+            /* eslint-disable @typescript-eslint/no-var-requires */
+            const bcrypt = require('bcrypt');
+            const hashedPassword = await bcrypt.hash('admin123', 10);
+            await prisma.adminUser.create({
+                data: {
+                    email: adminEmail,
+                    password: hashedPassword,
+                    name: 'Super Admin',
+                    role: 'ADMIN'
+                }
+            });
+            console.log('✅ Admin user created: admin@bizzriser.com / admin123');
+        } else {
+            console.log('ℹ️  Admin user already exists');
+        }
+
         console.log('🎉 Seeding complete!');
     } finally {
         await prisma.$disconnect();
