@@ -4,7 +4,7 @@ import { PrismaClient } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 
 async function getPrisma() {
-    const databaseUrl = process.env.DATABASE_URL || '';
+    const databaseUrl = process.env.PRISMA_URL || process.env.DATABASE_URL || '';
     const isSqlite = databaseUrl.startsWith('file:') || databaseUrl.includes('.db');
 
     if (isSqlite) {
