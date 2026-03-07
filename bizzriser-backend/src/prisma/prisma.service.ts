@@ -18,9 +18,13 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
             const adapter = new PrismaBetterSqlite3({ url });
             super({ adapter, log: ['info'] });
         } else {
-            console.log('🏦 Initializing Prisma with standard provider (PostgreSQL/MySQL)');
-            // Standard Prisma initialization automatically picks up DATABASE_URL from the environment
-            super();
+            console.log('🏦 Initializing Prisma with PostgreSQL adapter');
+            /* eslint-disable @typescript-eslint/no-var-requires */
+            const { Pool } = require('pg');
+            const { PrismaPg } = require('@prisma/adapter-pg');
+            const pool = new Pool({ connectionString: databaseUrl });
+            const adapter = new PrismaPg(pool);
+            super({ adapter, log: ['info'] });
         }
     }
 

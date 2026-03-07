@@ -13,7 +13,12 @@ async function getPrisma() {
         return new PrismaClient({ adapter } as any);
     }
 
-    return new PrismaClient();
+    /* eslint-disable @typescript-eslint/no-var-requires */
+    const { Pool } = require('pg');
+    const { PrismaPg } = require('@prisma/adapter-pg');
+    const pool = new Pool({ connectionString: databaseUrl });
+    const adapter = new PrismaPg(pool);
+    return new PrismaClient({ adapter } as any);
 }
 
 async function main() {
