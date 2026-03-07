@@ -19,7 +19,8 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
             super({ adapter, log: ['info'] });
         } else {
             console.log('🏦 Initializing Prisma with standard provider (PostgreSQL/MySQL)');
-            super(databaseUrl ? { datasourceUrl: databaseUrl } as any : {});
+            // Standard Prisma initialization automatically picks up DATABASE_URL from the environment
+            super();
         }
     }
 
