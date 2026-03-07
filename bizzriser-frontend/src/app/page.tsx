@@ -377,14 +377,14 @@ export default function Home() {
             <motion.div
               animate={{ y: [0, -10, 0] }}
               transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute -right-6 md:-right-12 top-1/4 glass bg-background p-4 rounded-2xl shadow-xl flex items-center gap-3 border border-border z-20"
+              className="absolute -right-2 sm:-right-6 md:-right-12 top-1/4 glass bg-background p-2.5 md:p-4 rounded-xl md:rounded-2xl shadow-xl flex items-center gap-2 md:gap-3 border border-border z-20"
             >
-              <div className="w-10 h-10 rounded-full bg-[#25D366] flex items-center justify-center">
-                <MessageSquare className="w-5 h-5 text-white" />
+              <div className="w-8 h-8 md:w-10 md:h-10 shrink-0 rounded-full bg-[#25D366] flex items-center justify-center">
+                <MessageSquare className="w-4 h-4 md:w-5 md:h-5 text-white" />
               </div>
               <div className="flex flex-col text-left">
-                <span className="text-sm font-semibold text-foreground">Payment Received</span>
-                <span className="text-xs text-muted-foreground">Automated message sent</span>
+                <span className="text-xs md:text-sm font-semibold text-foreground">Payment Received</span>
+                <span className="text-[10px] md:text-xs text-muted-foreground whitespace-nowrap">Automated message sent</span>
               </div>
             </motion.div>
           </motion.div>
