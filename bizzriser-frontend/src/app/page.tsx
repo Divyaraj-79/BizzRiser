@@ -352,11 +352,25 @@ export default function Home() {
             transition={{ duration: 1, delay: 0.3 }}
             className="mt-20 relative max-w-5xl mx-auto"
           >
-            <div className="aspect-[21/9] rounded-2xl glass-dark border border-white/10 overflow-hidden shadow-2xl relative">
-              <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent z-10" />
-              <div className="w-full h-full bg-black/20 flex items-center justify-center text-muted-foreground">
-                [Dashboard Interface Mockup]
-              </div>
+            <div className="rounded-2xl border border-border overflow-hidden shadow-2xl relative">
+              {/* Light Mode Laptop */}
+              <Image
+                src="/laptopatday.jpeg"
+                alt="BizzRiser Dashboard on Laptop (Day)"
+                width={1200}
+                height={600}
+                className="w-full h-auto object-cover dark:hidden"
+                priority
+              />
+              {/* Dark Mode Laptop */}
+              <Image
+                src="/laptopatnight.jpeg"
+                alt="BizzRiser Dashboard on Laptop (Night)"
+                width={1200}
+                height={600}
+                className="w-full h-auto object-cover hidden dark:block"
+                priority
+              />
             </div>
 
             {/* Floating Chat Bubble */}
