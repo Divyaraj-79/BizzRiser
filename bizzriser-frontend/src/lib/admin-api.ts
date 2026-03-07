@@ -1,6 +1,7 @@
-export const ADMIN_API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
+export const ADMIN_API_BASE = (process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001").replace(/\/$/, "");
 
 export async function adminFetch(endpoint: string, options: RequestInit = {}) {
+    const cleanEndpoint = endpoint.startsWith("/") ? endpoint : `/${endpoint}`;
     const token = typeof window !== "undefined" ? localStorage.getItem("admin_token") : null;
 
     const headers = {
@@ -9,7 +10,7 @@ export async function adminFetch(endpoint: string, options: RequestInit = {}) {
         ...options.headers,
     };
 
-    const response = await fetch(`${ADMIN_API_BASE}${endpoint}`, {
+    const response = await fetch(`${ADMIN_API_BASE}${cleanEndpoint}`, {
         ...options,
         headers,
     });

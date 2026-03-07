@@ -11,6 +11,10 @@ async function bootstrap() {
     credentials: true,
   });
 
+  // Global exception filter for better logging
+  const { AllExceptionsFilter } = require('./common/filters/http-exception.filter');
+  app.useGlobalFilters(new AllExceptionsFilter());
+
   const config = new DocumentBuilder()
     .setTitle('BizzRiser API')
     .setDescription('The backend API for the BizzRiser SaaS Platform')

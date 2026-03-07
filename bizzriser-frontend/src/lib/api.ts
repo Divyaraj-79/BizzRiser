@@ -1,7 +1,9 @@
-export const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+export const API_URL = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001').replace(/\/$/, '');
 
 export async function fetchApi(endpoint: string, options: RequestInit = {}) {
-    const url = `${API_URL}${endpoint}`;
+    // Ensure endpoint starts with /
+    const cleanEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+    const url = `${API_URL}${cleanEndpoint}`;
 
     // Provide default headers but allow overrides
     const headers = new Headers(options.headers || {});
