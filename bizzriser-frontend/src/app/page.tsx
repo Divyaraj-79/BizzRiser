@@ -570,14 +570,14 @@ export default function Home() {
                           )}
 
                           <div className="leading-[1.4] break-words pr-12 pb-2 mt-0.5">
-                            {msg.text.replace('{brand}', activeDemo.brand)}
+                            {(msg?.text || "").replace('{brand}', activeDemo?.brand || "BizzRiser")}
                           </div>
 
                           <div className="absolute bottom-1 right-1.5 flex items-center gap-1">
                             <span className="text-[10px] text-[#667781] dark:text-[#8696a0] font-normal leading-none mb-0.5">
                               11:34 pm
                             </span>
-                            {msg.sender === 'user' && (
+                            {msg?.sender === 'user' && (
                               <div className="flex -space-x-1.5 leading-none">
                                 <svg className="w-[15.5px] h-[10.5px] text-[#53bdeb]" viewBox="0 0 16 11" fill="none" xmlns="http://www.w3.org/2000/svg">
                                   <path d="M11.4582 1.25L4.85408 7.85417L2.04158 5.04167L1.10408 5.97917L4.85408 9.72917L12.3957 2.1875L11.4582 1.25Z" fill="currentColor" />
