@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import 'dotenv/config';
-import { PrismaClient } from '../src/generated/prisma';
+import { PrismaClient } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 
 async function getPrisma() {
