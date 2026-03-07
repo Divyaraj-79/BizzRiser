@@ -3,9 +3,9 @@
 import { useState, useEffect } from "react";
 import { fetchApi } from "@/lib/api";
 
-interface PricingPlan { id: string; name: string; price: string; description: string; features: string[]; recommended: boolean; billingCycle: string; }
+interface PricingPlan { id: string; name: string; price: string; description: string; features: string[]; recommended: boolean; billingCycle: string; order: number; }
 
-const EMPTY = { name: "", price: "", description: "", features: "", recommended: false, billingCycle: "monthly" };
+const EMPTY = { name: "", price: "", description: "", features: "", recommended: false, billingCycle: "monthly", order: 0 };
 
 export default function PricingPlansAdmin() {
     const [items, setItems] = useState<PricingPlan[]>([]);
@@ -26,7 +26,7 @@ export default function PricingPlansAdmin() {
     useEffect(() => { load(); }, []);
 
     const open = (item?: PricingPlan) => {
-        if (item) { setEditing(item); setForm({ name: item.name, price: item.price, description: item.description, features: item.features.join("\n"), recommended: item.recommended, billingCycle: item.billingCycle || "monthly" }); }
+        if (item) { setEditing(item); setForm({ name: item.name, price: item.price, description: item.description, features: item.features.join("\n"), recommended: item.recommended, billingCycle: item.billingCycle || "monthly", order: item.order || 0 }); }
         else { setEditing(null); setForm(EMPTY); }
         setShowForm(true);
     };
@@ -39,7 +39,8 @@ export default function PricingPlansAdmin() {
             description: form.description,
             features: form.features.split("\n").map(f => f.trim()).filter(Boolean),
             recommended: form.recommended,
-            billingCycle: form.billingCycle
+            billingCycle: form.billingCycle,
+            order: Number(form.order) || 0
         };
         try {
             if (editing) await fetchApi(`/pricing-plans/${editing.id}`, { method: "PATCH", body: JSON.stringify(body), headers });
@@ -95,6 +96,10 @@ export default function PricingPlansAdmin() {
                         <input className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-green-500" value={form.description} onChange={e => setForm(p => ({ ...p, description: e.target.value }))} />
                     </div>
                     <div>
+                        <label className="text-xs text-white/50 mb-1 block">Display Order (e.g. 0, 1, 2)</label>
+                        <input type="number" className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-green-500" value={form.order} onChange={e => setForm(p => ({ ...p, order: parseInt(e.target.value) || 0 }))} />
+                    </div>
+                    <div>
                         <label className="text-xs text-white/50 mb-1 block">Features (one per line)</label>
                         <textarea rows={5} className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-green-500 resize-none font-mono" value={form.features} onChange={e => setForm(p => ({ ...p, features: e.target.value }))} placeholder={"1,000 messages/month\n1 WhatsApp number\nBasic support"} />
                     </div>
@@ -118,6 +123,9 @@ export default function PricingPlansAdmin() {
                                     {plan.recommended && <span className="text-[10px] bg-green-500 text-black font-bold px-2 py-0.5 rounded-full">Recommended</span>}
                                     <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${plan.billingCycle === "yearly" ? "bg-blue-500 text-white" : "bg-white/10 text-white/50 text-xs"}`}>
                                         {plan.billingCycle === "yearly" ? "Yearly" : "Monthly"}
+                                    </span>
+                                    <span className="text-[10px] bg-white/10 text-white font-bold px-2 py-0.5 rounded-full border border-white/20">
+                                        Order: {plan.order}
                                     </span>
                                 </div>
                                 <div className="flex items-center justify-between">

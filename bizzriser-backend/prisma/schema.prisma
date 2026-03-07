@@ -151,6 +151,7 @@ model PricingPlan {
   features     Json     // JSON array of feature strings
   recommended  Boolean  @default(false)
   billingCycle String   @default("monthly") // 'monthly' or 'yearly'
+  order        Int      @default(0)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 }

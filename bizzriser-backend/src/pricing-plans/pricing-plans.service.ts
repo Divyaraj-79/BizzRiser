@@ -23,7 +23,7 @@ export class PricingPlansService {
 
     async findAll() {
         const results = await this.prisma.pricingPlan.findMany({
-            orderBy: { createdAt: 'asc' },
+            orderBy: { order: 'asc' },
         });
         return results.map(parseFeatures);
     }
