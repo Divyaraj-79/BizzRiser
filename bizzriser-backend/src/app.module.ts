@@ -17,9 +17,11 @@ import { IndustryChatbotsModule } from './industry-chatbots/industry-chatbots.mo
 import { TestimonialsModule } from './testimonials/testimonials.module';
 import { SolutionIndustriesModule } from './solution-industries/solution-industries.module';
 import { PricingPlansModule } from './pricing-plans/pricing-plans.module';
+import { DebugModule } from './debug/debug.module';
 
 @Module({
   imports: [
+    DebugModule,
     PrismaModule,
     UploadModule,
     BlogsModule,
