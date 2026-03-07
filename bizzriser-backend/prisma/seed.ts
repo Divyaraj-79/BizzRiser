@@ -3,7 +3,8 @@ import { PrismaClient } from '@prisma/client';
 
 async function getPrisma() {
     const databaseUrl = process.env.PRISMA_URL || process.env.DATABASE_URL || '';
-    const isSqlite = databaseUrl.startsWith('file:') || databaseUrl.includes('.db');
+    const isRender = process.env.RENDER === 'true' || !!process.env.RENDER;
+    const isSqlite = !isRender && (databaseUrl.startsWith('file:') || databaseUrl.includes('.db'));
 
     if (isSqlite) {
         /* eslint-disable @typescript-eslint/no-var-requires */
