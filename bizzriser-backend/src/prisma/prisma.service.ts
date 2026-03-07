@@ -6,9 +6,11 @@ import { PrismaClient } from '@prisma/client';
 export class PrismaService extends PrismaClient implements OnModuleInit, OnModuleDestroy {
     constructor() {
         const databaseUrl = process.env.DATABASE_URL || '';
-        const isSqlite = databaseUrl.startsWith('file:') || databaseUrl.includes('.db');
+        const isRender = process.env.RENDER === 'true' || !!process.env.RENDER;
+        const isSqlite = !isRender && (databaseUrl.startsWith('file:') || databaseUrl.includes('.db'));
 
         if (isSqlite) {
+            console.log('📦 Initializing Prisma with SQLite adapter');
             // Lazy load SQLite adapter to avoid issues in environments without better-sqlite3
             /* eslint-disable @typescript-eslint/no-var-requires */
             const { PrismaBetterSqlite3 } = require('@prisma/adapter-better-sqlite3');
@@ -16,7 +18,7 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
             const adapter = new PrismaBetterSqlite3({ url });
             super({ adapter, log: ['info'] });
         } else {
-            // Standard PostgreSQL/MySQL/etc. configuration
+            console.log('🏦 Initializing Prisma with standard provider (PostgreSQL/MySQL)');
             super(databaseUrl ? { datasourceUrl: databaseUrl } as any : {});
         }
     }
