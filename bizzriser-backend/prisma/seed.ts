@@ -22,11 +22,13 @@ async function getPrisma() {
 }
 
 async function main() {
+    console.log('🏁 Starting unified seeding process...');
     const prisma = await getPrisma();
     try {
-        console.log('🌱 Seeding database with dummy data...');
+        console.log('🌱 Seeding database...');
 
         // ─── Home Stats ────────────────────────────────────────────────────────────
+        console.log('📊 Seeding Home Stats...');
         const statsCount = await prisma.homeStat.count();
         if (statsCount === 0) {
             await prisma.homeStat.createMany({
@@ -37,12 +39,13 @@ async function main() {
                     { value: '24/7', label: 'Automated Support Coverage', order: 3 },
                 ],
             });
-            console.log('✅ Home Stats seeded');
+            console.log('✅ Home Stats seeded successfully');
         } else {
             console.log('ℹ️  Home Stats already exist, skipping');
         }
 
         // ─── Testimonials ──────────────────────────────────────────────────────────
+        console.log('💬 Seeding Testimonials...');
         const testimonialsCount = await prisma.testimonial.count();
         if (testimonialsCount === 0) {
             await prisma.testimonial.createMany({
@@ -54,12 +57,13 @@ async function main() {
                     { author: 'Diana West', role: 'CEO, BeautyBox', content: 'Our broadcast campaigns now get 4x higher open rates than email. WhatsApp automation is the future.', rating: 5, published: true },
                 ],
             });
-            console.log('✅ Testimonials seeded');
+            console.log('✅ Testimonials seeded successfully');
         } else {
             console.log('ℹ️  Testimonials already exist, skipping');
         }
 
         // ─── Solution Industries ───────────────────────────────────────────────────
+        console.log('🏭 Seeding Solution Industries...');
         const industriesCount = await prisma.solutionIndustry.count();
         if (industriesCount === 0) {
             await prisma.solutionIndustry.createMany({
@@ -72,12 +76,13 @@ async function main() {
                     { title: 'Finance', description: 'Send account alerts, loan reminders, and provide instant support for banking queries.', icon: 'TrendingUp', order: 5 },
                 ],
             });
-            console.log('✅ Solution Industries seeded');
+            console.log('✅ Solution Industries seeded successfully');
         } else {
             console.log('ℹ️  Solution Industries already exist, skipping');
         }
 
         // ─── Pricing Plans ─────────────────────────────────────────────────────────
+        console.log('💰 Seeding Pricing Plans...');
         await prisma.pricingPlan.deleteMany();
         await prisma.pricingPlan.createMany({
             data: [
@@ -133,10 +138,11 @@ async function main() {
                 },
             ],
         });
-        console.log('✅ Pricing Plans seeded');
+        console.log('✅ Pricing Plans seeded successfully');
 
 
         // ─── Industry Chatbots ─────────────────────────────────────────────────────
+        console.log('🤖 Seeding Industry Chatbots...');
         const chatbotsCount = await prisma.industryChatbot.count();
         if (chatbotsCount === 0) {
             await prisma.industryChatbot.createMany({
@@ -150,6 +156,8 @@ async function main() {
                             { role: 'bot', message: 'Amazing choice! 🌴 We have packages from ₹45,000 per person. How many travellers?' },
                             { role: 'user', message: '2 adults, 1 child.' },
                             { role: 'bot', message: 'Perfect! I have a 7-night family package for ₹1,12,000 including flights. Want to see the itinerary?' },
+                            { role: 'user', message: 'Yes please!' },
+                            { role: 'bot', message: '✈️ Sending your personalised Bali itinerary now. Should I hold this package for you for 24 hours?' },
                             { role: 'user', message: 'Yes please!' },
                             { role: 'bot', message: '✈️ Sending your personalised Bali itinerary now. Should I hold this package for you for 24 hours?' },
                         ]),
@@ -189,12 +197,13 @@ async function main() {
                     },
                 ],
             });
-            console.log('✅ Industry Chatbots seeded');
+            console.log('✅ Industry Chatbots seeded successfully');
         } else {
             console.log('ℹ️  Industry Chatbots already exist, skipping');
         }
 
         // ─── Blogs ─────────────────────────────────────────────────────────────
+        console.log('📝 Seeding Blogs...');
         const blogsCount = await prisma.blog.count();
         if (blogsCount === 0) {
             await prisma.blog.createMany({
@@ -252,12 +261,13 @@ async function main() {
                     },
                 ],
             });
-            console.log('✅ Blogs seeded');
+            console.log('✅ Blogs seeded successfully');
         } else {
             console.log('ℹ️  Blogs already exist, skipping');
         }
 
         // ─── Newsletter Subscribers ───────────────────────────────────────────
+        console.log('📧 Seeding Newsletter Subscribers...');
         await prisma.newsletterSubscriber.deleteMany();
         await prisma.newsletterSubscriber.createMany({
             data: [
@@ -266,9 +276,10 @@ async function main() {
                 { email: 'hello@bizzriser.com', status: 'SUBSCRIBED' },
             ],
         });
-        console.log('✅ Newsletter Subscribers seeded');
+        console.log('✅ Newsletter Subscribers seeded successfully');
 
         // ─── Case Studies ──────────────────────────────────────────────────────────
+        console.log('📚 Seeding Case Studies...');
         await prisma.caseStudy.deleteMany();
         await prisma.caseStudy.createMany({
             data: [
@@ -358,9 +369,10 @@ async function main() {
                 }
             ],
         });
-        console.log('✅ Case Studies seeded');
+        console.log('✅ Case Studies seeded successfully');
 
         // ─── Admin User ────────────────────────────────────────────────────────────
+        console.log('👤 Seeding Admin User...');
         const adminEmail = 'admin@bizzriser.com';
         const existingAdmin = await prisma.adminUser.findUnique({ where: { email: adminEmail } });
         if (!existingAdmin) {
@@ -380,7 +392,7 @@ async function main() {
             console.log('ℹ️  Admin user already exists');
         }
 
-        console.log('🎉 Seeding complete!');
+        console.log('🎉 Seeding process complete!');
     } finally {
         await prisma.$disconnect();
     }
