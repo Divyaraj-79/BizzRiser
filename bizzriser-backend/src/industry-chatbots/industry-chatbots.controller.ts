@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { IndustryChatbotsService } from './industry-chatbots.service';
-import { Prisma } from '@prisma/client';
+import { Prisma } from '../generated/prisma';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller('industry-chatbots')

@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { Prisma } from '@prisma/client';
+import { Prisma } from '../generated/prisma';
 
 function parseFlowSteps(chatbot: any) {
     if (!chatbot) return chatbot;

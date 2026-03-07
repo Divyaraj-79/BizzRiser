@@ -1,20 +1,24 @@
 import 'dotenv/config';
-import { Injectable, OnModuleInit } from '@nestjs/common';
-import { PrismaClient } from '@prisma/client';
-import { PrismaBetterSqlite3 } from '@prisma/adapter-better-sqlite3';
+import { Injectable, OnModuleInit, OnModuleDestroy } from '@nestjs/common';
+import { PrismaClient } from '../generated/prisma';
 
 @Injectable()
-export class PrismaService extends PrismaClient implements OnModuleInit {
+export class PrismaService extends PrismaClient implements OnModuleInit, OnModuleDestroy {
     constructor() {
-        const url = process.env.DATABASE_URL?.replace('file:', '') || './dev.db';
-        const adapter = new PrismaBetterSqlite3({
-            url,
-        });
+        const databaseUrl = process.env.DATABASE_URL || '';
+        const isSqlite = databaseUrl.startsWith('file:') || databaseUrl.includes('.db');
 
-        super({
-            adapter,
-            log: ['info'],
-        });
+        if (isSqlite) {
+            // Lazy load SQLite adapter to avoid issues in environments without better-sqlite3
+            /* eslint-disable @typescript-eslint/no-var-requires */
+            const { PrismaBetterSqlite3 } = require('@prisma/adapter-better-sqlite3');
+            const url = databaseUrl.replace('file:', '') || './dev.db';
+            const adapter = new PrismaBetterSqlite3({ url });
+            super({ adapter, log: ['info'] });
+        } else {
+            // Standard PostgreSQL/MySQL/etc. configuration
+            super(databaseUrl ? { datasourceUrl: databaseUrl } as any : {});
+        }
     }
 
     async onModuleInit() {
