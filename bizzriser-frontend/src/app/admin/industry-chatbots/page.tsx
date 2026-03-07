@@ -12,6 +12,7 @@ export default function IndustryChatbotsAdmin() {
     const [items, setItems] = useState<Chatbot[]>([]);
     const [editing, setEditing] = useState<Chatbot | null>(null);
     const [showForm, setShowForm] = useState(false);
+    const [apiIndustries, setApiIndustries] = useState<{ id: string, title: string }[]>([]);
     const [industry, setIndustry] = useState("");
     const [brand, setBrand] = useState("");
     const [steps, setSteps] = useState<ChatStep[]>([{ role: "bot", message: "" }]);
@@ -23,8 +24,10 @@ export default function IndustryChatbotsAdmin() {
     const load = async () => {
         setLoading(true);
         try {
+            const indData = await fetchApi("/solution-industries");
+            setApiIndustries(indData ?? []);
+
             const data = await fetchApi("/industry-chatbots");
-            // SQLite returns JSON fields as strings — parse them just in case
             setItems(data.map((cb: any) => ({
                 ...cb,
                 flowSteps: typeof cb.flowSteps === "string" ? JSON.parse(cb.flowSteps) : (cb.flowSteps ?? []),
@@ -37,7 +40,7 @@ export default function IndustryChatbotsAdmin() {
 
     const open = (item?: Chatbot) => {
         if (item) { setEditing(item); setIndustry(item.industry); setBrand(item.brand); setSteps(item.flowSteps); }
-        else { setEditing(null); setIndustry(""); setBrand(""); setSteps([{ role: "bot", message: "" }]); }
+        else { setEditing(null); setIndustry(apiIndustries.length > 0 ? apiIndustries[0].id : ""); setBrand(""); setSteps([{ role: "bot", message: "" }]); }
         setShowForm(true);
     };
 
@@ -48,7 +51,7 @@ export default function IndustryChatbotsAdmin() {
 
     const save = async () => {
         setSaving(true);
-        const body = { industry: industry.toLowerCase().replace(/\s+/g, "-"), brand, flowSteps: steps };
+        const body = { industry, brand, flowSteps: steps };
         try {
             if (editing) await fetchApi(`/industry-chatbots/${editing.id}`, { method: "PATCH", body: JSON.stringify(body), headers });
             else await fetchApi("/industry-chatbots", { method: "POST", body: JSON.stringify(body), headers });
@@ -77,8 +80,13 @@ export default function IndustryChatbotsAdmin() {
                     <h3 className="font-semibold text-white text-sm">{editing ? "Edit Flow" : "New Flow"}</h3>
                     <div className="grid grid-cols-2 gap-3">
                         <div>
-                            <label className="text-xs text-white/50 mb-1 block">Industry (slug, e.g. "travel")</label>
-                            <input className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-green-500" value={industry} onChange={e => setIndustry(e.target.value)} placeholder="travel" />
+                            <label className="text-xs text-white/50 mb-1 block">Solution Industry (Links to Dropdown)</label>
+                            <select className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-green-500" value={industry} onChange={e => setIndustry(e.target.value)}>
+                                <option value="" disabled>Select an Industry...</option>
+                                {apiIndustries.map(ind => (
+                                    <option key={ind.id} value={ind.id}>{ind.title}</option>
+                                ))}
+                            </select>
                         </div>
                         <div>
                             <label className="text-xs text-white/50 mb-1 block">Default Brand Name</label>
@@ -117,7 +125,7 @@ export default function IndustryChatbotsAdmin() {
                             <div key={cb.id} className="bg-white/5 border border-white/10 rounded-xl p-5 space-y-3">
                                 <div className="flex items-center justify-between">
                                     <div>
-                                        <h3 className="font-bold text-white capitalize">{cb.industry}</h3>
+                                        <h3 className="font-bold text-white capitalize">{apiIndustries.find(ind => ind.id === cb.industry)?.title || cb.industry}</h3>
                                         <p className="text-xs text-white/40">Default brand: {cb.brand}</p>
                                     </div>
                                     <div className="flex gap-3">

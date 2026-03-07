@@ -127,11 +127,11 @@ export class DebugController {
                 log('🏢 Force seeding Solution Industries...');
                 await this.prisma.solutionIndustry.createMany({
                     data: [
-                        { id: "travel", title: 'Travel & Hospitality', description: '', icon: 'Plane', order: 1 },
-                        { id: "ecommerce", title: 'E-Commerce', description: '', icon: 'TrendingUp', order: 2 },
-                        { id: "realestate", title: 'Real Estate', description: '', icon: 'Users', order: 3 },
-                        { id: "education", title: 'Education', description: '', icon: 'Bot', order: 4 },
-                        { id: "healthcare", title: 'Healthcare', description: '', icon: 'Shield', order: 5 },
+                        { id: "11111111-1111-1111-1111-111111111111", title: 'Travel & Hospitality', description: '', icon: 'Plane', order: 1 },
+                        { id: "22222222-2222-2222-2222-222222222222", title: 'E-Commerce', description: '', icon: 'TrendingUp', order: 2 },
+                        { id: "33333333-3333-3333-3333-333333333333", title: 'Real Estate', description: '', icon: 'Users', order: 3 },
+                        { id: "44444444-4444-4444-4444-444444444444", title: 'Education', description: '', icon: 'Bot', order: 4 },
+                        { id: "55555555-5555-5555-5555-555555555555", title: 'Healthcare', description: '', icon: 'Shield', order: 5 },
                     ]
                 });
                 log('✅ Solution Industries created');
@@ -143,7 +143,7 @@ export class DebugController {
                 await this.prisma.industryChatbot.createMany({
                     data: [
                         {
-                            industry: 'travel', brand: 'Travel X', flowSteps: JSON.stringify([
+                            industry: '11111111-1111-1111-1111-111111111111', brand: 'Travel X', flowSteps: JSON.stringify([
                                 { sender: 'bot', text: 'Hi! Planning your next getaway with {brand}?' },
                                 { sender: 'user', text: 'Yes, looking for a beach resort.' },
                                 { sender: 'bot', text: 'Great choice! Checkout our top 3 Maldives packages 🏝️' },
@@ -152,7 +152,7 @@ export class DebugController {
                             ])
                         },
                         {
-                            industry: 'ecommerce', brand: 'Shop X', flowSteps: JSON.stringify([
+                            industry: '22222222-2222-2222-2222-222222222222', brand: 'Shop X', flowSteps: JSON.stringify([
                                 { sender: 'bot', text: 'Hey there! Your cart at {brand} is waiting for you.' },
                                 { sender: 'user', text: 'I forgot to apply the discount code.' },
                                 { sender: 'bot', text: 'No worries! Use code SAVE20 for 20% off. Checkout now?' },
@@ -161,7 +161,7 @@ export class DebugController {
                             ])
                         },
                         {
-                            industry: 'realestate', brand: 'Estates X', flowSteps: JSON.stringify([
+                            industry: '33333333-3333-3333-3333-333333333333', brand: 'Estates X', flowSteps: JSON.stringify([
                                 { sender: 'bot', text: 'Welcome to {brand} Real Estate! Looking to buy or rent?' },
                                 { sender: 'user', text: 'Buy a 2 BHK apartment.' },
                                 { sender: 'bot', text: 'Got it. Here are 3 premium 2 BHKs in your preferred location.' },
@@ -170,7 +170,7 @@ export class DebugController {
                             ])
                         },
                         {
-                            industry: 'education', brand: 'Edu X', flowSteps: JSON.stringify([
+                            industry: '44444444-4444-4444-4444-444444444444', brand: 'Edu X', flowSteps: JSON.stringify([
                                 { sender: 'bot', text: 'Hello from {brand}! Interested in our new courses?' },
                                 { sender: 'user', text: 'Yes, details about the Data Science bootcamp.' },
                                 { sender: 'bot', text: 'It\'s a 12-week intensive course. Next batch starts next week.' },
@@ -179,7 +179,7 @@ export class DebugController {
                             ])
                         },
                         {
-                            industry: 'healthcare', brand: 'Health X', flowSteps: JSON.stringify([
+                            industry: '55555555-5555-5555-5555-555555555555', brand: 'Health X', flowSteps: JSON.stringify([
                                 { sender: 'bot', text: 'Hi! How can {brand} assist you with your health today?' },
                                 { sender: 'user', text: 'I need to book a consultation with Dr. Smith.' },
                                 { sender: 'bot', text: 'Dr. Smith is available tomorrow at 4 PM. Should I book?' },
