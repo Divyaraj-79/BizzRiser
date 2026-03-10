@@ -6,8 +6,8 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "build": "prisma generate && npx prisma db push --accept-data-loss && nest build && npx prisma db seed",
-    "postinstall": "prisma generate",
+    "build": "node prisma/fix-provider.js && prisma generate && npx prisma db push --accept-data-loss && nest build && npx prisma db seed",
+    "postinstall": "node prisma/fix-provider.js && prisma generate",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "node dist/src/main",
     "start:dev": "nest start --watch",
