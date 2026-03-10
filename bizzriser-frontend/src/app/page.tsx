@@ -13,6 +13,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { fetchApi } from "@/lib/api";
+import { CustomDropdown } from "@/components/ui/custom-dropdown";
 
 // Dummy data for sections
 const partners = [
@@ -528,23 +529,17 @@ export default function Home() {
 
           <div className="w-full max-w-4xl mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-              <div>
-                <label htmlFor="industry" className="block text-sm font-medium text-foreground mb-2">Select Your Industry</label>
-                <select
-                  id="industry"
-                  className="w-full p-3 border border-border rounded-lg bg-background"
+              <div className="flex flex-col gap-4">
+                <CustomDropdown
+                  label="Select Your Industry"
+                  options={apiIndustries.map(ind => ({ id: ind.id, title: ind.title }))}
                   value={selectedIndustry}
-                  onChange={(e) => {
-                    const id = e.target.value;
+                  onChange={(id) => {
                     setSelectedIndustry(id);
                     const ind = apiIndustries.find(i => i.id === id);
                     if (ind) setBrandName(ind.title);
                   }}
-                >
-                  {apiIndustries.map(ind => (
-                    <option key={ind.id} value={ind.id}>{ind.title}</option>
-                  ))}
-                </select>
+                />
               </div>
               <div>
                 <label htmlFor="brand" className="block text-sm font-medium text-foreground mb-2">Your Brand Name</label>

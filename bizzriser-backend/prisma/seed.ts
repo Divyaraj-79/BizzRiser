@@ -30,57 +30,45 @@ async function main() {
 
         // ─── Home Stats ────────────────────────────────────────────────────────────
         console.log('📊 Seeding Home Stats...');
-        const statsCount = await prisma.homeStat.count();
-        if (statsCount === 0) {
-            await prisma.homeStat.createMany({
-                data: [
-                    { value: '10,000+', label: 'WhatsApp Messages Sent', order: 0 },
-                    { value: '98%', label: 'Customer Satisfaction Rate', order: 1 },
-                    { value: '5x', label: 'Average Lead Conversion Rate', order: 2 },
-                    { value: '24/7', label: 'Automated Support Coverage', order: 3 },
-                ],
-            });
-            console.log('✅ Home Stats seeded successfully');
-        } else {
-            console.log('ℹ️  Home Stats already exist, skipping');
-        }
+        await prisma.homeStat.deleteMany();
+        await prisma.homeStat.createMany({
+            data: [
+                { value: '10,000+', label: 'WhatsApp Messages Sent', order: 0 },
+                { value: '98%', label: 'Customer Satisfaction Rate', order: 1 },
+                { value: '5x', label: 'Average Lead Conversion Rate', order: 2 },
+                { value: '24/7', label: 'Automated Support Coverage', order: 3 },
+            ],
+        });
+        console.log('✅ Home Stats seeded successfully');
 
         // ─── Testimonials ──────────────────────────────────────────────────────────
         console.log('💬 Seeding Testimonials...');
-        const testimonialsCount = await prisma.testimonial.count();
-        if (testimonialsCount === 0) {
-            await prisma.testimonial.createMany({
-                data: [
-                    { author: 'Sarah Jenkins', role: 'CMO, TechGrowth', content: 'BizzRiser completely transformed how we handle customer support. We recovered 30% more abandoned carts within the first week.', rating: 5, published: true },
-                    { author: 'Alex Patel', role: 'Founder, ShopNow', content: 'The WhatsApp automation is incredible. Our response time went from hours to seconds. Customers love how instant we feel now.', rating: 5, published: true },
-                    { author: 'Meera Nair', role: 'Head of CX, WealthWise', content: 'We were skeptical at first but the chatbot handles 80% of our inquiries without any human intervention. Game changer.', rating: 5, published: true },
-                    { author: 'Rohan Shah', role: 'Growth Lead, FinEdge', content: 'BizzRiser has reduced our support team workload by 60%. The ROI in just 2 months is remarkable.', rating: 5, published: true },
-                    { author: 'Diana West', role: 'CEO, BeautyBox', content: 'Our broadcast campaigns now get 4x higher open rates than email. WhatsApp automation is the future.', rating: 5, published: true },
-                ],
-            });
-            console.log('✅ Testimonials seeded successfully');
-        } else {
-            console.log('ℹ️  Testimonials already exist, skipping');
-        }
+        await prisma.testimonial.deleteMany();
+        await prisma.testimonial.createMany({
+            data: [
+                { author: 'Sarah Jenkins', role: 'CMO, TechGrowth', content: 'BizzRiser completely transformed how we handle customer support. We recovered 30% more abandoned carts within the first week.', rating: 5, published: true },
+                { author: 'Alex Patel', role: 'Founder, ShopNow', content: 'The WhatsApp automation is incredible. Our response time went from hours to seconds. Customers love how instant we feel now.', rating: 5, published: true },
+                { author: 'Meera Nair', role: 'Head of CX, WealthWise', content: 'We were skeptical at first but the chatbot handles 80% of our inquiries without any human intervention. Game changer.', rating: 5, published: true },
+                { author: 'Rohan Shah', role: 'Growth Lead, FinEdge', content: 'BizzRiser has reduced our support team workload by 60%. The ROI in just 2 months is remarkable.', rating: 5, published: true },
+                { author: 'Diana West', role: 'CEO, BeautyBox', content: 'Our broadcast campaigns now get 4x higher open rates than email. WhatsApp automation is the future.', rating: 5, published: true },
+            ],
+        });
+        console.log('✅ Testimonials seeded successfully');
 
         // ─── Solution Industries ───────────────────────────────────────────────────
         console.log('🏭 Seeding Solution Industries...');
-        const industriesCount = await prisma.solutionIndustry.count();
-        if (industriesCount === 0) {
-            await prisma.solutionIndustry.createMany({
-                data: [
-                    { title: 'E-Commerce', description: 'Recover abandoned carts, send order updates, and handle returns automatically via WhatsApp.', icon: 'ShoppingCart', order: 0 },
-                    { title: 'Real Estate', description: 'Qualify leads, book property viewings, and nurture prospects with automated WhatsApp flows.', icon: 'Building2', order: 1 },
-                    { title: 'Healthcare', description: 'Send appointment reminders, handle patient FAQs, and follow-up post-consultation automatically.', icon: 'Stethoscope', order: 2 },
-                    { title: 'Education', description: 'Engage students with course updates, answer admissions queries, and send fee reminders.', icon: 'GraduationCap', order: 3 },
-                    { title: 'Travel & Tourism', description: 'Automate booking confirmations, itinerary updates, and 24/7 travel support.', icon: 'Plane', order: 4 },
-                    { title: 'Finance', description: 'Send account alerts, loan reminders, and provide instant support for banking queries.', icon: 'TrendingUp', order: 5 },
-                ],
-            });
-            console.log('✅ Solution Industries seeded successfully');
-        } else {
-            console.log('ℹ️  Solution Industries already exist, skipping');
+        await prisma.solutionIndustry.deleteMany();
+        const industries = [
+            { id: '11111111-1111-1111-1111-111111111111', title: 'Travel & Hospitality', description: 'Automate booking confirmations, itinerary updates, and 24/7 travel support.', icon: 'Plane', order: 0 },
+            { id: '22222222-2222-2222-2222-222222222222', title: 'E-Commerce', description: 'Recover abandoned carts, send order updates, and handle returns automatically via WhatsApp.', icon: 'ShoppingCart', order: 1 },
+            { id: '33333333-3333-3333-3333-333333333333', title: 'Real Estate', description: 'Qualify leads, book property viewings, and nurture prospects with automated WhatsApp flows.', icon: 'Building2', order: 2 },
+            { id: '44444444-4444-4444-4444-444444444444', title: 'Education', description: 'Engage students with course updates, answer admissions queries, and send fee reminders.', icon: 'GraduationCap', order: 3 },
+            { id: '55555555-5555-5555-5555-555555555555', title: 'Healthcare', description: 'Send appointment reminders, handle patient FAQs, and follow-up post-consultation automatically.', icon: 'Stethoscope', order: 4 },
+        ];
+        for (const ind of industries) {
+            await prisma.solutionIndustry.create({ data: ind });
         }
+        console.log('✅ Solution Industries seeded successfully');
 
         // ─── Pricing Plans ─────────────────────────────────────────────────────────
         console.log('💰 Seeding Pricing Plans...');
@@ -144,128 +132,118 @@ async function main() {
 
         // ─── Industry Chatbots ─────────────────────────────────────────────────────
         console.log('🤖 Seeding Industry Chatbots...');
-        const chatbotsCount = await prisma.industryChatbot.count();
-        if (chatbotsCount === 0) {
-            await prisma.industryChatbot.createMany({
-                data: [
-                    {
-                        industry: 'travel',
-                        brand: 'Travel X',
-                        flowSteps: JSON.stringify([
-                            { role: 'bot', message: "Hi! I'm Travel X's AI assistant. Where would you like to travel?" },
-                            { role: 'user', message: 'I want to go to Bali this December.' },
-                            { role: 'bot', message: 'Amazing choice! 🌴 We have packages from ₹45,000 per person. How many travellers?' },
-                            { role: 'user', message: '2 adults, 1 child.' },
-                            { role: 'bot', message: 'Perfect! I have a 7-night family package for ₹1,12,000 including flights. Want to see the itinerary?' },
-                            { role: 'user', message: 'Yes please!' },
-                            { role: 'bot', message: '✈️ Sending your personalised Bali itinerary now. Should I hold this package for you for 24 hours?' },
-                            { role: 'user', message: 'Yes please!' },
-                            { role: 'bot', message: '✈️ Sending your personalised Bali itinerary now. Should I hold this package for you for 24 hours?' },
-                        ]),
-                    },
-                    {
-                        industry: 'ecommerce',
-                        brand: 'ShopEase',
-                        flowSteps: JSON.stringify([
-                            { role: 'bot', message: "Hi! You left something in your cart at ShopEase 🛒 Can I help you complete your order?" },
-                            { role: 'user', message: 'Yes, I wanted to check the delivery time first.' },
-                            { role: 'bot', message: 'Great news! Your order will be delivered within 2-3 business days with free shipping. 🚀' },
-                            { role: 'user', message: 'Ok, is there any discount?' },
-                            { role: 'bot', message: "Since you're a returning customer, I'm applying a 10% discount automatically! Use code WELCOME10. Want to complete your order now? 🎉" },
-                        ]),
-                    },
-                    {
-                        industry: 'realestate',
-                        brand: 'PropFind',
-                        flowSteps: JSON.stringify([
-                            { role: 'bot', message: "Hello! I'm PropFind's assistant. Are you looking to buy, sell, or rent a property?" },
-                            { role: 'user', message: 'Looking to buy a 3BHK in Pune.' },
-                            { role: 'bot', message: 'We have 12 properties matching that. Budget range? (e.g., 50L-80L)' },
-                            { role: 'user', message: 'Around 70 lakhs.' },
-                            { role: 'bot', message: '🏠 Found 4 great options in Kothrud & Baner within your budget. Shall I schedule site visits this weekend?' },
-                        ]),
-                    },
-                    {
-                        industry: 'healthcare',
-                        brand: 'HealthCare Plus',
-                        flowSteps: JSON.stringify([
-                            { role: 'bot', message: "Hi! I'm your HealthCare Plus assistant. How can I help you today?" },
-                            { role: 'user', message: "I'd like to book an appointment with a dermatologist." },
-                            { role: 'bot', message: 'Dr. Sharma is available on Tuesday at 3 PM or Wednesday at 11 AM. Which works for you?' },
-                            { role: 'user', message: 'Tuesday 3 PM please.' },
-                            { role: 'bot', message: "Perfect! ✅ Appointment confirmed with Dr. Sharma on Tuesday at 3 PM. I'll send you a reminder 1 hour before." },
-                        ]),
-                    },
-                ],
-            });
-            console.log('✅ Industry Chatbots seeded successfully');
-        } else {
-            console.log('ℹ️  Industry Chatbots already exist, skipping');
-        }
+        await prisma.industryChatbot.deleteMany();
+        await prisma.industryChatbot.createMany({
+            data: [
+                {
+                    industry: '11111111-1111-1111-1111-111111111111',
+                    brand: 'Travel X',
+                    flowSteps: JSON.stringify([
+                        { sender: 'bot', text: "Hi! I'm Travel X's AI assistant. Where would you like to travel?" },
+                        { sender: 'user', text: 'I want to go to Bali this December.' },
+                        { sender: 'bot', text: 'Amazing choice! 🌴 We have packages from ₹45,000 per person. How many travellers?' },
+                        { sender: 'user', text: '2 adults, 1 child.' },
+                        { sender: 'bot', text: 'Perfect! I have a 7-night family package for ₹1,12,000 including flights. Want to see the itinerary?' },
+                        { sender: 'user', text: 'Yes please!' },
+                        { sender: 'bot', text: '✈️ Sending your personalised Bali itinerary now. Should I hold this package for you for 24 hours?' },
+                    ]),
+                },
+                {
+                    industry: '22222222-2222-2222-2222-222222222222',
+                    brand: 'ShopEase',
+                    flowSteps: JSON.stringify([
+                        { sender: 'bot', text: "Hi! You left something in your cart at ShopEase 🛒 Can I help you complete your order?" },
+                        { sender: 'user', text: 'Yes, I wanted to check the delivery time first.' },
+                        { sender: 'bot', text: 'Great news! Your order will be delivered within 2-3 business days with free shipping. 🚀' },
+                        { sender: 'user', text: 'Ok, is there any discount?' },
+                        { sender: 'bot', text: "Since you're a returning customer, I'm applying a 10% discount automatically! Use code WELCOME10. Want to complete your order now? 🎉" },
+                    ]),
+                },
+                {
+                    industry: '33333333-3333-3333-3333-333333333333',
+                    brand: 'PropFind',
+                    flowSteps: JSON.stringify([
+                        { sender: 'bot', text: "Hello! I'm PropFind's assistant. Are you looking to buy, sell, or rent a property?" },
+                        { sender: 'user', text: 'Looking to buy a 3BHK in Pune.' },
+                        { sender: 'bot', text: 'We have 12 properties matching that. Budget range? (e.g., 50L-80L)' },
+                        { sender: 'user', text: 'Around 70 lakhs.' },
+                        { sender: 'bot', text: '🏠 Found 4 great options in Kothrud & Baner within your budget. Shall I schedule site visits this weekend?' },
+                    ]),
+                },
+                {
+                    industry: '44444444-4444-4444-4444-444444444444',
+                    brand: 'Edu X',
+                    flowSteps: JSON.stringify([
+                        { sender: 'bot', text: "Hello from Edu X! Interested in our new courses?" },
+                        { sender: 'user', text: 'Yes, details about the Data Science bootcamp.' },
+                        { sender: 'bot', text: "It's a 12-week intensive course. Next batch starts next week." },
+                        { sender: 'user', text: 'What is the fee structure?' },
+                        { sender: 'bot', text: 'The fee is $999. You can pay in 3 installments too. Register now?' }
+                    ]),
+                },
+            ],
+        });
+        console.log('✅ Industry Chatbots seeded successfully');
 
         // ─── Blogs ─────────────────────────────────────────────────────────────
         console.log('📝 Seeding Blogs...');
-        const blogsCount = await prisma.blog.count();
-        if (blogsCount === 0) {
-            await prisma.blog.createMany({
-                data: [
-                    {
-                        title: 'The Ultimate Guide to WhatsApp Marketing in 2024',
-                        slug: 'whatsapp-marketing-2024',
-                        excerpt: 'Discover the latest trends, strategies, and templates for driving revenue through WhatsApp Business API this year.',
-                        content: '## Introduction\n\nWhatsApp has become the worlds most popular messaging app...',
-                        category: 'Marketing',
-                        author: 'Sarah Jenks',
-                        published: true,
-                        featured: true,
-                        readTime: 7,
-                        tags: JSON.stringify(['WhatsApp', 'Marketing', 'Automation']),
-                        metaTitle: 'WhatsApp Marketing Guide 2024 | BizzRiser',
-                        metaDescription: 'Complete guide to WhatsApp marketing in 2024 including templates and strategies.',
-                    },
-                    {
-                        title: 'Building an Automated WhatsApp Sales Funnel',
-                        slug: 'sales-funnel-whatsapp',
-                        excerpt: 'Learn how to capture leads, nurture them with automated sequences, and close deals directly in WhatsApp.',
-                        content: '## Why Automated Funnels?\n\nManual follow-ups are slow...',
-                        category: 'Sales',
-                        author: 'Mike Ross',
-                        published: true,
-                        featured: true,
-                        readTime: 9,
-                        tags: JSON.stringify(['Sales', 'Automation', 'Tutorial']),
-                        metaTitle: 'WhatsApp Sales Funnel Automation | BizzRiser',
-                    },
-                    {
-                        title: 'Mastering Customer Retention with Automated Support',
-                        slug: 'customer-retention-strategies',
-                        excerpt: 'Stop losing customers to slow support times. Implement AI-driven ticketing systems within WhatsApp.',
-                        content: '## Retention is Key\n\nAcquiring a new customer is 5x more expensive...',
-                        category: 'Support',
-                        author: 'Elena Davis',
-                        published: true,
-                        featured: true,
-                        readTime: 6,
-                        tags: JSON.stringify(['Support', 'Retention']),
-                    },
-                    {
-                        title: 'How to Reduce Cart Abandonment by 40% with WhatsApp',
-                        slug: 'reduce-cart-abandonment',
-                        excerpt: 'Learn the exact automated flow that top e-commerce brands use to recover lost sales instantly.',
-                        content: '## The $18 Billion Problem\n\nCart abandonment is a major issue...',
-                        category: 'E-Commerce',
-                        author: 'Mike Ross',
-                        published: true,
-                        featured: false,
-                        readTime: 5,
-                        tags: JSON.stringify(['E-Commerce', 'Cart Abandonment']),
-                    },
-                ],
-            });
-            console.log('✅ Blogs seeded successfully');
-        } else {
-            console.log('ℹ️  Blogs already exist, skipping');
-        }
+        await prisma.blog.deleteMany();
+        await prisma.blog.createMany({
+            data: [
+                {
+                    title: 'The Ultimate Guide to WhatsApp Marketing in 2024',
+                    slug: 'whatsapp-marketing-2024',
+                    excerpt: 'Discover the latest trends, strategies, and templates for driving revenue through WhatsApp Business API this year.',
+                    content: '## Introduction\n\nWhatsApp has become the worlds most popular messaging app...',
+                    category: 'Marketing',
+                    author: 'Sarah Jenks',
+                    published: true,
+                    featured: true,
+                    readTime: 7,
+                    tags: JSON.stringify(['WhatsApp', 'Marketing', 'Automation']),
+                    metaTitle: 'WhatsApp Marketing Guide 2024 | BizzRiser',
+                    metaDescription: 'Complete guide to WhatsApp marketing in 2024 including templates and strategies.',
+                },
+                {
+                    title: 'Building an Automated WhatsApp Sales Funnel',
+                    slug: 'sales-funnel-whatsapp',
+                    excerpt: 'Learn how to capture leads, nurture them with automated sequences, and close deals directly in WhatsApp.',
+                    content: '## Why Automated Funnels?\n\nManual follow-ups are slow...',
+                    category: 'Sales',
+                    author: 'Mike Ross',
+                    published: true,
+                    featured: true,
+                    readTime: 9,
+                    tags: JSON.stringify(['Sales', 'Automation', 'Tutorial']),
+                    metaTitle: 'WhatsApp Sales Funnel Automation | BizzRiser',
+                },
+                {
+                    title: 'Mastering Customer Retention with Automated Support',
+                    slug: 'customer-retention-strategies',
+                    excerpt: 'Stop losing customers to slow support times. Implement AI-driven ticketing systems within WhatsApp.',
+                    content: '## Retention is Key\n\nAcquiring a new customer is 5x more expensive...',
+                    category: 'Support',
+                    author: 'Elena Davis',
+                    published: true,
+                    featured: true,
+                    readTime: 6,
+                    tags: JSON.stringify(['Support', 'Retention']),
+                },
+                {
+                    title: 'How to Reduce Cart Abandonment by 40% with WhatsApp',
+                    slug: 'reduce-cart-abandonment',
+                    excerpt: 'Learn the exact automated flow that top e-commerce brands use to recover lost sales instantly.',
+                    content: '## The $18 Billion Problem\n\nCart abandonment is a major issue...',
+                    category: 'E-Commerce',
+                    author: 'Mike Ross',
+                    published: true,
+                    featured: false,
+                    readTime: 5,
+                    tags: JSON.stringify(['E-Commerce', 'Cart Abandonment']),
+                },
+            ],
+        });
+        console.log('✅ Blogs seeded successfully');
 
         // ─── Newsletter Subscribers ───────────────────────────────────────────
         console.log('📧 Seeding Newsletter Subscribers...');

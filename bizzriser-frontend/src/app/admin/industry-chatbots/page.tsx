@@ -2,6 +2,9 @@
 
 import { useState, useEffect } from "react";
 import { fetchApi } from "@/lib/api";
+import Link from 'next/link';
+import { Settings } from 'lucide-react';
+import { CustomDropdown } from "@/components/ui/custom-dropdown";
 
 interface ChatStep { sender: "user" | "bot"; text: string; }
 interface Chatbot { id: string; industry: string; brand: string; flowSteps: ChatStep[]; }
@@ -79,14 +82,19 @@ export default function IndustryChatbotsAdmin() {
                 <div className="bg-white/5 border border-white/10 rounded-xl p-5 space-y-5">
                     <h3 className="font-semibold text-white text-sm">{editing ? "Edit Flow" : "New Flow"}</h3>
                     <div className="grid grid-cols-2 gap-3">
-                        <div>
-                            <label className="text-xs text-white/50 mb-1 block">Solution Industry (Links to Dropdown)</label>
-                            <select className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-green-500" value={industry} onChange={e => setIndustry(e.target.value)}>
-                                <option value="" disabled>Select an Industry...</option>
-                                {apiIndustries.map(ind => (
-                                    <option key={ind.id} value={ind.id}>{ind.title}</option>
-                                ))}
-                            </select>
+                        <div className="space-y-3">
+                            <div className="flex items-center justify-between">
+                                <label className="text-xs text-white/50 mb-1 block">Solution Industry (Links to Dropdown)</label>
+                                <Link href="/admin/solution-industries" className="text-[10px] text-green-400 hover:text-green-300 flex items-center gap-1">
+                                    <Settings className="w-3 h-3" /> Manage Industries
+                                </Link>
+                            </div>
+                            <CustomDropdown
+                                options={apiIndustries.map(ind => ({ id: ind.id, title: ind.title }))}
+                                value={industry}
+                                onChange={setIndustry}
+                                className="!bg-white/5 !border-white/10"
+                            />
                         </div>
                         <div>
                             <label className="text-xs text-white/50 mb-1 block">Default Brand Name</label>
