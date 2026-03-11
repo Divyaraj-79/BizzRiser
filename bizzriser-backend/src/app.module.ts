@@ -17,6 +17,7 @@ import { IndustryChatbotsModule } from './industry-chatbots/industry-chatbots.mo
 import { TestimonialsModule } from './testimonials/testimonials.module';
 import { SolutionIndustriesModule } from './solution-industries/solution-industries.module';
 import { PricingPlansModule } from './pricing-plans/pricing-plans.module';
+import { PartnerInfoModule } from './partner-info/partner-info.module';
 import { DebugModule } from './debug/debug.module';
 
 @Module({
@@ -37,6 +38,7 @@ import { DebugModule } from './debug/debug.module';
     TestimonialsModule,
     SolutionIndustriesModule,
     PricingPlansModule,
+    PartnerInfoModule,
     MailerModule.forRoot({
       transport: {
         host: process.env.SMTP_HOST || 'smtp.gmail.com',

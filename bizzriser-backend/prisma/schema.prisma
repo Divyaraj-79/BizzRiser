@@ -155,3 +155,18 @@ model PricingPlan {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 }
+model AboutSection {
+  id          String   @id @default(uuid())
+  title       String   @default("Powered by Selten Infotech")
+  description String   @default("BizzRiser is proudly developed and maintained by Selten Infotech, a premier software development agency known for building robust, scalable enterprise solutions.")
+  updatedAt   DateTime @updatedAt
+}
+
+model AboutStat {
+  id        String   @id @default(uuid())
+  label     String
+  value     String
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

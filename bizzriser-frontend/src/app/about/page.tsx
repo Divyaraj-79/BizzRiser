@@ -6,6 +6,9 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Counter } from "@/components/ui/counter";
 import Image from "next/image";
 
+import { useState, useEffect } from "react";
+import { fetchApi } from "@/lib/api";
+
 const numbers = [
     { label: "Active Customers", value: "10,000+" },
     { label: "Team Members", value: "50+" },
@@ -21,6 +24,25 @@ const values = [
 ];
 
 export default function AboutPage() {
+    const [section, setSection] = useState({ title: "Powered by Selten Infotech", description: "BizzRiser is proudly developed and maintained by Selten Infotech..." });
+    const [stats, setStats] = useState<any[]>([]);
+
+    useEffect(() => {
+        const load = async () => {
+            try {
+                const [secData, statsData] = await Promise.all([
+                    fetchApi("/partner-info/section"),
+                    fetchApi("/partner-info/stats"),
+                ]);
+                if (secData) setSection(secData);
+                if (statsData && statsData.length > 0) setStats(statsData);
+            } catch (e) {
+                console.error("Failed to load about data:", e);
+            }
+        };
+        load();
+    }, []);
+
     return (
         <div className="bg-background flex flex-col flex-1">
             {/* 1. Hero Section */}
@@ -89,19 +111,19 @@ export default function AboutPage() {
 
                 <div className="container px-4 mx-auto relative z-10">
                     <div className="max-w-3xl mx-auto text-center">
-                        <h2 className="text-3xl font-bold mb-6">Powered by Selten Infotech</h2>
+                        <h2 className="text-3xl font-bold mb-6">{section.title}</h2>
                         <p className="text-lg text-muted-foreground mb-12">
-                            BizzRiser is proudly developed and maintained by Selten Infotech, a premier software development agency known for building robust, scalable enterprise solutions. With years of experience in system architecture, Selten Infotech ensures BizzRiser remains the most stable and feature-rich WhatsApp platform on the market.
+                            {section.description}
                         </p>
                     </div>
 
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
-                        {[
+                        {(stats.length > 0 ? stats : [
                             { label: "Years Experience", value: "10+" },
                             { label: "Projects Delivered", value: "500+" },
                             { label: "Technical Experts", value: "30+" },
                             { label: "Support Uptime", value: "99.9%" },
-                        ].map((stat, i) => (
+                        ]).map((stat, i) => (
                             <motion.div
                                 key={i}
                                 initial={{ opacity: 0, y: 10 }}
