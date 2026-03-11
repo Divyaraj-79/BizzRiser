@@ -85,12 +85,12 @@ export function Footer() {
   }, []);
 
   return (
-    <footer className="bg-card border-t border-border pt-20 pb-20 relative overflow-hidden shrink-0">
+    <footer className="bg-card border-t border-border pt-20 pb-32 md:pb-20 relative overflow-hidden shrink-0">
       {/* Background Decorative Blur */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-bizz-primary/5 blur-[120px] rounded-full pointer-events-none" />
 
       <div className="container px-4 mx-auto relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 mb-20">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 md:gap-12 mb-20">
 
           {/* Brand Section */}
           <div className="lg:col-span-4 space-y-8">
@@ -126,37 +126,40 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Quick Links */}
-          <div className="lg:col-span-2">
-            <h4 className="text-sm font-bold uppercase tracking-wider text-foreground mb-6">Solutions</h4>
-            <ul className="space-y-4">
-              {footerLinks.solutions.map((link) => (
-                <li key={link.name}>
-                  <Link
-                    href={link.href}
-                    className="text-foreground/80 hover:text-bizz-primary hover:translate-x-1 inline-block transition-all"
-                  >
-                    {link.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+          {/* Links Grid Wrapping Solutions & Company */}
+          <div className="grid grid-cols-2 gap-8 lg:col-span-4">
+            {/* Quick Links */}
+            <div>
+              <h4 className="text-sm font-bold uppercase tracking-wider text-foreground mb-6">Solutions</h4>
+              <ul className="space-y-4">
+                {footerLinks.solutions.map((link) => (
+                  <li key={link.name}>
+                    <Link
+                      href={link.href}
+                      className="text-foreground/80 hover:text-bizz-primary hover:translate-x-1 inline-block transition-all text-sm md:text-base"
+                    >
+                      {link.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
 
-          <div className="lg:col-span-2">
-            <h4 className="text-sm font-bold uppercase tracking-wider text-foreground mb-6">Company</h4>
-            <ul className="space-y-4">
-              {footerLinks.company.map((link) => (
-                <li key={link.name}>
-                  <Link
-                    href={link.href}
-                    className="text-foreground/80 hover:text-bizz-primary hover:translate-x-1 inline-block transition-all"
-                  >
-                    {link.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            <div>
+              <h4 className="text-sm font-bold uppercase tracking-wider text-foreground mb-6">Company</h4>
+              <ul className="space-y-4">
+                {footerLinks.company.map((link) => (
+                  <li key={link.name}>
+                    <Link
+                      href={link.href}
+                      className="text-foreground/80 hover:text-bizz-primary hover:translate-x-1 inline-block transition-all text-sm md:text-base"
+                    >
+                      {link.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
 
           {/* Newsletter Section */}

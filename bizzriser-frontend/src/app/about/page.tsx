@@ -150,7 +150,7 @@ export default function AboutPage() {
                         <p className="text-muted-foreground">The principles that guide every feature we build and every customer we support.</p>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-sm md:max-w-none mx-auto">
                         {values.map((val, i) => (
                             <motion.div
                                 key={val.title}

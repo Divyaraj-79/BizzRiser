@@ -186,7 +186,7 @@ function HorizontalTestimonials({ testimonials }: { testimonials: any[] }) {
       <Button
         variant="outline"
         size="icon"
-        className="absolute left-1 sm:left-4 md:left-8 z-20 rounded-full bg-background/50 hover:bg-background/80 backdrop-blur-sm border-border w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 flex"
+        className="absolute left-1 sm:left-4 md:left-8 z-20 rounded-full bg-background/50 hover:bg-background/80 backdrop-blur-sm border-border w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 hidden md:flex"
         onClick={handlePrev}
       >
         <ChevronLeft className="w-4 h-4 md:w-6 md:h-6 text-foreground" />
@@ -195,7 +195,7 @@ function HorizontalTestimonials({ testimonials }: { testimonials: any[] }) {
       <Button
         variant="outline"
         size="icon"
-        className="absolute right-1 sm:right-4 md:right-8 z-20 rounded-full bg-background/50 hover:bg-background/80 backdrop-blur-sm border-border w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 flex"
+        className="absolute right-1 sm:right-4 md:right-8 z-20 rounded-full bg-background/50 hover:bg-background/80 backdrop-blur-sm border-border w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 hidden md:flex"
         onClick={handleNext}
       >
         <ChevronRight className="w-4 h-4 md:w-6 md:h-6 text-foreground" />
@@ -720,7 +720,7 @@ export default function Home() {
             <p className="text-muted-foreground max-w-2xl mx-auto">We don't just give you a tool; we give you a revenue-generating partner.</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-sm md:max-w-none mx-auto">
             {[
               {
                 title: "Practical Implementation",
