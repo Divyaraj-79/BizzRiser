@@ -16,6 +16,19 @@ export class PartnerInfoService implements OnModuleInit {
                 }
             });
         }
+
+        // Seed default stats if empty
+        const statCount = await this.prisma.aboutStat.count();
+        if (statCount === 0) {
+            await this.prisma.aboutStat.createMany({
+                data: [
+                    { label: "Years Experience", value: "10+", order: 0 },
+                    { label: "Projects Delivered", value: "500+", order: 1 },
+                    { label: "Technical Experts", value: "30+", order: 2 },
+                    { label: "Support Uptime", value: "99.9%", order: 3 },
+                ],
+            });
+        }
     }
 
     // Section Management
