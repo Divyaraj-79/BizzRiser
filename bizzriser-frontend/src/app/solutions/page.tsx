@@ -77,7 +77,7 @@ export default function SolutionsPage() {
                         id: ind.id,
                         name: ind.title,
                         icon: ICON_MAP[ind.icon] ?? <Bot className="w-6 h-6" />,
-                        link: "#",
+                        link: `/solutions/${ind.slug}`,
                     })));
                 }
             })

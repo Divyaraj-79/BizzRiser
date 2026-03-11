@@ -18,6 +18,11 @@ export class SolutionIndustriesController {
         return this.solutionIndustriesService.findAll();
     }
 
+    @Get('slug/:slug')
+    findBySlug(@Param('slug') slug: string) {
+        return this.solutionIndustriesService.findBySlug(slug);
+    }
+
     @Get(':id')
     findOne(@Param('id') id: string) {
         return this.solutionIndustriesService.findOne(id);

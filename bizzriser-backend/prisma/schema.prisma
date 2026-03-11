@@ -136,8 +136,10 @@ model Testimonial {
 model SolutionIndustry {
   id          String   @id @default(uuid())
   title       String
+  slug        String   @unique
   description String
   icon        String   // String referring to an icon name
+  content     Json?    // Added for dynamic industry page content
   order       Int      @default(0)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
