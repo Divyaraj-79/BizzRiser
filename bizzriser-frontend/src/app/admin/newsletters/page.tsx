@@ -2,6 +2,9 @@
 
 import { useState, useEffect } from "react";
 import { fetchApi } from "@/lib/api";
+import { formatFullDate } from "@/lib/utils";
+import { Trash2 } from "lucide-react";
+import { toast } from "sonner";
 
 interface Subscriber { id: string; email: string; status: string; createdAt: string; }
 
@@ -18,12 +21,23 @@ export default function NewslettersAdmin() {
         setLoading(false);
     };
 
+    const deleteItem = async (id: string) => {
+        if (!confirm("Are you sure you want to delete this subscriber?")) return;
+        try {
+            await fetchApi(`/newsletters/${id}`, { method: "DELETE", headers });
+            toast.success("Subscriber deleted successfully");
+            await load();
+        } catch (error: any) {
+            toast.error(error.message || "Failed to delete subscriber");
+        }
+    };
+
     useEffect(() => { load(); }, []);
 
     const filtered = items.filter(i => i.email.toLowerCase().includes(search.toLowerCase()));
 
     const exportCSV = () => {
-        const csv = ["Email,Status,Date", ...filtered.map(i => `${i.email},${i.status},${new Date(i.createdAt).toLocaleDateString()}`)].join("\n");
+        const csv = ["Email,Status,Date", ...filtered.map(i => `${i.email},${i.status},${formatFullDate(i.createdAt)}`)].join("\n");
         const blob = new Blob([csv], { type: "text/csv" });
         const url = URL.createObjectURL(blob);
         const a = document.createElement("a"); a.href = url; a.download = "newsletter-subscribers.csv"; a.click();
@@ -57,6 +71,7 @@ export default function NewslettersAdmin() {
                                     <th className="px-5 py-3 text-left text-xs text-white/40 font-medium">Email</th>
                                     <th className="px-5 py-3 text-left text-xs text-white/40 font-medium">Status</th>
                                     <th className="px-5 py-3 text-left text-xs text-white/40 font-medium">Date Joined</th>
+                                    <th className="px-5 py-3" />
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-white/5">
@@ -66,7 +81,12 @@ export default function NewslettersAdmin() {
                                         <td className="px-5 py-4">
                                             <span className={`px-2.5 py-1 rounded-full text-xs font-medium ${s.status === "SUBSCRIBED" ? "bg-green-500/20 text-green-400" : "bg-white/5 text-white/30"}`}>{s.status}</span>
                                         </td>
-                                        <td className="px-5 py-4 text-white/40 text-xs">{new Date(s.createdAt).toLocaleDateString()}</td>
+                                        <td className="px-5 py-4 text-white/40 text-xs">{formatFullDate(s.createdAt)}</td>
+                                        <td className="px-5 py-4 text-right">
+                                            <button onClick={() => deleteItem(s.id)} className="p-2 text-white/20 hover:text-red-500 transition">
+                                                <Trash2 className="w-4 h-4" />
+                                            </button>
+                                        </td>
                                     </tr>
                                 ))}
                             </tbody>

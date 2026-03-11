@@ -2,6 +2,9 @@
 
 import { useState, useEffect } from "react";
 import { fetchApi } from "@/lib/api";
+import { formatFullDate } from "@/lib/utils";
+import { Trash2 } from "lucide-react";
+import { toast } from "sonner";
 
 interface Contact { id: string; firstName: string; lastName: string; email: string; company?: string; phone?: string; industry?: string; message: string; status: string; createdAt: string; }
 
@@ -30,6 +33,18 @@ export default function ContactsAdmin() {
         try { await fetchApi(`/contacts/${id}`, { method: "PATCH", body: JSON.stringify({ status }), headers }); await load(); setSelected(null); } catch { }
     };
 
+    const deleteItem = async (id: string) => {
+        if (!confirm("Are you sure you want to delete this inquiry?")) return;
+        try {
+            await fetchApi(`/contacts/${id}`, { method: "DELETE", headers });
+            toast.success("Inquiry deleted successfully");
+            await load();
+            setSelected(null);
+        } catch (error: any) {
+            toast.error(error.message || "Failed to delete inquiry");
+        }
+    };
+
     return (
         <div className="max-w-5xl mx-auto space-y-6">
             <div>
@@ -49,11 +64,17 @@ export default function ContactsAdmin() {
                         <button onClick={() => setSelected(null)} className="text-white/40 hover:text-white text-lg leading-none">✕</button>
                     </div>
                     <div className="bg-black/20 rounded-lg p-4 text-sm text-white/70 whitespace-pre-wrap">{selected.message}</div>
-                    <div className="flex items-center gap-3 flex-wrap">
-                        <span className="text-xs text-white/30">Update status:</span>
-                        {["NEW", "IN_PROGRESS", "RESOLVED"].map(s => (
-                            <button key={s} onClick={() => updateStatus(selected.id, s)} className={`px-3 py-1.5 rounded-full text-xs font-medium transition ${selected.status === s ? STATUS_COLORS[s] : "bg-white/5 text-white/30 hover:bg-white/10"}`}>{s.replace("_", " ")}</button>
-                        ))}
+                    <div className="flex items-center justify-between gap-3 flex-wrap">
+                        <div className="flex items-center gap-3">
+                            <span className="text-xs text-white/30">Update status:</span>
+                            {["NEW", "IN_PROGRESS", "RESOLVED"].map(s => (
+                                <button key={s} onClick={() => updateStatus(selected.id, s)} className={`px-3 py-1.5 rounded-full text-xs font-medium transition ${selected.status === s ? STATUS_COLORS[s] : "bg-white/5 text-white/30 hover:bg-white/10"}`}>{s.replace("_", " ")}</button>
+                            ))}
+                        </div>
+                        <button onClick={() => deleteItem(selected.id)} className="flex items-center gap-2 px-3 py-1.5 rounded-md bg-red-500/10 text-red-500 hover:bg-red-500/20 text-xs font-medium transition">
+                            <Trash2 className="w-3.5 h-3.5" />
+                            Delete
+                        </button>
                     </div>
                 </div>
             )}
@@ -79,7 +100,7 @@ export default function ContactsAdmin() {
                                         <td className="px-5 py-4 text-white/50">{c.email}</td>
                                         <td className="px-5 py-4 text-white/40 text-xs">{c.industry || "—"}</td>
                                         <td className="px-5 py-4"><span className={`px-2.5 py-1 rounded-full text-xs font-medium ${STATUS_COLORS[c.status] ?? "bg-white/5 text-white/30"}`}>{c.status?.replace("_", " ")}</span></td>
-                                        <td className="px-5 py-4 text-white/30 text-xs">{new Date(c.createdAt).toLocaleDateString()}</td>
+                                        <td className="px-5 py-4 text-white/40 text-xs">{formatFullDate(c.createdAt)}</td>
                                         <td className="px-5 py-4 text-xs text-white/30">View →</td>
                                     </tr>
                                 ))}
