@@ -92,51 +92,54 @@ export function Footer() {
       <div className="container px-4 mx-auto relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 md:gap-12 mb-20">
 
-          {/* Brand Section */}
-          <div className="lg:col-span-4 space-y-8">
-            <Link href="/" className="inline-block transition-transform hover:scale-105 active:scale-95">
-              <img
-                src={isDark ? "/logolight.png" : "/logo.png"}
-                alt="BizzRiser Logo"
-                className="h-9 w-auto"
-              />
-            </Link>
-            <p className="text-foreground/70 text-base leading-relaxed max-w-sm">
-              Practical WhatsApp Business Automation with Real Support.
-              Built strictly on official Meta APIs to ensure your scale is safe, reliable, and frictionless.
-            </p>
+          {/* Column 1: Brand & Newsletter */}
+          <div className="lg:col-span-4 flex flex-col justify-between">
+            <div className="space-y-6 mb-8 lg:mb-0">
+              <Link href="/" className="inline-block transition-transform hover:scale-105 active:scale-95">
+                <img
+                  src={isDark ? "/logolight.png" : "/logo.png"}
+                  alt="BizzRiser Logo"
+                  className="h-9 w-auto"
+                />
+              </Link>
+              <p className="text-foreground/70 text-sm leading-relaxed max-w-sm">
+                Practical WhatsApp Business Automation with Real Support. Connect with your customers, automate responses, and scale your business effortlessly.
+              </p>
+            </div>
 
-            {/* Social Links */}
-            <div className="flex items-center gap-3">
-              {[
-                { icon: <Facebook className="w-4.5 h-4.5" />, href: "https://facebook.com/bizzriser.wp" },
-                { icon: <Twitter className="w-4.5 h-4.5" />, href: "#" },
-                { icon: <Instagram className="w-4.5 h-4.5" />, href: "https://instagram.com/bizzriser" },
-                { icon: <Linkedin className="w-4.5 h-4.5" />, href: "https://linkedin.com/company/bizzriser" }
-              ].map((social, i) => (
-                <Link
-                  key={i}
-                  href={social.href}
-                  target="_blank"
-                  className="w-10 h-10 rounded-full border border-border flex items-center justify-center text-foreground hover:bg-bizz-primary hover:text-white hover:border-bizz-primary hover:-translate-y-1 shadow-sm transition-all duration-300"
+            <div className="space-y-4 pt-4">
+              <h4 className="text-sm font-bold text-foreground">Subscribe to our newsletter</h4>
+              <form onSubmit={handleSubscribe} className="relative flex max-w-sm">
+                <input
+                  type="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Enter your email"
+                  className="flex-1 h-10 bg-transparent border border-border rounded-l-lg px-4 text-sm focus:outline-none focus:ring-1 focus:ring-bizz-primary/50 transition-all font-sans"
+                />
+                <Button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="h-10 px-6 bg-bizz-primary hover:bg-bizz-primary/90 text-white rounded-r-lg rounded-l-none font-medium shadow-none text-sm transition-all"
                 >
-                  {social.icon}
-                </Link>
-              ))}
+                  {isSubmitting ? "..." : "Subscribe"}
+                </Button>
+              </form>
             </div>
           </div>
 
-          {/* Links Grid Wrapping Solutions & Company */}
-          <div className="grid grid-cols-2 gap-8 lg:col-span-4">
-            {/* Quick Links */}
+          {/* Column 2 & 3: Solutions & Company (Stacked side-by-side on mobile natively via grid-cols-2) */}
+          <div className="lg:col-span-5 grid grid-cols-2 gap-8 lg:pl-8">
+            {/* Solutions */}
             <div>
-              <h4 className="text-sm font-bold uppercase tracking-wider text-foreground mb-6">Solutions</h4>
+              <h4 className="text-sm font-bold text-foreground mb-6">Solutions</h4>
               <ul className="space-y-4">
                 {footerLinks.solutions.map((link) => (
                   <li key={link.name}>
                     <Link
                       href={link.href}
-                      className="text-foreground/80 hover:text-bizz-primary hover:translate-x-1 inline-block transition-all text-sm md:text-base"
+                      className="text-foreground/70 hover:text-bizz-primary hover:translate-x-1 inline-block transition-all text-sm"
                     >
                       {link.name}
                     </Link>
@@ -145,14 +148,15 @@ export function Footer() {
               </ul>
             </div>
 
+            {/* Company */}
             <div>
-              <h4 className="text-sm font-bold uppercase tracking-wider text-foreground mb-6">Company</h4>
+              <h4 className="text-sm font-bold text-foreground mb-6">Company</h4>
               <ul className="space-y-4">
                 {footerLinks.company.map((link) => (
                   <li key={link.name}>
                     <Link
                       href={link.href}
-                      className="text-foreground/80 hover:text-bizz-primary hover:translate-x-1 inline-block transition-all text-sm md:text-base"
+                      className="text-foreground/70 hover:text-bizz-primary hover:translate-x-1 inline-block transition-all text-sm"
                     >
                       {link.name}
                     </Link>
@@ -162,33 +166,45 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Newsletter Section */}
-          <div className="lg:col-span-4 space-y-6">
-            <h4 className="text-sm font-bold uppercase tracking-wider text-foreground">Stay in the Loop</h4>
-            <p className="text-foreground/80 text-sm leading-relaxed">
-              Join 5,000+ businesses receiving our weekly insights on WhatsApp automation and growth strategies.
-            </p>
+          {/* Column 4: Contact & Socials */}
+          <div className="lg:col-span-3 lg:pl-8 space-y-6">
+            <h4 className="text-sm font-bold text-foreground mb-6">Contact</h4>
+            <ul className="space-y-4">
+              <li className="flex gap-3 text-sm text-foreground/70 group">
+                <MapPin className="w-5 h-5 shrink-0 text-bizz-primary/70 group-hover:text-bizz-primary transition-colors mt-0.5" />
+                <span className="leading-relaxed">
+                  720, RK Empire, Nr. Mavdi Chowkdi,<br />
+                  150 Ft. Ring Road, Rajkot - 360004
+                </span>
+              </li>
+              <li className="flex gap-3 text-sm text-foreground/70 group">
+                <Phone className="w-5 h-5 shrink-0 text-bizz-primary/70 group-hover:text-bizz-primary transition-colors mt-0.5" />
+                <span className="leading-relaxed">+91 98799 66997</span>
+              </li>
+              <li className="flex gap-3 text-sm text-foreground/70 group">
+                <Mail className="w-5 h-5 shrink-0 text-bizz-primary/70 group-hover:text-bizz-primary transition-colors mt-0.5" />
+                <span className="leading-relaxed">hello@bizzriser.com</span>
+              </li>
+            </ul>
 
-            <form onSubmit={handleSubscribe} className="relative group">
-              <input
-                type="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter your work email"
-                className="w-full h-14 bg-background border border-border rounded-full pl-6 pr-32 text-sm focus:ring-2 focus:ring-bizz-primary/20 focus:border-bizz-primary transition-all shadow-sm"
-              />
-              <Button
-                type="submit"
-                disabled={isSubmitting}
-                className="absolute right-1.5 top-1.5 h-11 px-6 bg-gradient-brand text-white rounded-full font-bold shadow-lg shadow-bizz-primary/10 hover:shadow-bizz-primary/30 transition-all active:scale-95"
-              >
-                {isSubmitting ? "..." : "Join Now"}
-              </Button>
-            </form>
-            <p className="text-[11px] text-foreground/60 px-6">
-              *By subscribing, you agree to our privacy terms.
-            </p>
+            {/* Social Links Moved Here */}
+            <div className="flex items-center gap-3 pt-4">
+              {[
+                { icon: <Facebook className="w-4 h-4" />, href: "https://facebook.com/bizzriser.wp" },
+                { icon: <Twitter className="w-4 h-4" />, href: "#" },
+                { icon: <Instagram className="w-4 h-4" />, href: "https://instagram.com/bizzriser" },
+                { icon: <Linkedin className="w-4 h-4" />, href: "https://linkedin.com/company/bizzriser" }
+              ].map((social, i) => (
+                <Link
+                  key={i}
+                  href={social.href}
+                  target="_blank"
+                  className="w-8 h-8 rounded-full border border-border flex items-center justify-center text-foreground hover:bg-bizz-primary hover:text-white hover:border-bizz-primary shadow-sm transition-all duration-300 bg-background"
+                >
+                  {social.icon}
+                </Link>
+              ))}
+            </div>
           </div>
         </div>
 
