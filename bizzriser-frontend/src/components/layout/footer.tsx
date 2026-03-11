@@ -212,15 +212,6 @@ export function Footer() {
           </div>
 
           {/* Status Indicator */}
-          <div className="flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-secondary/30 border border-border/50">
-            <div className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-bizz-primary opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-bizz-primary"></span>
-            </div>
-            <span className="text-[11px] font-bold uppercase tracking-widest text-foreground/60">
-              System Operational
-            </span>
-          </div>
         </div>
       </div>
     </footer>
