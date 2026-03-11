@@ -7,6 +7,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { fetchApi } from "@/lib/api";
+import { toast } from "sonner";
 
 export default function ContactPage() {
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -31,11 +32,9 @@ export default function ContactPage() {
                 method: 'POST',
                 body: JSON.stringify(data),
             });
-            const { toast } = await import("sonner");
             toast.success("Message sent successfully! We will be in touch.");
             (e.target as HTMLFormElement).reset();
         } catch (error: any) {
-            const { toast } = await import("sonner");
             toast.error(error.message || "Failed to send message. Please try again.");
         } finally {
             setIsSubmitting(false);

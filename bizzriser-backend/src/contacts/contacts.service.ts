@@ -14,12 +14,11 @@ export class ContactsService {
   async create(createContactDto: CreateContactDto) {
     const contact = await this.prisma.contactMessage.create({ data: createContactDto });
 
-    // Send email notification (best-effort, don't fail if email fails)
-    try {
-      await this.mailerService.sendMail({
-        to: process.env.ADMIN_NOTIFY_EMAIL || process.env.SMTP_USER,
-        subject: `New Contact Inquiry from ${createContactDto.firstName} ${createContactDto.lastName}`,
-        html: `
+    // Send email notification (asynchronous, don't block the response)
+    this.mailerService.sendMail({
+      to: process.env.ADMIN_NOTIFY_EMAIL || process.env.SMTP_USER,
+      subject: `New Contact Inquiry from ${createContactDto.firstName} ${createContactDto.lastName}`,
+      html: `
           <h2>New Contact Form Submission</h2>
           <table style="border-collapse: collapse; width: 100%;">
             <tr><td style="padding:8px; border:1px solid #ddd;"><strong>Name</strong></td><td style="padding:8px; border:1px solid #ddd;">${createContactDto.firstName} ${createContactDto.lastName}</td></tr>
@@ -31,11 +30,10 @@ export class ContactsService {
           </table>
           <p style="margin-top:16px; color:#999; font-size:12px;">This enquiry was submitted via BizzRiser.com</p>
         `,
-      });
-    } catch (e) {
-      // Log but don't crash the request if email fails
-      console.warn('Email notification failed:', e?.message);
-    }
+    }).catch(e => {
+      // Log error in background if email fails
+      console.warn('Background email notification failed:', e?.message);
+    });
 
     return contact;
   }
