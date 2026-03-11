@@ -132,11 +132,13 @@ export default function SolutionsPage() {
                                 <Card className={`h-full ${solution.gradient} hover:shadow-[0_0_30px_rgba(45,198,83,0.1)] transition-all flex flex-col group relative overflow-hidden`}>
                                     <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
                                     <CardHeader>
-                                        <div className={`w-16 h-16 rounded-2xl ${solution.iconGradient} flex items-center justify-center mb-4 border border-white/10`}>
+                                        <div className={`w-16 h-16 rounded-2xl ${solution.iconGradient} flex items-center justify-center mb-4 border border-white/10 shadow-inner`}>
                                             {solution.icon}
                                         </div>
-                                        <CardTitle className="text-2xl font-bold group-hover:text-gradient transition-all">{solution.title}</CardTitle>
-                                        <CardDescription className="text-base mt-2">{solution.desc}</CardDescription>
+                                        <CardTitle className="text-2xl font-bold group-hover:text-bizz-primary transition-all duration-300">{solution.title}</CardTitle>
+                                        <CardDescription className="text-base mt-2 text-foreground/70 leading-relaxed font-medium">
+                                            {solution.desc}
+                                        </CardDescription>
                                     </CardHeader>
                                     <CardContent className="flex-1">
                                         <ul className="space-y-3">

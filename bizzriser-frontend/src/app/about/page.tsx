@@ -41,7 +41,7 @@ export default function AboutPage() {
                         <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight mb-8">
                             Enabling Businesses to <span className="text-gradient">Connect Better.</span>
                         </h1>
-                        <p className="text-xl md:text-2xl text-muted-foreground leading-relaxed">
+                        <p className="text-xl md:text-2xl text-foreground/80 leading-relaxed">
                             BizzRiser was born from a simple observation: businesses were losing millions by failing to engage with customers where they already spend their time—on WhatsApp.
                         </p>
                     </motion.div>

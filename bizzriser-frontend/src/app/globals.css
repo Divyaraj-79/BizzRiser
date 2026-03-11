@@ -38,7 +38,7 @@
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
-  
+
   /* Brand Colors */
   --color-bizz-primary: #2DC653;
   --color-bizz-dark: #1B8F3A;
@@ -46,7 +46,7 @@
   --color-bizz-white: #FFFFFF;
   --color-bizz-lightgrey: #D3D3D3;
   --color-bizz-muted: #94a3b8;
-  
+
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -69,7 +69,7 @@
   --secondary: #E2E8F0;
   --secondary-foreground: #0F172A;
   --muted: #f1f5f9;
-  --muted-foreground: #64748b;
+  --muted-foreground: #475569;
   --accent: #2563EB;
   --accent-foreground: #0F172A;
   --destructive: oklch(0.577 0.245 27.325);
@@ -91,7 +91,8 @@
   --sidebar-ring: #2DC653;
 }
 
-html, body {
+html,
+body {
   height: 100%;
 }
 
@@ -99,20 +100,20 @@ body {
   overflow-x: hidden;
 }
 
-.motion-carousel > div {
+.motion-carousel>div {
   opacity: 0.45;
   transform: scale(0.92);
   transition: all 0.4s ease;
 }
 
-.motion-carousel > div:nth-child(3),
-.motion-carousel > div:nth-child(8) {
+.motion-carousel>div:nth-child(3),
+.motion-carousel>div:nth-child(8) {
   opacity: 1;
   transform: scale(1.05);
 }
 
 .dark {
-  --background: #0F172A;
+  --background: #0B0F1A;
   --foreground: #F8FAFC;
   --card: #111827;
   --card-foreground: #F8FAFC;
@@ -123,7 +124,7 @@ body {
   --secondary: #1e293b;
   --secondary-foreground: #F8FAFC;
   --muted: #1e293b;
-  --muted-foreground: #94a3b8;
+  --muted-foreground: #CBD5E1;
   --accent: #2563EB;
   --accent-foreground: #0F172A;
   --destructive: oklch(0.704 0.191 22.216);
@@ -218,9 +219,12 @@ body {
 
 /* Counter Animation */
 @keyframes counter-glow {
-  0%, 100% {
+
+  0%,
+  100% {
     box-shadow: 0 0 20px rgba(45, 198, 83, 0.1);
   }
+
   50% {
     box-shadow: 0 0 30px rgba(45, 198, 83, 0.2);
   }
@@ -234,6 +238,7 @@ body {
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
@@ -243,6 +248,7 @@ body {
       opacity: 0;
       transform: translateY(10px);
     }
+
     to {
       opacity: 1;
       transform: translateY(0);
@@ -253,6 +259,7 @@ body {
     from {
       opacity: 0;
     }
+
     to {
       opacity: 1;
     }

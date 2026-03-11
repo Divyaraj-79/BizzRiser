@@ -120,7 +120,7 @@ ${selectedPlan === i
 
                     {/* PRICING CARDS */}
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 m-15 gap-8 max-w-6xl mx-auto">
+                    <div className="grid grid-cols-1 md:grid-cols-3 mt-12 gap-8 max-w-6xl mx-auto">
 
                         {displayPlans.map((plan, i) => {
 
@@ -261,11 +261,11 @@ ${selectedPlan === i
                                 Features
                             </div>
 
-                            <div className="p-6 font-bold text-lg text-center text-bizz-primary">
+                            <div className="p-6 font-bold text-lg text-center text-bizz-primary bg-bizz-primary/5">
                                 BizzRiser
                             </div>
 
-                            <div className="p-6 font-bold text-lg text-center text-muted-foreground">
+                            <div className="p-6 font-bold text-lg text-center text-foreground bg-muted/50">
                                 Traditional Tools
                             </div>
 
@@ -309,7 +309,7 @@ ${selectedPlan === i
 
                 <div className="container px-4 mx-auto text-center">
 
-                    <p className="text-sm font-bold text-muted-foreground mb-12 tracking-widest uppercase">
+                    <p className="text-sm font-bold text-foreground/60 mb-12 tracking-widest uppercase">
                         POWERING AUTOMATION FOR PREMIUM BRANDS
                     </p>
 

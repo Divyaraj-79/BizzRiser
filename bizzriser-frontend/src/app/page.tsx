@@ -335,7 +335,7 @@ export default function Home() {
               <span className="text-gradient">Scale.</span>
             </h1>
 
-            <p className="text-xl md:text-2xl text-muted-foreground mb-10 max-w-2xl mx-auto dark:text-gray-300">
+            <p className="text-xl md:text-2xl text-foreground/80 mb-10 max-w-2xl mx-auto font-medium">
               Practical WhatsApp Business Automation with Real Support. Stop dropping leads and start closing more deals automatically.
             </p>
 
@@ -443,13 +443,13 @@ export default function Home() {
       {/* 2. Partner Badges */}
       <section className="py-12 border-y border-border bg-card/50">
         <div className="container px-4 mx-auto overflow-hidden">
-          <p className="text-center text-sm font-medium text-muted-foreground mb-8">
+          <p className="text-center text-xs font-bold text-foreground/40 mb-10 tracking-widest uppercase">
             TRUSTED BY INNOVATIVE TEAMS WORLDWIDE
           </p>
-          <div className="flex flex-wrap justify-center items-center gap-12 opacity-50 grayscale hover:grayscale-0 transition-all duration-500">
+          <div className="flex flex-wrap justify-center items-center gap-12 opacity-40 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-700">
             {/* Replace with actual image tags when logos are available */}
             {partners.map(p => (
-              <span key={p.name} className="text-2xl font-bold font-mono">{p.name}</span>
+              <span key={p.name} className="text-2xl font-bold font-mono text-foreground">{p.name}</span>
             ))}
           </div>
         </div>
@@ -470,7 +470,7 @@ export default function Home() {
                 Numbers That Speak For Themselves
               </h2>
 
-              <p className="text-muted-foreground text-sm sm:text-base">
+              <p className="text-foreground/70 text-base md:text-lg">
                 We deliver measurable impact for businesses that demand high conversion rates.
               </p>
             </motion.div>
