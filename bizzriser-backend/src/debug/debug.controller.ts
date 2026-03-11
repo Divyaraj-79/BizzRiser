@@ -127,11 +127,11 @@ export class DebugController {
                 log('🏢 Force seeding Solution Industries...');
                 await this.prisma.solutionIndustry.createMany({
                     data: [
-                        { id: "11111111-1111-1111-1111-111111111111", title: 'Travel & Hospitality', description: '', icon: 'Plane', order: 1 },
-                        { id: "22222222-2222-2222-2222-222222222222", title: 'E-Commerce', description: '', icon: 'TrendingUp', order: 2 },
-                        { id: "33333333-3333-3333-3333-333333333333", title: 'Real Estate', description: '', icon: 'Users', order: 3 },
-                        { id: "44444444-4444-4444-4444-444444444444", title: 'Education', description: '', icon: 'Bot', order: 4 },
-                        { id: "55555555-5555-5555-5555-555555555555", title: 'Healthcare', description: '', icon: 'Shield', order: 5 },
+                        { id: "11111111-1111-1111-1111-111111111111", title: 'Travel & Hospitality', slug: 'travel-and-hospitality', description: '', icon: 'Plane', order: 1 },
+                        { id: "22222222-2222-2222-2222-222222222222", title: 'E-Commerce', slug: 'e-commerce', description: '', icon: 'TrendingUp', order: 2 },
+                        { id: "33333333-3333-3333-3333-333333333333", title: 'Real Estate', slug: 'real-estate', description: '', icon: 'Users', order: 3 },
+                        { id: "44444444-4444-4444-4444-444444444444", title: 'Education', slug: 'education', description: '', icon: 'Bot', order: 4 },
+                        { id: "55555555-5555-5555-5555-555555555555", title: 'Healthcare', slug: 'healthcare', description: '', icon: 'Shield', order: 5 },
                     ]
                 });
                 log('✅ Solution Industries created');

@@ -59,11 +59,11 @@ async function main() {
         console.log('🏭 Seeding Solution Industries...');
         await prisma.solutionIndustry.deleteMany();
         const industries = [
-            { id: '11111111-1111-1111-1111-111111111111', title: 'Travel & Hospitality', description: 'Automate booking confirmations, itinerary updates, and 24/7 travel support.', icon: 'Plane', order: 0 },
-            { id: '22222222-2222-2222-2222-222222222222', title: 'E-Commerce', description: 'Recover abandoned carts, send order updates, and handle returns automatically via WhatsApp.', icon: 'ShoppingCart', order: 1 },
-            { id: '33333333-3333-3333-3333-333333333333', title: 'Real Estate', description: 'Qualify leads, book property viewings, and nurture prospects with automated WhatsApp flows.', icon: 'Building2', order: 2 },
-            { id: '44444444-4444-4444-4444-444444444444', title: 'Education', description: 'Engage students with course updates, answer admissions queries, and send fee reminders.', icon: 'GraduationCap', order: 3 },
-            { id: '55555555-5555-5555-5555-555555555555', title: 'Healthcare', description: 'Send appointment reminders, handle patient FAQs, and follow-up post-consultation automatically.', icon: 'Stethoscope', order: 4 },
+            { id: '11111111-1111-1111-1111-111111111111', title: 'Travel & Hospitality', slug: 'travel-and-hospitality', description: 'Automate booking confirmations, itinerary updates, and 24/7 travel support.', icon: 'Plane', order: 0 },
+            { id: '22222222-2222-2222-2222-222222222222', title: 'E-Commerce', slug: 'e-commerce', description: 'Recover abandoned carts, send order updates, and handle returns automatically via WhatsApp.', icon: 'ShoppingCart', order: 1 },
+            { id: '33333333-3333-3333-3333-333333333333', title: 'Real Estate', slug: 'real-estate', description: 'Qualify leads, book property viewings, and nurture prospects with automated WhatsApp flows.', icon: 'Building2', order: 2 },
+            { id: '44444444-4444-4444-4444-444444444444', title: 'Education', slug: 'education', description: 'Engage students with course updates, answer admissions queries, and send fee reminders.', icon: 'GraduationCap', order: 3 },
+            { id: '55555555-5555-5555-5555-555555555555', title: 'Healthcare', slug: 'healthcare', description: 'Send appointment reminders, handle patient FAQs, and follow-up post-consultation automatically.', icon: 'Stethoscope', order: 4 },
         ];
         for (const ind of industries) {
             await prisma.solutionIndustry.create({ data: ind });
