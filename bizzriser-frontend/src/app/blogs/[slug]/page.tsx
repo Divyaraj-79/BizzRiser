@@ -111,7 +111,7 @@ export default function BlogContentPage() {
     const tags = Array.isArray(blog.tags) ? blog.tags : [];
 
     return (
-        <div className="pt-20 min-h-screen bg-background text-foreground overflow-hidden">
+        <div className="pt-20 flex flex-col flex-1 bg-background text-foreground overflow-hidden">
             {/* 1. Header & Hero */}
             <section className="relative py-12 md:py-24 border-b border-border bg-card/30">
                 {/* Background Blobs */}

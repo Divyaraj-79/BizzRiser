@@ -7,7 +7,7 @@ import Link from "next/link";
 
 export default function CustomerSupportPage() {
     return (
-        <div className="flex flex-col min-h-screen bg-background pt-20">
+        <div className="flex flex-col flex-1 bg-background pt-20">
 
             {/* Hero Section */}
             <section className="relative py-24 md:py-32 overflow-hidden">

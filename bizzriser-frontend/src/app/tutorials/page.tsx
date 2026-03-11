@@ -63,7 +63,7 @@ const writtenGuides = [
 
 export default function TutorialsPage() {
     return (
-        <div className="pt-20 min-h-screen bg-background">
+        <div className="pt-20 flex flex-col flex-1 bg-background">
             {/* 1. Hero Section */}
             <section className="relative py-24 overflow-hidden border-b border-border bg-card/30">
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-bizz-primary/5 rounded-full blur-[120px] pointer-events-none" />

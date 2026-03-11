@@ -85,7 +85,7 @@ export function Footer() {
   }, []);
 
   return (
-    <footer className="bg-card border-t border-border pt-20 pb-10 relative overflow-hidden mt-auto">
+    <footer className="bg-card border-t border-border pt-20 pb-20 relative overflow-hidden shrink-0">
       {/* Background Decorative Blur */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-bizz-primary/5 blur-[120px] rounded-full pointer-events-none" />
 
@@ -134,7 +134,7 @@ export function Footer() {
                 <li key={link.name}>
                   <Link
                     href={link.href}
-                    className="text-foreground/60 hover:text-bizz-primary hover:translate-x-1 inline-block transition-all"
+                    className="text-foreground/80 hover:text-bizz-primary hover:translate-x-1 inline-block transition-all"
                   >
                     {link.name}
                   </Link>
@@ -150,7 +150,7 @@ export function Footer() {
                 <li key={link.name}>
                   <Link
                     href={link.href}
-                    className="text-foreground/60 hover:text-bizz-primary hover:translate-x-1 inline-block transition-all"
+                    className="text-foreground/80 hover:text-bizz-primary hover:translate-x-1 inline-block transition-all"
                   >
                     {link.name}
                   </Link>
@@ -162,7 +162,7 @@ export function Footer() {
           {/* Newsletter Section */}
           <div className="lg:col-span-4 space-y-6">
             <h4 className="text-sm font-bold uppercase tracking-wider text-foreground">Stay in the Loop</h4>
-            <p className="text-foreground/60 text-sm leading-relaxed">
+            <p className="text-foreground/80 text-sm leading-relaxed">
               Join 5,000+ businesses receiving our weekly insights on WhatsApp automation and growth strategies.
             </p>
 
@@ -183,7 +183,7 @@ export function Footer() {
                 {isSubmitting ? "..." : "Join Now"}
               </Button>
             </form>
-            <p className="text-[11px] text-foreground/40 px-6">
+            <p className="text-[11px] text-foreground/60 px-6">
               *By subscribing, you agree to our privacy terms.
             </p>
           </div>
@@ -203,7 +203,7 @@ export function Footer() {
                 <Link
                   key={link.name}
                   href={link.href}
-                  className="text-xs text-foreground/40 hover:text-bizz-primary transition-colors"
+                  className="text-xs text-foreground/60 hover:text-bizz-primary transition-colors"
                 >
                   {link.name}
                 </Link>
@@ -225,4 +225,4 @@ export function Footer() {
       </div>
     </footer>
   );
-}
+}  

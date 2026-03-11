@@ -46,7 +46,7 @@ const openRoles = [
 
 export default function CareersPage() {
     return (
-        <div className="pt-20 min-h-screen bg-background">
+        <div className="pt-20 flex flex-col flex-1 bg-background">
             {/* 1. Hero Section */}
             <section className="relative py-24 overflow-hidden">
                 {/* Animated Background */}

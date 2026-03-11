@@ -37,7 +37,7 @@ export default function PricingPage() {
     const displayPlans = apiPlans.filter(plan => (plan.billingCycle || "monthly") === billingCycle);
 
     return (
-        <div className="bg-background">
+        <div className="bg-background flex flex-col flex-1">
 
             {/* HERO */}
 

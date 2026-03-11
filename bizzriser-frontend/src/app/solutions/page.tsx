@@ -85,7 +85,7 @@ export default function SolutionsPage() {
     }, []);
 
     return (
-        <div className="bg-background">
+        <div className="bg-background flex flex-col flex-1">
             {/* 1. Hero Section */}
             <section className="relative pt-32 pb-24 overflow-hidden bg-card/30 border-b border-border">
                 {/* Background Elements */}

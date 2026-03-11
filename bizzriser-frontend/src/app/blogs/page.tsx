@@ -168,7 +168,7 @@ export default function BlogsPage() {
     };
 
     return (
-        <div className="pt-20 min-h-screen bg-background">
+        <div className="pt-20 flex flex-col flex-1 bg-background">
             {/* 1. Hero & Featured Carousel */}
             <section className="relative py-20 border-b border-border bg-card/30">
                 <div className="absolute top-0 right-1/3 w-[400px] h-[400px] bg-bizz-primary/5 rounded-full blur-[100px] pointer-events-none" />

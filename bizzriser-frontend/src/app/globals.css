@@ -91,9 +91,8 @@
   --sidebar-ring: #2DC653;
 }
 
-html,
-body {
-  height: 100%;
+html {
+  scroll-behavior: smooth;
 }
 
 body {

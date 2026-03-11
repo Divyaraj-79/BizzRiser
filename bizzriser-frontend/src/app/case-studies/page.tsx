@@ -31,7 +31,7 @@ export default function CaseStudiesPage() {
     }, []);
 
     return (
-        <div className="bg-background">
+        <div className="bg-background flex flex-col flex-1">
             {/* 1. Hero Section */}
             <section className="relative pt-32 pb-24 overflow-hidden border-b border-border bg-card/30">
                 <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(45,198,83,0.1),transparent_50%)] pointer-events-none" />
