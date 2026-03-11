@@ -22,9 +22,9 @@ const values = [
 
 export default function AboutPage() {
     return (
-        <div className="pt-20 min-h-screen bg-background">
+        <div className="bg-background">
             {/* 1. Hero Section */}
-            <section className="relative py-24 overflow-hidden bg-card/30 border-b border-border">
+            <section className="relative pt-32 pb-24 overflow-hidden bg-card/30 border-b border-border">
                 {/* Decorative Grid */}
                 <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
 

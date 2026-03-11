@@ -91,6 +91,14 @@
   --sidebar-ring: #2DC653;
 }
 
+html, body {
+  height: 100%;
+}
+
+body {
+  overflow-x: hidden;
+}
+
 .motion-carousel > div {
   opacity: 0.45;
   transform: scale(0.92);

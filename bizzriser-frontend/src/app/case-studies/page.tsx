@@ -31,9 +31,9 @@ export default function CaseStudiesPage() {
     }, []);
 
     return (
-        <div className="pt-20 min-h-screen bg-background">
+        <div className="bg-background">
             {/* 1. Hero Section */}
-            <section className="relative py-24 overflow-hidden border-b border-border bg-card/30">
+            <section className="relative pt-32 pb-24 overflow-hidden border-b border-border bg-card/30">
                 <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(45,198,83,0.1),transparent_50%)] pointer-events-none" />
 
                 <div className="container px-4 mx-auto text-center relative z-10">

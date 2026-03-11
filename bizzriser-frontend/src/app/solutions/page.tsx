@@ -85,9 +85,9 @@ export default function SolutionsPage() {
     }, []);
 
     return (
-        <div className="pt-20 min-h-screen bg-background">
+        <div className="bg-background">
             {/* 1. Hero Section */}
-            <section className="relative py-24 overflow-hidden bg-card/30 border-b border-border">
+            <section className="relative pt-32 pb-24 overflow-hidden bg-card/30 border-b border-border">
                 {/* Background Elements */}
                 <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-bizz-primary/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(45,198,83,0.05)_0,transparent_100%)] pointer-events-none" />

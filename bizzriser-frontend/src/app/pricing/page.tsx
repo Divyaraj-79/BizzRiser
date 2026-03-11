@@ -37,11 +37,11 @@ export default function PricingPage() {
     const displayPlans = apiPlans.filter(plan => (plan.billingCycle || "monthly") === billingCycle);
 
     return (
-        <div className="pt-20 min-h-screen bg-background">
+        <div className="bg-background">
 
             {/* HERO */}
 
-            <section className="relative py-24 overflow-hidden">
+            <section className="relative pt-32 pb-24 overflow-hidden">
 
                 <div className="absolute inset-0 bg-gradient-to-b from-bizz-primary/5 to-transparent pointer-events-none" />
 

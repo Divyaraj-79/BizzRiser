@@ -88,7 +88,7 @@ export function Footer() {
   }, []);
 
   return (
-    <footer className="bg-card border-t border-border mt-auto pt-16 pb-8 relative overflow-hidden">
+    <footer className="bg-card border-t border-border pt-16 pb-8 relative overflow-hidden">
 
       {/* Background blur */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-bizz-accent/5 blur-[120px] rounded-full pointer-events-none" />
@@ -207,10 +207,10 @@ export function Footer() {
             {/* Social */}
             <div className="flex items-center gap-4 mt-6">
 
-              <Link href="#"><Facebook className="w-4 h-4" /></Link>
-              <Link href="#"><Twitter className="w-4 h-4" /></Link>
-              <Link href="#"><Instagram className="w-4 h-4" /></Link>
-              <Link href="#"><Linkedin className="w-4 h-4" /></Link>
+              <Link href="https://facebook.com/bizzriser.wp" target="_blank"><Facebook className="w-4 h-4" /></Link>
+              <Link href="#" target="_blank"><Twitter className="w-4 h-4" /></Link>
+              <Link href="https://instagram.com/bizzriser" target="_blank"><Instagram className="w-4 h-4" /></Link>
+              <Link href="https://linkedin.com/company/bizzriser" target="_blank"><Linkedin className="w-4 h-4" /></Link>
 
             </div>
           </div>
@@ -306,9 +306,9 @@ export function Footer() {
           {/* Social */}
           <div className="flex justify-center gap-5">
 
-            <Link href="#"><Facebook size={18} /></Link>
+            <Link href="https://facebook.com/bizzriser.wp"><Facebook size={18} /></Link>
             <Link href="#"><Twitter size={18} /></Link>
-            <Link href="#"><Instagram size={18} /></Link>
+            <Link href="https://instagram.com/bizzriser"><Instagram size={18} /></Link>
             <Link href="#"><Linkedin size={18} /></Link>
 
           </div>

@@ -42,9 +42,9 @@ export default function ContactPage() {
     };
 
     return (
-        <div className="pt-20 min-h-screen bg-background flex flex-col">
+        <div className="bg-background flex flex-col">
             {/* 1. Hero Section */}
-            <section className="relative py-24 overflow-hidden bg-card/30 border-b border-border">
+            <section className="relative pt-32 pb-24 overflow-hidden bg-card/30 border-b border-border">
                 {/* Abstract Background Shapes */}
                 <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-bizz-primary/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/3 pointer-events-none" />
                 <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-bizz-accent/5 rounded-full blur-[80px] translate-y-1/2 -translate-x-1/2 pointer-events-none" />
