@@ -49,7 +49,7 @@ export class SolutionIndustriesService implements OnModuleInit {
     }
 }
 
-const DEFAULT_INDUSTRIES = [
+export const DEFAULT_INDUSTRIES = [
     {
         title: 'Travel & Hospitality',
         slug: 'travel-and-hospitality',
