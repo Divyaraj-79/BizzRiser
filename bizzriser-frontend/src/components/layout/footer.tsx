@@ -78,9 +78,9 @@ export function Footer() {
             </Link>
 
             <p className="text-muted-foreground text-sm leading-relaxed max-w-sm">
-              Practical WhatsApp Business Automation with Real Support.
-              Connect with your customers, automate responses, and scale
-              your business effortlessly.
+              BizzRiser helps businesses automate customer communication using the
+              official WhatsApp Business API, including broadcast marketing, chatbot
+              automation, lead management, and support automation.
             </p>
 
             {/* Newsletter */}

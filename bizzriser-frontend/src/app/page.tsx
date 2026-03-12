@@ -336,7 +336,7 @@ export default function Home() {
             </h1>
 
             <p className="text-xl md:text-2xl text-foreground/80 mb-10 max-w-2xl mx-auto font-medium">
-              Practical WhatsApp Business Automation with Real Support. Stop dropping leads and start closing more deals automatically.
+              Practical WhatsApp automation designed for real businesses. Capture leads, send broadcasts, and close more deals - with expert support.
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -388,7 +388,7 @@ export default function Home() {
               </div>
               <div className="flex flex-col text-left">
                 <span className="text-xs md:text-sm font-semibold text-foreground">Payment Received</span>
-                <span className="text-[10px] md:text-xs text-muted-foreground whitespace-nowrap">Automated message sent</span>
+                <span className="text-[10px] md:text-xs text-muted-foreground whitespace-nowrap">Customer gets confirmation instantly</span>
               </div>
             </motion.div>
 
@@ -403,7 +403,7 @@ export default function Home() {
               </div>
               <div className="flex flex-col text-left">
                 <span className="text-xs md:text-sm font-semibold text-foreground">Order Confirmed</span>
-                <span className="text-[10px] md:text-xs text-muted-foreground whitespace-nowrap">Tracking link sent</span>
+                <span className="text-[10px] md:text-xs text-muted-foreground whitespace-nowrap">Tracking link sent automatically</span>
               </div>
             </motion.div>
 
@@ -418,7 +418,7 @@ export default function Home() {
               </div>
               <div className="flex flex-col text-left">
                 <span className="text-xs md:text-sm font-semibold text-foreground">Lead Qualified</span>
-                <span className="text-[10px] md:text-xs text-muted-foreground whitespace-nowrap">New CRM entry created</span>
+                <span className="text-[10px] md:text-xs text-muted-foreground whitespace-nowrap">CRM entry created automatically</span>
               </div>
             </motion.div>
 
@@ -433,7 +433,7 @@ export default function Home() {
               </div>
               <div className="flex flex-col text-left">
                 <span className="text-xs md:text-sm font-semibold text-foreground">Support Ticket Resolved</span>
-                <span className="text-[10px] md:text-xs text-muted-foreground whitespace-nowrap">Customer rated 5 stars</span>
+                <span className="text-[10px] md:text-xs text-muted-foreground whitespace-nowrap">Customer satisfaction recorded</span>
               </div>
             </motion.div>
           </motion.div>
@@ -443,10 +443,10 @@ export default function Home() {
       {/* 2. Partner Badges */}
       <section className="py-12 border-y border-border bg-card/50">
         <div className="container px-4 mx-auto overflow-hidden">
-          <p className="text-center text-xs font-bold text-foreground/40 mb-10 tracking-widest uppercase">
-            TRUSTED BY INNOVATIVE TEAMS WORLDWIDE
+          <p className="text-center text-xs font-bold text-foreground/100 mb-10 tracking-widest uppercase">
+            Built on World-Class Infrastructure. Powered by technologies from:
           </p>
-          <div className="flex flex-wrap justify-center items-center gap-12 opacity-40 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-700">
+          <div className="flex flex-wrap justify-center items-center gap-12 opacity-100 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-700">
             {/* Replace with actual image tags when logos are available */}
             {partners.map(p => (
               <span key={p.name} className="text-2xl font-bold font-mono text-foreground">{p.name}</span>
@@ -724,17 +724,17 @@ export default function Home() {
             {[
               {
                 title: "Practical Implementation",
-                desc: "Forget abstract software. We provide plug-and-play templates that actually convert in the real world.",
+                desc: "We don’t just give you software. We help you implement WhatsApp automation that actually converts leads into customers.",
                 icon: <Bot className="w-8 h-8 text-bizz-primary" />
               },
               {
                 title: "Dedicated Human Support",
-                desc: "While we automate your business, our own support is strictly human. Get real answers from real experts.",
+                desc: "Real support from real experts. No ticket loops. No AI responses.",
                 icon: <Users className="w-8 h-8 text-bizz-accent" />
               },
               {
                 title: "Ban-Safe Infrastructure",
-                desc: "Built strictly on official Meta APIs with built-in safeguards to ensure your number never gets blocked.",
+                desc: "Built on the official Meta WhatsApp API, designed to keep your messaging compliant and safe.",
                 icon: <Shield className="w-8 h-8 text-bizz-primary" />
               }
             ].map((usp, i) => (
@@ -758,7 +758,7 @@ export default function Home() {
       <section className="py-24 bg-card/50 overflow-hidden relative">
         <div className="container px-4 mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Loved by 10,000+ Growth Teams</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Trusted by Growing Businesses across India</h2>
           </div>
 
           <HorizontalTestimonials testimonials={testimonials} />
@@ -791,9 +791,9 @@ export default function Home() {
         <div className="absolute inset-0 bg-gradient-brand opacity-90 mix-blend-multiply" />
 
         <div className="container px-4 mx-auto relative z-10 text-center">
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">Ready to scale your business?</h2>
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">Ready to Automate Your WhatsApp?</h2>
           <p className="text-white/80 text-xl max-w-2xl mx-auto mb-10">
-            Join thousands of businesses that use BizzRiser to automate support, boost sales, and delight customers.
+            See how BizzRiser can turn WhatsApp into your highest converting sales channel.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link href="https://wa.me/919879966997?text=Hii,%20I%20want%20to%20schedule%20a%20demo" target="_blank">

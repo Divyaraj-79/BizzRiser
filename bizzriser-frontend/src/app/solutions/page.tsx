@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
-import { ArrowRight, Bot, Target, Headphones, Megaphone, ShoppingBag, GraduationCap, Building2, Stethoscope, ChevronRight, TrendingUp, Plane, ShoppingCart } from "lucide-react";
+import { ArrowRight, Bot, Target, Headphones, Megaphone, ShoppingBag, GraduationCap, Building2, Stethoscope, ChevronRight, TrendingUp, Plane, ShoppingCart, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import Link from "next/link";
@@ -12,7 +12,7 @@ const goalSolutions = [
     {
         id: "lead-gen",
         title: "Lead Generation",
-        desc: "Capture and qualify leads 24/7. Turn website visitors into WhatsApp conversations.",
+        desc: "Capture and qualify leads 24/7 using WhatsApp chatbots and click-to-WhatsApp ads.",
         icon: <Target className="w-8 h-8 text-emerald-500" />,
         features: ["Chatbot Qualification", "Click-to-WhatsApp Ads", "CRM Integration"],
         gradient: "card-lead-gen",
@@ -21,7 +21,7 @@ const goalSolutions = [
     {
         id: "support",
         title: "Customer Support",
-        desc: "Resolve queries faster. Deflect repetitive questions with intelligent bots and route complex issues to agents.",
+        desc: "Provide instant customer support using WhatsApp automation and AI chatbots.",
         icon: <Headphones className="w-8 h-8 text-blue-500" />,
         features: ["Automated FAQs", "Agent Handover", "Ticket Management"],
         gradient: "card-support",
@@ -30,7 +30,7 @@ const goalSolutions = [
     {
         id: "marketing",
         title: "Broadcast Marketing",
-        desc: "Send personalized offers and updates at scale with 98% open rates.",
+        desc: "Send personalized offers and updates at scale on WhatsApp with 98% open rates.",
         icon: <Megaphone className="w-8 h-8 text-orange-500" />,
         features: ["Personalized Campaigns", "Analytics Dashboard", "Opt-in Management"],
         gradient: "card-marketing",
@@ -103,10 +103,10 @@ export default function SolutionsPage() {
                             Solutions that scale
                         </div>
                         <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight mb-6">
-                            Automate the <span className="text-gradient">entire customer journey</span>
+                            Automate Your Entire Customer Journey with<span className="text-gradient"> WhatsApp Business API</span>
                         </h1>
                         <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-10">
-                            From the first click to lifetime loyalty. See how BizzRiser solves your specific business challenges.
+                            From lead capture to customer retention, BizzRiser helps businesses automate conversations using the official WhatsApp Business API. Manage support, run marketing campaigns, and convert more leads directly on WhatsApp.
                         </p>
                     </motion.div>
                 </div>
@@ -196,7 +196,108 @@ export default function SolutionsPage() {
                 </div>
             </section>
 
-            {/* 4. CTA Section */}
+            {/* 4. Why Businesses Are Switching Section */}
+            <section className="py-24 relative overflow-hidden">
+                <div className="absolute top-1/2 left-0 w-[500px] h-[500px] bg-bizz-accent/5 rounded-full blur-[120px] -translate-y-1/2 -translate-x-1/2 pointer-events-none" />
+
+                <div className="container px-4 mx-auto">
+                    <div className="max-w-4xl mx-auto text-center mb-20">
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.6 }}
+                        >
+                            <h2 className="text-3xl md:text-5xl font-bold mb-6 tracking-tight">
+                                Why Businesses Are Switching to <span className="text-gradient">WhatsApp Automation</span>
+                            </h2>
+                            <p className="text-lg text-muted-foreground leading-relaxed">
+                                Today’s customers expect instant communication. Traditional channels like email often fail to meet these expectations.
+                                WhatsApp is now the most powerful channel, enabling businesses to respond instantly and convert more leads.
+                            </p>
+                        </motion.div>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
+                        {[
+                            {
+                                title: "Higher Open Rates",
+                                desc: "98% open rates ensure your promotions, order confirmations, and reminders are seen within minutes, unlike email.",
+                                icon: <TrendingUp className="w-8 h-8" />,
+                                color: "text-emerald-500",
+                                bg: "bg-emerald-500/10"
+                            },
+                            {
+                                title: "Instant Customer Support",
+                                desc: "Intelligent chatbots handle FAQs 24/7, routing complex issues to agents without long waiting times.",
+                                icon: <Headphones className="w-8 h-8" />,
+                                color: "text-blue-500",
+                                bg: "bg-blue-500/10"
+                            },
+                            {
+                                title: "Automatic Lead Capture",
+                                desc: "Capture and qualify leads through structured conversations instantly, ensuring no inquiry is missed.",
+                                icon: <Target className="w-8 h-8" />,
+                                color: "text-purple-500",
+                                bg: "bg-purple-500/10"
+                            },
+                            {
+                                title: "Personalized Marketing",
+                                desc: "Send targeted broadcast campaigns at scale while maintaining the feel of a personal one-on-one conversation.",
+                                icon: <Megaphone className="w-8 h-8" />,
+                                color: "text-orange-500",
+                                bg: "bg-orange-500/10"
+                            },
+                            {
+                                title: "Long-Term Relationships",
+                                desc: "Build loyalty with automated post-purchase flows, delivery updates, and re-engagement campaigns.",
+                                icon: <Users className="w-8 h-8" />,
+                                color: "text-pink-500",
+                                bg: "bg-pink-500/10"
+                            },
+                            {
+                                title: "Business Growth Engine",
+                                desc: "Turn WhatsApp into a complete sales and support platform that scales with your business workload.",
+                                icon: <Bot className="w-8 h-8" />,
+                                color: "text-bizz-primary",
+                                bg: "bg-bizz-primary/10"
+                            }
+                        ].map((item, i) => (
+                            <motion.div
+                                key={item.title}
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: i * 0.1 }}
+                                className="group p-8 rounded-3xl bg-card border border-border hover:border-bizz-primary/40 hover:shadow-2xl hover:shadow-bizz-primary/10 transition-all duration-500"
+                            >
+                                <div className={`w-14 h-14 ${item.bg} ${item.color} rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500`}>
+                                    {item.icon}
+                                </div>
+                                <h3 className="text-xl font-bold mb-3">{item.title}</h3>
+                                <p className="text-muted-foreground text-sm leading-relaxed">
+                                    {item.desc}
+                                </p>
+                            </motion.div>
+                        ))}
+                    </div>
+
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        transition={{ duration: 1 }}
+                        className="p-10 rounded-[2.5rem] bg-gradient-brand text-white text-center relative overflow-hidden"
+                    >
+                        <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-white/10 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2" />
+                        <h3 className="text-2xl md:text-3xl font-bold mb-4 relative z-10">Turn WhatsApp Into a Complete Growth Channel</h3>
+                        <p className="text-white/80 max-w-3xl mx-auto mb-0 relative z-10">
+                            With BizzRiser, leverage the official WhatsApp Business API to automate conversations, manage interactions, and scale without increasing operational workload.
+                        </p>
+                    </motion.div>
+                </div>
+            </section>
+
+            {/* 5. CTA Section */}
             <section className="py-24 relative overflow-hidden">
                 <div className="absolute inset-0 bg-bizz-dark/10" />
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom,rgba(45,198,83,0.15)_0,transparent_100%)]" />
@@ -210,6 +311,6 @@ export default function SolutionsPage() {
                     </Link>
                 </div>
             </section>
-        </div>
+        </div >
     );
 }
