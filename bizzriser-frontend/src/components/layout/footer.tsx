@@ -26,6 +26,9 @@ const footerLinks = {
     { name: "Case Studies", href: "/case-studies" },
     { name: "Contact", href: "/contact" },
   ],
+  blogs: [
+    { name: "Blogs", href: "/blogs" }
+  ],
   legal: [
     { name: "Privacy Policy", href: "/privacy" },
     { name: "Terms of Service", href: "/terms" },
@@ -250,10 +253,23 @@ export function Footer() {
             <div>
               <h3 className="font-semibold text-sm mb-3">Contact</h3>
               <ul className="space-y-2 text-xs text-muted-foreground">
-                <li>+91 98799</li>
-                <li>hello@bizzriser.com</li>
+                <li>+91 98799 66997</li>
+                <li>bizzriserbyselten@gmail.com</li>
+                <ul className="space-y-2">
+                  {footerLinks.blogs.map((link) => (
+                    <li key={link.name}>
+                      <Link
+                        href={link.href}
+                        className="text-xs text-muted-foreground"
+                      >
+                        {link.name}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
               </ul>
             </div>
+
 
           </div>
 
