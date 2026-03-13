@@ -150,7 +150,7 @@ export default function AboutPage() {
                         <p className="text-muted-foreground">The principles that guide every feature we build and every customer we support.</p>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-sm md:max-w-none mx-auto">
+                    <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 max-w-none mx-auto">
                         {values.map((val, i) => (
                             <motion.div
                                 key={val.title}
@@ -158,13 +158,15 @@ export default function AboutPage() {
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ delay: i * 0.1 }}
-                                className="bg-card p-8 rounded-3xl border border-border hover:border-bizz-primary/30 transition-all"
+                                className="bg-card p-5 md:p-8 rounded-2xl md:rounded-3xl border border-border hover:border-bizz-primary/30 transition-all flex flex-col"
                             >
-                                <div className="w-16 h-16 rounded-2xl bg-secondary flex items-center justify-center mb-6">
-                                    {val.icon}
+                                <div className="w-12 h-12 md:w-16 md:h-16 rounded-xl md:rounded-2xl bg-secondary flex items-center justify-center mb-4 md:mb-6 shrink-0">
+                                    <div className="scale-75 md:scale-100">
+                                        {val.icon}
+                                    </div>
                                 </div>
-                                <h3 className="text-xl font-bold mb-3">{val.title}</h3>
-                                <p className="text-muted-foreground">{val.desc}</p>
+                                <h3 className="text-base md:text-xl font-bold mb-2 md:mb-3 leading-tight">{val.title}</h3>
+                                <p className="text-xs md:text-base text-muted-foreground leading-relaxed">{val.desc}</p>
                             </motion.div>
                         ))}
                     </div>

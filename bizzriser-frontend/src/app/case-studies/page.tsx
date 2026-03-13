@@ -75,13 +75,13 @@ export default function CaseStudiesPage() {
 
                     {/* Grid */}
                     {loading ? (
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                            {[1, 2, 3].map(i => (
-                                <div key={i} className="h-[400px] rounded-2xl bg-white/5 animate-pulse" />
+                        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
+                            {[1, 2, 3, 4].map(i => (
+                                <div key={i} className="h-[300px] md:h-[400px] rounded-2xl bg-white/5 animate-pulse" />
                             ))}
                         </div>
                     ) : (
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
                             {caseStudies.map((study, i) => (
                                 <motion.div
                                     key={study.id}
@@ -92,9 +92,9 @@ export default function CaseStudiesPage() {
                                     className="group"
                                 >
                                     <Link href={`/case-studies/${study.slug || study.id}`} className="block h-full cursor-pointer">
-                                        <Card className="h-full flex flex-col bg-gradient-to-br from-accent/10 to-bizz-primary/10 border-accent/20 hover:border-accent/40 hover:shadow-xl transition-all overflow-hidden">
+                                        <Card className="h-full flex flex-col bg-gradient-to-br from-accent/10 to-bizz-primary/10 border-accent/20 hover:border-accent/40 hover:shadow-xl transition-all overflow-hidden rounded-xl md:rounded-2xl">
                                             {/* Top Banner / Metric Header */}
-                                            <div className="relative h-48 overflow-hidden group/banner border-b border-accent/20">
+                                            <div className="relative h-32 md:h-48 overflow-hidden group/banner border-b border-accent/20">
                                                 {study.bannerUrl ? (
                                                     <>
                                                         <img
@@ -110,40 +110,40 @@ export default function CaseStudiesPage() {
                                                     </div>
                                                 )}
 
-                                                <div className="absolute inset-0 flex flex-col justify-center items-center text-center p-6 z-10">
-                                                    <div className={`text-4xl font-extrabold mb-1 drop-shadow-lg transition-transform duration-500 group-hover:scale-110 ${study.bannerUrl ? 'text-white' : 'text-foreground'}`}>
+                                                <div className="absolute inset-0 flex flex-col justify-center items-center text-center p-3 md:p-6 z-10">
+                                                    <div className={`text-xl md:text-4xl font-extrabold mb-0.5 md:mb-1 drop-shadow-lg transition-transform duration-500 group-hover:scale-110 ${study.bannerUrl ? 'text-white' : 'text-foreground'}`}>
                                                         {study.metric}
                                                     </div>
-                                                    <div className={`text-sm font-semibold uppercase tracking-wider ${study.bannerUrl ? 'text-white/90' : 'text-muted-foreground'}`}>
+                                                    <div className={`text-[8px] md:text-sm font-semibold uppercase tracking-wider ${study.bannerUrl ? 'text-white/90' : 'text-muted-foreground'}`}>
                                                         {study.metricLabel}
                                                     </div>
                                                 </div>
                                             </div>
 
-                                            <CardContent className="p-6 flex-1 flex flex-col relative z-10">
-                                                <div className="flex justify-between items-start mb-6">
-                                                    <div className="w-12 h-12 rounded-xl bg-white border border-accent/20 flex items-center justify-center p-2 shadow-sm overflow-hidden">
+                                            <CardContent className="p-3 md:p-6 flex-1 flex flex-col relative z-10">
+                                                <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-2 mb-4 md:mb-6">
+                                                    <div className="w-8 h-8 md:w-12 md:h-12 rounded-lg bg-white border border-accent/20 flex items-center justify-center p-1.5 shadow-sm overflow-hidden shrink-0">
                                                         {study.logoUrl ? (
                                                             <img src={study.logoUrl} alt={study.company} className="w-full h-full object-contain" />
                                                         ) : (
-                                                            <Building2 className="w-8 h-8 text-accent" />
+                                                            <Building2 className="w-5 h-5 md:w-8 md:h-8 text-accent" />
                                                         )}
                                                     </div>
-                                                    <div className="flex flex-col items-end gap-2">
-                                                        <Badge variant="outline" className="text-xs">{study.industry}</Badge>
-                                                        <Badge className="bg-bizz-primary/10 text-bizz-primary hover:bg-bizz-primary/20 hover:text-bizz-primary border-0 text-xs">{study.goal}</Badge>
+                                                    <div className="flex flex-wrap md:flex-col items-start md:items-end gap-1.5 md:gap-2">
+                                                        <Badge variant="outline" className="text-[10px] md:text-xs px-2 py-0 h-5 md:h-auto">{study.industry}</Badge>
+                                                        <Badge className="bg-bizz-primary/10 text-bizz-primary hover:bg-bizz-primary/20 hover:text-bizz-primary border-0 text-[10px] md:text-xs px-2 py-0 h-5 md:h-auto">{study.goal}</Badge>
                                                     </div>
                                                 </div>
 
-                                                <h3 className="text-xl font-bold mb-3 text-foreground group-hover:text-accent transition-colors line-clamp-2">
+                                                <h3 className="text-sm md:text-xl font-bold mb-2 md:mb-3 text-foreground group-hover:text-accent transition-colors line-clamp-2 leading-tight">
                                                     {study.title}
                                                 </h3>
-                                                <p className="text-muted-foreground text-sm line-clamp-3 mb-6 flex-1">
+                                                <p className="text-muted-foreground text-[10px] md:text-sm line-clamp-2 md:line-clamp-3 mb-4 md:mb-6 flex-1 leading-normal">
                                                     {study.excerpt}
                                                 </p>
 
-                                                <div className="flex items-center text-sm font-bold text-foreground group-hover:text-bizz-primary transition-colors mt-auto">
-                                                    Read full story <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                                                <div className="flex items-center text-[10px] md:text-sm font-bold text-foreground group-hover:text-bizz-primary transition-colors mt-auto">
+                                                    Read full story <ArrowRight className="w-3 h-3 md:w-4 md:h-4 ml-1 group-hover:translate-x-1 transition-transform" />
                                                 </div>
                                             </CardContent>
                                         </Card>

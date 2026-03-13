@@ -720,36 +720,97 @@ export default function Home() {
             <p className="text-muted-foreground max-w-2xl mx-auto">We don't just give you a tool; we give you a revenue-generating partner.</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-sm md:max-w-none mx-auto">
-            {[
-              {
-                title: "Practical Implementation",
-                desc: "We don’t just give you software. We help you implement WhatsApp automation that actually converts leads into customers.",
-                icon: <Bot className="w-8 h-8 text-bizz-primary" />
-              },
-              {
-                title: "Dedicated Human Support",
-                desc: "Real support from real experts. No ticket loops. No AI responses.",
-                icon: <Users className="w-8 h-8 text-bizz-accent" />
-              },
-              {
-                title: "Ban-Safe Infrastructure",
-                desc: "Built on the official Meta WhatsApp API, designed to keep your messaging compliant and safe.",
-                icon: <Shield className="w-8 h-8 text-bizz-primary" />
-              }
-            ].map((usp, i) => (
+          <div className="relative">
+            {/* Desktop Grid Layout */}
+            <div className="hidden md:grid md:grid-cols-3 gap-8 max-w-none mx-auto">
+              {[
+                {
+                  title: "Practical Implementation",
+                  desc: "We don’t just give you software. We help you implement WhatsApp automation that actually converts leads into customers.",
+                  icon: <Bot className="w-8 h-8 text-bizz-primary" />
+                },
+                {
+                  title: "Dedicated Human Support",
+                  desc: "Real support from real experts. No ticket loops. No AI responses.",
+                  icon: <Users className="w-8 h-8 text-bizz-accent" />
+                },
+                {
+                  title: "Ban-Safe Infrastructure",
+                  desc: "Built on the official Meta WhatsApp API, designed to keep your messaging compliant and safe.",
+                  icon: <Shield className="w-8 h-8 text-bizz-primary" />
+                }
+              ].map((usp, i) => (
+                <motion.div
+                  key={usp.title}
+                  whileHover={{ y: -10 }}
+                  className="p-8 rounded-3xl bg-gradient-to-br from-accent/10 to-bizz-primary/10 border border-accent/20 hover:shadow-2xl hover:border-accent/40 transition-all duration-300"
+                >
+                  <div className="w-16 h-16 rounded-2xl bg-accent/10 mb-6 flex items-center justify-center">
+                    {usp.icon}
+                  </div>
+                  <h3 className="text-xl font-bold mb-3">{usp.title}</h3>
+                  <p className="text-muted-foreground leading-relaxed">{usp.desc}</p>
+                </motion.div>
+              ))}
+            </div>
+
+            <div className="md:hidden overflow-hidden py-4 -mx-4 px-4 relative">
+              <div className="absolute inset-y-0 left-0 w-8 bg-gradient-to-r from-background to-transparent z-10" />
+              <div className="absolute inset-y-0 right-0 w-8 bg-gradient-to-l from-background to-transparent z-10" />
+
               <motion.div
-                key={usp.title}
-                whileHover={{ y: -10 }}
-                className="p-8 rounded-3xl bg-gradient-to-br from-accent/10 to-bizz-primary/10 border border-accent/20 hover:shadow-2xl hover:border-accent/40 transition-all duration-300"
+                className="flex gap-4 w-max"
+                animate={{
+                  x: [0, "-50%"],
+                }}
+                transition={{
+                  x: {
+                    repeat: Infinity,
+                    repeatType: "loop",
+                    duration: 15,
+                    ease: "linear",
+                  },
+                }}
               >
-                <div className="w-16 h-16 rounded-2xl bg-accent/10 mb-6 flex items-center justify-center">
-                  {usp.icon}
-                </div>
-                <h3 className="text-xl font-bold mb-3">{usp.title}</h3>
-                <p className="text-muted-foreground leading-relaxed">{usp.desc}</p>
+                {[...Array(2)].map((_, i) => (
+                  <div key={i} className="flex gap-4">
+                    {[
+                      {
+                        title: "Practical Implementation",
+                        desc: "We don’t just give you software. We help you implement WhatsApp automation that actually converts leads into customers.",
+                        icon: <Bot className="w-6 h-6 text-emerald-500" />
+                      },
+                      {
+                        title: "Dedicated Human Support",
+                        desc: "Real support from real experts. No ticket loops. No AI responses.",
+                        icon: <Users className="w-6 h-6 text-cyan-500" />
+                      },
+                      {
+                        title: "Ban-Safe Infrastructure",
+                        desc: "Built on the official Meta WhatsApp API, designed to keep your messaging compliant and safe.",
+                        icon: <Shield className="w-6 h-6 text-blue-500" />
+                      },
+                      {
+                        title: "ROI-First Approach",
+                        desc: "Every automation is designed with one goal: increasing your bottom line through higher engagement.",
+                        icon: <TrendingUp className="w-6 h-6 text-indigo-500" />
+                      }
+                    ].map((usp, j) => (
+                      <div
+                        key={`${i}-${j}`}
+                        className="w-[280px] p-6 rounded-3xl bg-card border border-border shadow-[0_4px_20px_rgba(0,0,0,0.05)] shrink-0 flex flex-col group hover:border-bizz-primary/30 transition-all"
+                      >
+                        <div className="w-12 h-12 rounded-2xl bg-secondary flex items-center justify-center mb-4 shrink-0 transition-transform group-hover:scale-110">
+                          {usp.icon}
+                        </div>
+                        <h3 className="text-base font-bold mb-2 leading-tight group-hover:text-bizz-primary transition-colors">{usp.title}</h3>
+                        <p className="text-xs text-muted-foreground leading-relaxed">{usp.desc}</p>
+                      </div>
+                    ))}
+                  </div>
+                ))}
               </motion.div>
-            ))}
+            </div>
           </div>
         </div>
       </section>

@@ -120,7 +120,7 @@ export default function SolutionsPage() {
                         <p className="text-muted-foreground max-w-2xl mx-auto">Whatever your objective, we have the tools to make it happen via WhatsApp.</p>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div className="grid grid-cols-2 md:grid-cols-2 gap-3 md:gap-8">
                         {goalSolutions.map((solution, i) => (
                             <motion.div
                                 key={solution.title}
@@ -131,28 +131,32 @@ export default function SolutionsPage() {
                             >
                                 <Card className={`h-full ${solution.gradient} hover:shadow-[0_0_30px_rgba(45,198,83,0.1)] transition-all flex flex-col group relative overflow-hidden`}>
                                     <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
-                                    <CardHeader>
-                                        <div className={`w-16 h-16 rounded-2xl ${solution.iconGradient} flex items-center justify-center mb-4 border border-white/10 shadow-inner`}>
-                                            {solution.icon}
+                                    <CardHeader className="p-3 md:p-6">
+                                        <div className={`w-10 h-10 md:w-16 md:h-16 rounded-lg md:rounded-2xl ${solution.iconGradient} flex items-center justify-center mb-2 md:mb-4 border border-white/10 shadow-inner shrink-0`}>
+                                            <div className="scale-65 md:scale-100">
+                                                {solution.icon}
+                                            </div>
                                         </div>
-                                        <CardTitle className="text-2xl font-bold group-hover:text-bizz-primary transition-all duration-300">{solution.title}</CardTitle>
-                                        <CardDescription className="text-base mt-2 text-foreground/70 leading-relaxed font-medium">
+                                        <CardTitle className="text-sm md:text-2xl font-bold group-hover:text-bizz-primary transition-all duration-300 leading-tight">
+                                            {solution.title}
+                                        </CardTitle>
+                                        <CardDescription className="text-[10px] md:text-base mt-1 md:mt-2 text-foreground/70 leading-relaxed font-medium">
                                             {solution.desc}
                                         </CardDescription>
                                     </CardHeader>
-                                    <CardContent className="flex-1">
-                                        <ul className="space-y-3">
+                                    <CardContent className="flex-1 p-3 pt-0 md:p-6 md:pt-0">
+                                        <ul className="space-y-1.5 md:space-y-3">
                                             {solution.features.map(feature => (
-                                                <li key={feature} className="flex items-center gap-2 text-foreground font-medium">
-                                                    <div className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-emerald-400 to-cyan-400 shrink-0" />
-                                                    {feature}
+                                                <li key={feature} className="flex items-start gap-1.5 text-foreground font-medium text-[9px] md:text-sm leading-tight">
+                                                    <div className="w-1 h-1 md:w-1.5 md:h-1.5 rounded-full bg-gradient-to-r from-emerald-400 to-cyan-400 shrink-0 mt-1" />
+                                                    <span>{feature}</span>
                                                 </li>
                                             ))}
                                         </ul>
                                     </CardContent>
-                                    <div className="p-6 pt-0 mt-auto">
-                                        <Button variant="ghost" className="p-0 hover:bg-transparent text-bizz-primary hover:opacity-80 transition-opacity font-semibold">
-                                            Learn more <ArrowRight className="w-4 h-4 ml-2" />
+                                    <div className="p-3 pt-0 md:p-6 md:pt-0 mt-auto">
+                                        <Button variant="ghost" className="p-0 h-auto hover:bg-transparent text-bizz-primary hover:opacity-80 transition-opacity font-bold text-[10px] md:text-base">
+                                            Learn more <ArrowRight className="w-3 h-3 md:w-4 md:h-4 ml-1 md:ml-2" />
                                         </Button>
                                     </div>
                                 </Card>
@@ -218,7 +222,7 @@ export default function SolutionsPage() {
                         </motion.div>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
+                    <div className="hidden md:grid md:grid-cols-3 gap-8 mb-20">
                         {[
                             {
                                 title: "Higher Open Rates",
@@ -280,6 +284,87 @@ export default function SolutionsPage() {
                                 </p>
                             </motion.div>
                         ))}
+                    </div>
+
+                    {/* Mobile Continuous Horizontal Scroll */}
+                    <div className="md:hidden overflow-hidden py-4 -mx-4 px-4 relative mb-20">
+                        <div className="absolute inset-y-0 left-0 w-8 bg-gradient-to-r from-background to-transparent z-10" />
+                        <div className="absolute inset-y-0 right-0 w-8 bg-gradient-to-l from-background to-transparent z-10" />
+
+                        <motion.div
+                            className="flex gap-4 w-max"
+                            animate={{
+                                x: [0, "-50%"],
+                            }}
+                            transition={{
+                                x: {
+                                    repeat: Infinity,
+                                    repeatType: "loop",
+                                    duration: 25,
+                                    ease: "linear",
+                                },
+                            }}
+                        >
+                            {[...Array(2)].map((_, i) => (
+                                <div key={i} className="flex gap-4">
+                                    {[
+                                        {
+                                            title: "Higher Open Rates",
+                                            desc: "98% open rates ensure your promotions, order confirmations, and reminders are seen within minutes, unlike email.",
+                                            icon: <TrendingUp className="w-6 h-6" />,
+                                            color: "text-emerald-500",
+                                            bg: "bg-emerald-500/10"
+                                        },
+                                        {
+                                            title: "Instant Customer Support",
+                                            desc: "Intelligent chatbots handle FAQs 24/7, routing complex issues to agents without long waiting times.",
+                                            icon: <Headphones className="w-6 h-6" />,
+                                            color: "text-blue-500",
+                                            bg: "bg-blue-500/10"
+                                        },
+                                        {
+                                            title: "Automatic Lead Capture",
+                                            desc: "Capture and qualify leads through structured conversations instantly, ensuring no inquiry is missed.",
+                                            icon: <Target className="w-6 h-6" />,
+                                            color: "text-purple-500",
+                                            bg: "bg-purple-500/10"
+                                        },
+                                        {
+                                            title: "Personalized Marketing",
+                                            desc: "Send targeted broadcast campaigns at scale while maintaining the feel of a personal one-on-one conversation.",
+                                            icon: <Megaphone className="w-6 h-6" />,
+                                            color: "text-orange-500",
+                                            bg: "bg-orange-500/10"
+                                        },
+                                        {
+                                            title: "Long-Term Relationships",
+                                            desc: "Build loyalty with automated post-purchase flows, delivery updates, and re-engagement campaigns.",
+                                            icon: <Users className="w-6 h-6" />,
+                                            color: "text-pink-500",
+                                            bg: "bg-pink-500/10"
+                                        },
+                                        {
+                                            title: "Business Growth Engine",
+                                            desc: "Turn WhatsApp into a complete sales and support platform that scales with your business workload.",
+                                            icon: <Bot className="w-6 h-6" />,
+                                            color: "text-bizz-primary",
+                                            bg: "bg-bizz-primary/10"
+                                        }
+                                    ].map((item, j) => (
+                                        <div
+                                            key={`${i}-${j}`}
+                                            className="w-[280px] p-6 rounded-3xl bg-card border border-border shadow-[0_4px_20px_rgba(0,0,0,0.05)] shrink-0 flex flex-col group hover:border-bizz-primary/30 transition-all"
+                                        >
+                                            <div className={`w-12 h-12 ${item.bg} ${item.color} rounded-2xl flex items-center justify-center mb-4 shrink-0 transition-transform group-hover:scale-110`}>
+                                                {item.icon}
+                                            </div>
+                                            <h3 className="text-base font-bold mb-2 leading-tight group-hover:text-bizz-primary transition-colors">{item.title}</h3>
+                                            <p className="text-xs text-muted-foreground leading-relaxed">{item.desc}</p>
+                                        </div>
+                                    ))}
+                                </div>
+                            ))}
+                        </motion.div>
                     </div>
 
                     <motion.div
