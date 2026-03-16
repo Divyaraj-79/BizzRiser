@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { motion } from "framer-motion";
@@ -12,6 +12,16 @@ import {
   SheetTrigger,
   SheetTitle,
 } from "@/components/ui/sheet";
+import { SolutionsDropdown } from "./solutions-dropdown";
+import { fetchApi } from "@/lib/api";
+import { ChevronDown } from "lucide-react";
+
+interface IndustrySolution {
+  id: string;
+  name: string;
+  icon: string;
+  link: string;
+}
 
 const navLinks = [
   { name: "Home", href: "/" },
@@ -27,8 +37,42 @@ export function Navbar() {
   const [isDark, setIsDark] = useState(false);
   const [open, setOpen] = useState(false);
 
+  const [isSolutionsOpen, setIsSolutionsOpen] = useState(false);
+  const [industries, setIndustries] = useState<IndustrySolution[]>([]);
+  const dropdownTimerRef = React.useRef<NodeJS.Timeout | null>(null);
+
   const pathname = usePathname();
   const router = useRouter();
+
+  useEffect(() => {
+    fetchApi("/solution-industries")
+      .then((data: any[]) => {
+        if (data?.length) {
+          setIndustries(data.map((ind: any) => ({
+            id: ind.id,
+            name: ind.title,
+            icon: ind.icon || "Bot",
+            link: `/solutions/${ind.slug}`,
+          })));
+        }
+      })
+      .catch(() => { });
+  }, []);
+
+  const handleMouseEnter = (name: string) => {
+    if (name === "Solutions") {
+      if (dropdownTimerRef.current) clearTimeout(dropdownTimerRef.current);
+      setIsSolutionsOpen(true);
+    }
+  };
+
+  const handleMouseLeave = (name: string) => {
+    if (name === "Solutions") {
+      dropdownTimerRef.current = setTimeout(() => {
+        setIsSolutionsOpen(false);
+      }, 150);
+    }
+  };
 
   if (pathname?.startsWith("/admin")) return null;
 
@@ -91,19 +135,35 @@ export function Navbar() {
           />
         </button>
 
-        {/* Desktop Navigation (UNCHANGED) */}
         <nav className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => (
-            <Link
+            <div
               key={link.name}
-              href={link.href}
-              className={`text-sm font-medium transition-colors hover:text-bizz-primary ${pathname === link.href
-                ? "text-bizz-primary"
-                : "text-muted-foreground"
-                }`}
+              className="relative py-4"
+              onMouseEnter={() => handleMouseEnter(link.name)}
+              onMouseLeave={() => handleMouseLeave(link.name)}
             >
-              {link.name}
-            </Link>
+              <Link
+                href={link.href}
+                className={`text-sm font-medium transition-colors hover:text-bizz-primary flex items-center gap-1 ${pathname === link.href || (link.name === "Solutions" && pathname?.startsWith("/solutions"))
+                  ? "text-bizz-primary"
+                  : "text-muted-foreground"
+                  }`}
+              >
+                {link.name}
+                {link.name === "Solutions" && (
+                  <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${isSolutionsOpen ? "rotate-180" : ""}`} />
+                )}
+              </Link>
+
+              {link.name === "Solutions" && (
+                <SolutionsDropdown
+                  isOpen={isSolutionsOpen}
+                  industries={industries}
+                  onClose={() => setIsSolutionsOpen(false)}
+                />
+              )}
+            </div>
           ))}
         </nav>
 
@@ -148,17 +208,39 @@ export function Navbar() {
                 {/* Nav Links */}
                 <div className="flex flex-col gap-6">
                   {navLinks.map((link) => (
-                    <Link
-                      key={link.name}
-                      href={link.href}
-                      onClick={() => setOpen(false)}
-                      className={`text-lg font-medium transition-colors ${pathname === link.href
-                        ? "text-bizz-primary"
-                        : "text-muted-foreground"
-                        }`}
-                    >
-                      {link.name}
-                    </Link>
+                    <div key={link.name} className="flex flex-col gap-3">
+                      <Link
+                        href={link.href}
+                        onClick={() => setOpen(false)}
+                        className={`text-lg font-medium transition-colors ${pathname === link.href || (link.name === "Solutions" && pathname?.startsWith("/solutions"))
+                          ? "text-bizz-primary"
+                          : "text-muted-foreground"
+                          }`}
+                      >
+                        {link.name}
+                      </Link>
+                      {link.name === "Solutions" && industries.length > 0 && (
+                        <div className="flex flex-col gap-3 pl-4 border-l border-white/10">
+                          {industries.slice(0, 4).map((ind) => (
+                            <Link
+                              key={ind.id}
+                              href={ind.link}
+                              onClick={() => setOpen(false)}
+                              className="text-sm text-muted-foreground hover:text-bizz-primary transition-colors"
+                            >
+                              {ind.name}
+                            </Link>
+                          ))}
+                          <Link
+                            href="/solutions"
+                            onClick={() => setOpen(false)}
+                            className="text-sm font-bold text-bizz-primary"
+                          >
+                            Explore All
+                          </Link>
+                        </div>
+                      )}
+                    </div>
                   ))}
                 </div>
 
