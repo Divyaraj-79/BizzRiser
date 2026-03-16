@@ -171,9 +171,9 @@ export function Footer() {
             {/* Social */}
             <div className="flex items-center gap-4 mt-6">
 
-              <Link href="#"><Facebook className="w-4 h-4" /></Link>
-              <Link href="#"><Twitter className="w-4 h-4" /></Link>
-              <Link href="#"><Instagram className="w-4 h-4" /></Link>
+              <Link href="https://www.facebook.com/bizzriser.wp/"><Facebook className="w-4 h-4" /></Link>
+              <Link href="https://x.com/bizzriser"><Twitter className="w-4 h-4" /></Link>
+              <Link href="https://www.instagram.com/bizzriser/"><Instagram className="w-4 h-4" /></Link>
               <Link href="#"><Linkedin className="w-4 h-4" /></Link>
             </div>
           </div>
@@ -276,9 +276,9 @@ export function Footer() {
           {/* Social */}
           <div className="flex justify-center gap-5">
 
-            <Link href="#"><Facebook size={18} /></Link>
-            <Link href="#"><Twitter size={18} /></Link>
-            <Link href="#"><Instagram size={18} /></Link>
+            <Link href="https://www.facebook.com/bizzriser.wp/"><Facebook size={18} /></Link>
+            <Link href="https://x.com/bizzriser"><Twitter size={18} /></Link>
+            <Link href="https://www.instagram.com/bizzriser/"><Instagram size={18} /></Link>
             <Link href="#"><Linkedin size={18} /></Link>
 
           </div>

@@ -18,6 +18,8 @@ const filters = {
 export default function CaseStudiesPage() {
     const [caseStudies, setCaseStudies] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
+    const [selectedIndustry, setSelectedIndustry] = useState("All Industries");
+    const [selectedGoal, setSelectedGoal] = useState("All Goals");
 
     useEffect(() => {
         fetch(`${ADMIN_API_BASE}/case-studies`)
@@ -29,6 +31,12 @@ export default function CaseStudiesPage() {
             .catch(err => console.error("Failed to fetch case studies:", err))
             .finally(() => setLoading(false));
     }, []);
+
+    const filteredCaseStudies = caseStudies.filter(study => {
+        const industryMatch = selectedIndustry === "All Industries" || study.industry === selectedIndustry;
+        const goalMatch = selectedGoal === "All Goals" || study.goal === selectedGoal;
+        return industryMatch && goalMatch;
+    });
 
     return (
         <div className="bg-background flex flex-col flex-1">
@@ -64,11 +72,19 @@ export default function CaseStudiesPage() {
                     <div className="flex flex-col md:flex-row justify-between items-center gap-6 mb-16">
                         <h2 className="text-2xl font-bold hidden md:block">All Customer Stories</h2>
                         <div className="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
-                            <select className="h-10 w-full sm:w-auto rounded-full border border-input bg-background/50 px-4 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 transition-all">
-                                {filters.industry.map(opt => <option key={opt}>{opt}</option>)}
+                            <select
+                                value={selectedIndustry}
+                                onChange={(e) => setSelectedIndustry(e.target.value)}
+                                className="h-10 w-full sm:w-auto rounded-full border border-input bg-background/50 px-4 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-accent transition-all cursor-pointer"
+                            >
+                                {filters.industry.map(opt => <option key={opt} value={opt}>{opt}</option>)}
                             </select>
-                            <select className="h-10 w-full sm:w-auto rounded-full border border-input bg-background/50 px-4 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 transition-all">
-                                {filters.goal.map(opt => <option key={opt}>{opt}</option>)}
+                            <select
+                                value={selectedGoal}
+                                onChange={(e) => setSelectedGoal(e.target.value)}
+                                className="h-10 w-full sm:w-auto rounded-full border border-input bg-background/50 px-4 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-accent transition-all cursor-pointer"
+                            >
+                                {filters.goal.map(opt => <option key={opt} value={opt}>{opt}</option>)}
                             </select>
                         </div>
                     </div>
@@ -82,7 +98,7 @@ export default function CaseStudiesPage() {
                         </div>
                     ) : (
                         <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
-                            {caseStudies.map((study, i) => (
+                            {filteredCaseStudies.map((study, i) => (
                                 <motion.div
                                     key={study.id}
                                     initial={{ opacity: 0, y: 30 }}
