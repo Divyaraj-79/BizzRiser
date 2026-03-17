@@ -352,30 +352,33 @@ ${selectedPlan === i
 
                     <motion.div
                         className="flex gap-24 items-center whitespace-nowrap"
-                        animate={{
-                            x: [0, "-50%"],
-                        }}
+                        initial={{ x: "0%" }}
+                        animate={{ x: "-50%" }}
                         transition={{
-                            x: {
-                                repeat: Infinity,
-                                repeatType: "loop",
-                                duration: 60, // Slower for premium feel
-                                ease: "linear",
-                            },
+                            duration: 20,
+                            ease: "linear",
+                            repeat: Infinity,
+                            repeatType: "loop",
                         }}
+                        style={{ willChange: "transform" }}
                     >
                         {/* Double the brands array for seamless loop */}
                         {[...displayBrands, ...displayBrands].map((brand, i) => (
-                            <div
+                            <motion.div
                                 key={`${brand.name}-${i}`}
-                                className="flex items-center justify-center grayscale opacity-30 hover:grayscale-0 hover:opacity-100 transition-all duration-700 hover:scale-125 px-4"
+                                className="flex items-center justify-center opacity-60 px-4"
+                                whileHover={{
+                                    scale: 1.25,
+                                    opacity: 1,
+                                    transition: { duration: 0.3 }
+                                }}
                             >
                                 <img
                                     src={brand.imageUrl}
                                     alt={brand.name}
                                     className="h-10 md:h-16 w-auto object-contain max-w-[180px]"
                                 />
-                            </div>
+                            </motion.div>
                         ))}
                     </motion.div>
                 </div>
