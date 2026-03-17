@@ -46,19 +46,16 @@ export default function BrandsAdmin() {
             const formData = new FormData();
             formData.append("file", file);
 
-            const uploadRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'}/upload/image`, {
+            const { url } = await fetchApi("/upload/image", {
                 method: "POST",
                 headers: { Authorization: `Bearer ${token}` },
                 body: formData,
             });
 
-            if (!uploadRes.ok) throw new Error("Upload failed");
-            const { url } = await uploadRes.json();
-
             // 2. Create brand
             await fetchApi("/brands", {
                 method: "POST",
-                headers: { ...headers, "Content-Type": "application/json" },
+                headers: { Authorization: `Bearer ${token}` },
                 body: JSON.stringify({ name, imageUrl: url }),
             });
 
@@ -69,8 +66,8 @@ export default function BrandsAdmin() {
             if (fileInput) fileInput.value = "";
 
             await loadBrands();
-        } catch (error) {
-            alert("Failed to upload brand");
+        } catch (error: any) {
+            alert(error.message || "Failed to upload brand");
             console.error(error);
         }
         setUploading(false);
