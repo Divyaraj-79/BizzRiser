@@ -51,7 +51,8 @@ export default function PricingPage() {
         { name: "kich", imageUrl: "/brands/kich.png" },
     ];
 
-    const displayBrands = brands.length > 0 ? brands : staticBrands;
+    // Use static brands exclusively for now as requested by user
+    const displayBrands = staticBrands;
 
     useEffect(() => {
         fetchApi("/pricing-plans")
@@ -346,11 +347,11 @@ ${selectedPlan === i
 
                 <div className="flex relative items-center">
                     {/* Fading Edges */}
-                    <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
-                    <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
+                    <div className="absolute inset-y-0 left-0 w-48 bg-gradient-to-r from-background via-background/80 to-transparent z-10 pointer-events-none" />
+                    <div className="absolute inset-y-0 right-0 w-48 bg-gradient-to-l from-background via-background/80 to-transparent z-10 pointer-events-none" />
 
                     <motion.div
-                        className="flex gap-20 items-center whitespace-nowrap"
+                        className="flex gap-24 items-center whitespace-nowrap"
                         animate={{
                             x: [0, "-50%"],
                         }}
@@ -358,7 +359,7 @@ ${selectedPlan === i
                             x: {
                                 repeat: Infinity,
                                 repeatType: "loop",
-                                duration: 40,
+                                duration: 60, // Slower for premium feel
                                 ease: "linear",
                             },
                         }}
@@ -366,13 +367,13 @@ ${selectedPlan === i
                         {/* Double the brands array for seamless loop */}
                         {[...displayBrands, ...displayBrands].map((brand, i) => (
                             <div
-                                key={`${brand.id || i}-${i}`}
-                                className="flex items-center justify-center grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition-all duration-500 hover:scale-110"
+                                key={`${brand.name}-${i}`}
+                                className="flex items-center justify-center grayscale opacity-30 hover:grayscale-0 hover:opacity-100 transition-all duration-700 hover:scale-125 px-4"
                             >
                                 <img
                                     src={brand.imageUrl}
                                     alt={brand.name}
-                                    className="h-8 md:h-12 w-auto object-contain"
+                                    className="h-10 md:h-16 w-auto object-contain max-w-[180px]"
                                 />
                             </div>
                         ))}
