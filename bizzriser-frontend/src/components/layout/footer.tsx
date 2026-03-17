@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import {
   Facebook,
   Twitter,
@@ -38,6 +39,9 @@ const footerLinks = {
 
 export function Footer() {
   const [isDark, setIsDark] = useState(false);
+  const pathname = usePathname();
+
+  if (pathname?.startsWith("/admin")) return null;
 
   useEffect(() => {
     setIsDark(document.documentElement.classList.contains("dark"));

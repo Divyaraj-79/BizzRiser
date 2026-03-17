@@ -2,7 +2,7 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  ArrowRight, Bot, CheckCircle2, MessageSquare, Shield, TrendingUp, Users, Play, Star,
+  ArrowRight, Bot, CheckCircle2, MessageSquare, Shield, TrendingUp, Users, Play, Star, Quote,
   ChevronLeft, ChevronRight, Plane, Video, Phone, MoreVertical, Search, Mic, Camera, Paperclip, Send
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -15,13 +15,16 @@ import { useState, useEffect } from "react";
 import { fetchApi } from "@/lib/api";
 import { CustomDropdown } from "@/components/ui/custom-dropdown";
 
+import meta from "../../public/meta.png";
+import google from "../../public/google.png";
+import aws from "../../public/aws.png";
+import awslight from "../../public/awslight.png";
+
 // Dummy data for sections
 const partners = [
-  { name: "Meta", logo: "/logos/meta.svg" },
-  { name: "Google", logo: "/logos/google.svg" },
-  { name: "Microsoft", logo: "/logos/microsoft.svg" },
-  { name: "Stripe", logo: "/logos/stripe.svg" },
-  { name: "AWS", logo: "/logos/aws.svg" },
+  { name: "Meta", logo: meta },
+  { name: "Google", logo: google },
+  { name: "AWS", logo: aws, logoLight: awslight },
 ];
 
 // Dynamic API states for Chatbots and Industries will replace these placeholders.
@@ -83,34 +86,32 @@ function SwipeTestimonials({ testimonials }: { testimonials: any[] }) {
                   damping: 25
                 }}
 
-                className="absolute w-full bg-card border border-border rounded-2xl shadow-xl p-6 md:p-8"
+                className="absolute w-full bg-card border border-border/50 rounded-2xl shadow-xl p-6 md:p-8 h-[300px] flex flex-col group overflow-hidden"
               >
+                <Quote className="absolute top-6 right-6 w-16 h-16 text-primary/5 -z-0 pointer-events-none" />
 
-                {/* Card content */}
-
-                <div className="flex gap-4 items-start">
-                  <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-gradient-brand flex items-center justify-center text-white font-bold text-xl shadow-lg shrink-0">
-                    {t.author.charAt(0)}
-                  </div>
-
-                  <div>
-                    <p className="text-muted-foreground text-sm md:text-base leading-relaxed mb-4">
+                <div className="relative z-10 flex flex-col h-full">
+                  <div className="flex-1 overflow-y-auto pr-2 mb-6 custom-scrollbar">
+                    <p className="text-muted-foreground text-sm md:text-base leading-relaxed italic font-medium">
                       "{t.content}"
                     </p>
+                  </div>
 
-                    <div>
-                      <p className="font-semibold text-foreground text-sm">
+                  <div className="flex gap-4 items-center pt-4 border-t border-border/50">
+                    <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-gradient-brand flex items-center justify-center text-white font-bold text-xl shadow-lg shrink-0">
+                      {t.author.charAt(0)}
+                    </div>
+
+                    <div className="min-w-0">
+                      <p className="font-bold text-foreground text-sm tracking-tight truncate">
                         {t.author}
                       </p>
 
-                      <p className="text-xs text-muted-foreground">
+                      <p className="text-xs text-muted-foreground font-medium truncate">
                         {t.role}
                       </p>
-
                     </div>
-
                   </div>
-
                 </div>
 
               </motion.div>
@@ -224,24 +225,34 @@ function HorizontalTestimonials({ testimonials }: { testimonials: any[] }) {
                 boxShadow: isCenter ? "0 10px 40px rgba(59, 130, 246, 0.15)" : "none",
               }}
               transition={{ duration: 0.5, type: "spring", stiffness: 300, damping: 30 }}
-              className="absolute w-[75vw] sm:w-[65vw] md:w-[380px] bg-background border border-border rounded-xl p-6 cursor-grab active:cursor-grabbing hover:cursor-grab"
+              className="absolute w-[75vw] sm:w-[65vw] md:w-[400px] h-[320px] bg-card border border-border/50 rounded-2xl p-6 md:p-8 cursor-grab active:cursor-grabbing hover:cursor-grab flex flex-col group overflow-hidden"
               style={{
                 pointerEvents: isVisible ? 'auto' : 'none',
               }}
             >
-              <div className="flex gap-1 mb-4">
-                {Array.from({ length: t.rating || 5 }).map((_, star) => (
-                  <Star key={star} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
-                ))}
-              </div>
-              <p className="text-foreground italic mb-6 text-sm md:text-base">"{t.content}"</p>
-              <div className="flex items-center gap-4 mt-auto">
-                <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gradient-brand flex items-center justify-center text-white font-bold shadow-lg shrink-0">
-                  {t.author.charAt(0)}
+              <Quote className="absolute top-6 right-6 w-20 h-20 text-primary/5 -z-0 pointer-events-none group-hover:text-primary/10 transition-colors" />
+
+              <div className="relative z-10 flex flex-col h-full">
+                <div className="flex gap-1 mb-4">
+                  {Array.from({ length: t.rating || 5 }).map((_, star) => (
+                    <Star key={star} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                  ))}
                 </div>
-                <div className="min-w-0">
-                  <h4 className="font-semibold text-sm truncate">{t.author}</h4>
-                  <p className="text-xs text-muted-foreground truncate">{t.role}</p>
+
+                <div className="flex-1 overflow-y-auto pr-2 mb-6 custom-scrollbar">
+                  <p className="text-foreground/90 italic text-sm md:text-base leading-relaxed font-medium">
+                    "{t.content}"
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-4 pt-4 border-t border-border/50">
+                  <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gradient-brand flex items-center justify-center text-white font-bold shadow-lg shrink-0">
+                    {t.author.charAt(0)}
+                  </div>
+                  <div className="min-w-0">
+                    <h4 className="font-bold text-sm tracking-tight truncate">{t.author}</h4>
+                    <p className="text-xs text-muted-foreground font-medium truncate">{t.role}</p>
+                  </div>
                 </div>
               </div>
             </motion.div>
@@ -450,7 +461,31 @@ export default function Home() {
           <div className="flex flex-wrap justify-center items-center gap-12 opacity-100 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-700">
             {/* Replace with actual image tags when logos are available */}
             {partners.map(p => (
-              <span key={p.name} className="text-2xl font-bold font-mono text-foreground">{p.name}</span>
+              <span key={p.name} className="relative w-24 h-24">
+                {(p as any).logoLight ? (
+                  <>
+                    <Image
+                      src={p.logo}
+                      alt={p.name}
+                      fill
+                      className="object-contain hidden dark:block"
+                    />
+                    <Image
+                      src={(p as any).logoLight}
+                      alt={p.name}
+                      fill
+                      className="object-contain dark:hidden"
+                    />
+                  </>
+                ) : (
+                  <Image
+                    src={p.logo}
+                    alt={p.name}
+                    fill
+                    className="object-contain"
+                  />
+                )}
+              </span>
             ))}
           </div>
         </div>
@@ -710,6 +745,19 @@ export default function Home() {
           100% {
             transform: translateY(0);
           }
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: rgba(0, 0, 0, 0.1);
+          border-radius: 10px;
+        }
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: rgba(255, 255, 255, 0.2);
         }
       `}</style>
 
