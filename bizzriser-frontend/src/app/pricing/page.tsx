@@ -27,6 +27,32 @@ export default function PricingPage() {
     const [apiPlans, setApiPlans] = useState<any[]>([]);
     const [brands, setBrands] = useState<any[]>([]);
 
+    const staticBrands = [
+        { name: "AJA by kazumi", imageUrl: "/brands/AJA by kazumi.png" },
+        { name: "Altros ceramic", imageUrl: "/brands/Altros ceramic.png" },
+        { name: "Angelcoat", imageUrl: "/brands/Angelcoat.png" },
+        { name: "Babu Lime", imageUrl: "/brands/Babu Lime.png" },
+        { name: "Captax consultancy", imageUrl: "/brands/Captax consultancy.png" },
+        { name: "Colours", imageUrl: "/brands/Colours.png" },
+        { name: "Emisun", imageUrl: "/brands/Emisun.png" },
+        { name: "Eros hspital", imageUrl: "/brands/Eros hspital.png" },
+        { name: "Farmking", imageUrl: "/brands/Farmking.png" },
+        { name: "Fit 2 fly", imageUrl: "/brands/Fit 2 fly.png" },
+        { name: "Fortumex", imageUrl: "/brands/Fortumex.png" },
+        { name: "GCCI", imageUrl: "/brands/GCCI.png" },
+        { name: "Khodaldham", imageUrl: "/brands/Khodaldham.png" },
+        { name: "Ktm", imageUrl: "/brands/Ktm.png" },
+        { name: "Leeji", imageUrl: "/brands/Leeji.png" },
+        { name: "Mumma mall", imageUrl: "/brands/Mumma mall.png" },
+        { name: "Patanjali schools", imageUrl: "/brands/Patanjali schools.png" },
+        { name: "RK university", imageUrl: "/brands/RK university.png" },
+        { name: "foursun solar", imageUrl: "/brands/foursun solar.png" },
+        { name: "golden Crown", imageUrl: "/brands/golden Crown.png" },
+        { name: "kich", imageUrl: "/brands/kich.png" },
+    ];
+
+    const displayBrands = brands.length > 0 ? brands : staticBrands;
+
     useEffect(() => {
         fetchApi("/pricing-plans")
             .then((data: any[]) => {
@@ -338,7 +364,7 @@ ${selectedPlan === i
                         }}
                     >
                         {/* Double the brands array for seamless loop */}
-                        {[...(brands.length > 0 ? brands : []), ...(brands.length > 0 ? brands : [])].map((brand, i) => (
+                        {[...displayBrands, ...displayBrands].map((brand, i) => (
                             <div
                                 key={`${brand.id || i}-${i}`}
                                 className="flex items-center justify-center grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition-all duration-500 hover:scale-110"
@@ -348,13 +374,6 @@ ${selectedPlan === i
                                     alt={brand.name}
                                     className="h-8 md:h-12 w-auto object-contain"
                                 />
-                            </div>
-                        ))}
-
-                        {/* Fallback if no brands are uploaded yet */}
-                        {brands.length === 0 && Array.from({ length: 6 }).map((_, i) => (
-                            <div key={i} className="flex items-center gap-4 px-12 opacity-10">
-                                <span className="text-2xl font-bold font-mono">Brand{String.fromCharCode(65 + (i % 4))}</span>
                             </div>
                         ))}
                     </motion.div>
