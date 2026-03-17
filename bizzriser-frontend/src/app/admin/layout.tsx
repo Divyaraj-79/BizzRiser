@@ -20,6 +20,7 @@ const NAV_SECTIONS = [
             { label: "Chatbot Flows", href: "/admin/industry-chatbots", icon: Bot },
             { label: "Solution Industries", href: "/admin/solution-industries", icon: Factory },
             { label: "Pricing Plans", href: "/admin/pricing-plans", icon: DollarSign },
+            { label: "Brands", href: "/admin/brands", icon: LayoutDashboard },
             { label: "About Section", href: "/admin/about-section", icon: FileText },
         ],
     },

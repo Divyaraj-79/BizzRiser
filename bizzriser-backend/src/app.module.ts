@@ -19,6 +19,7 @@ import { SolutionIndustriesModule } from './solution-industries/solution-industr
 import { PricingPlansModule } from './pricing-plans/pricing-plans.module';
 import { PartnerInfoModule } from './partner-info/partner-info.module';
 import { DebugModule } from './debug/debug.module';
+import { BrandsModule } from './brands/brands.module';
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { DebugModule } from './debug/debug.module';
     SolutionIndustriesModule,
     PricingPlansModule,
     PartnerInfoModule,
+    BrandsModule,
     MailerModule.forRoot({
       transport: {
         host: process.env.SMTP_HOST || 'smtp.gmail.com',

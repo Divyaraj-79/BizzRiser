@@ -25,6 +25,7 @@ export default function PricingPage() {
     const [billingCycle, setBillingCycle] = useState<"monthly" | "yearly">("yearly");
     const [selectedPlan, setSelectedPlan] = useState(1);
     const [apiPlans, setApiPlans] = useState<any[]>([]);
+    const [brands, setBrands] = useState<any[]>([]);
 
     useEffect(() => {
         fetchApi("/pricing-plans")
@@ -32,6 +33,12 @@ export default function PricingPage() {
                 if (data) setApiPlans(data);
             })
             .catch(() => { });
+
+        fetchApi("/brands")
+            .then((data: any[]) => {
+                if (data) setBrands(data);
+            })
+            .catch((err) => console.error("Brands fetch failed:", err));
     }, []);
 
     const displayPlans = apiPlans.filter(plan => (plan.billingCycle || "monthly") === billingCycle);
@@ -303,27 +310,55 @@ ${selectedPlan === i
 
             </section>
 
-            {/* CLIENT LOGOS */}
-
-            <section className="py-24 border-t border-border bg-background">
-
-                <div className="container px-4 mx-auto text-center">
-
-                    <p className="text-sm font-bold text-foreground/60 mb-12 tracking-widest uppercase">
+            {/* CLIENT LOGOS (Infinite Scroll) */}
+            <section className="py-24 border-t border-border bg-background relative overflow-hidden group">
+                <div className="container px-4 mx-auto text-center mb-16 relative z-10">
+                    <p className="text-sm font-bold text-foreground/60 mb-0 tracking-widest uppercase">
                         POWERING AUTOMATION FOR PREMIUM BRANDS
                     </p>
-
-                    <div className="flex flex-wrap justify-center gap-20 opacity-60">
-
-                        <span className="text-2xl font-bold font-mono">BrandA</span>
-                        <span className="text-2xl font-bold font-mono">BrandB</span>
-                        <span className="text-2xl font-bold font-mono">BrandC</span>
-                        <span className="text-2xl font-bold font-mono">BrandD</span>
-
-                    </div>
-
                 </div>
 
+                <div className="flex relative items-center">
+                    {/* Fading Edges */}
+                    <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
+                    <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
+
+                    <motion.div
+                        className="flex gap-20 items-center whitespace-nowrap"
+                        animate={{
+                            x: [0, "-50%"],
+                        }}
+                        transition={{
+                            x: {
+                                repeat: Infinity,
+                                repeatType: "loop",
+                                duration: 40,
+                                ease: "linear",
+                            },
+                        }}
+                    >
+                        {/* Double the brands array for seamless loop */}
+                        {[...(brands.length > 0 ? brands : []), ...(brands.length > 0 ? brands : [])].map((brand, i) => (
+                            <div
+                                key={`${brand.id || i}-${i}`}
+                                className="flex items-center justify-center grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition-all duration-500 hover:scale-110"
+                            >
+                                <img
+                                    src={brand.imageUrl}
+                                    alt={brand.name}
+                                    className="h-8 md:h-12 w-auto object-contain"
+                                />
+                            </div>
+                        ))}
+
+                        {/* Fallback if no brands are uploaded yet */}
+                        {brands.length === 0 && Array.from({ length: 6 }).map((_, i) => (
+                            <div key={i} className="flex items-center gap-4 px-12 opacity-10">
+                                <span className="text-2xl font-bold font-mono">Brand{String.fromCharCode(65 + (i % 4))}</span>
+                            </div>
+                        ))}
+                    </motion.div>
+                </div>
             </section>
 
         </div>
