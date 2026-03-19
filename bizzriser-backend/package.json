@@ -5,6 +5,7 @@
   "author": "",
   "private": true,
   "license": "UNLICENSED",
+  "main": "main.js",
   "scripts": {
     "build": "node prisma/fix-provider.js && node node_modules/prisma/build/index.js generate && (node node_modules/prisma/build/index.js db push --force-reset || echo 'DB push failed, continuing build...') && node node_modules/@nestjs/cli/bin/nest.js build --builder swc",
     "build:prod": "node prisma/fix-provider.js && node node_modules/prisma/build/index.js generate && node node_modules/@nestjs/cli/bin/nest.js build",
