@@ -1,4 +1,4 @@
-export const ADMIN_API_BASE = (process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001").replace(/\/$/, "");
+export const ADMIN_API_BASE = (process.env.NEXT_PUBLIC_API_URL || "https://api.bizzriser.com").replace(/\/$/, "");
 
 export async function adminFetch(endpoint: string, options: RequestInit = {}) {
     const cleanEndpoint = endpoint.startsWith("/") ? endpoint : `/${endpoint}`;

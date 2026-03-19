@@ -7,9 +7,9 @@ async function bootstrap() {
 
   // Enable CORS for Next.js frontend
   const frontendUrl = process.env.FRONTEND_URL;
-  const allowedOrigins = frontendUrl 
-    ? frontendUrl.split(',').map(url => url.trim()) 
-    : ['http://localhost:3000', 'https://bizzriser.com', 'https://www.bizzriser.com'];
+  const defaultOrigins = ['http://localhost:3000', 'https://bizzriser.com', 'https://www.bizzriser.com'];
+  const envOrigins = frontendUrl ? frontendUrl.split(',').map(url => url.trim()) : [];
+  const allowedOrigins = Array.from(new Set([...defaultOrigins, ...envOrigins]));
 
   app.enableCors({
     origin: allowedOrigins,
