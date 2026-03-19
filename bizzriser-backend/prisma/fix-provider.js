@@ -14,16 +14,23 @@ if (!fs.existsSync(schemaPath)) {
 
 let schema = fs.readFileSync(schemaPath, 'utf8');
 
+const databaseUrl = process.env.DATABASE_URL || '';
+const isFileDb = databaseUrl.startsWith('file:') || databaseUrl.includes('.db');
+
 if (isRender) {
     console.log('🚀 Render environment detected. Setting Prisma provider to postgresql...');
     schema = schema.replace(/provider\s*=\s*"sqlite"/, 'provider = "postgresql"');
     schema = schema.replace(/provider\s*=\s*"mysql"/, 'provider = "postgresql"');
-} else if (isHostinger) {
+} else if (isHostinger && !isFileDb) {
     console.log('🌐 Hostinger environment detected. Setting Prisma provider to mysql...');
     schema = schema.replace(/provider\s*=\s*"sqlite"/, 'provider = "mysql"');
     schema = schema.replace(/provider\s*=\s*"postgresql"/, 'provider = "mysql"');
+} else if (isFileDb) {
+    console.log('💻 SQLite environment detected. Ensuring Prisma provider is sqlite...');
+    schema = schema.replace(/provider\s*=\s*"postgresql"/, 'provider = "sqlite"');
+    schema = schema.replace(/provider\s*=\s*"mysql"/, 'provider = "sqlite"');
 } else {
-    console.log('💻 Local environment detected. Ensuring Prisma provider is sqlite...');
+    console.log('💻 Defaulting Prisma provider to sqlite...');
     schema = schema.replace(/provider\s*=\s*"postgresql"/, 'provider = "sqlite"');
     schema = schema.replace(/provider\s*=\s*"mysql"/, 'provider = "sqlite"');
 }
