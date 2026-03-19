@@ -11,7 +11,7 @@
     "build:prod": "node node_modules/prisma/build/index.js generate && node node_modules/@nestjs/cli/bin/nest.js build",
     "prisma:deploy": "node node_modules/prisma/build/index.js generate && node node_modules/prisma/build/index.js db push",
     "fix-permissions": "chmod +x node_modules/.bin/prisma node_modules/.bin/nest || true",
-    "postinstall": "node node_modules/prisma/build/index.js generate || echo 'Prisma generate failed, will try at runtime')",
+    "postinstall": "npx prisma generate",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "node dist/main",
     "start:prod": "node dist/main",
