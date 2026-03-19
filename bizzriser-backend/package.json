@@ -6,16 +6,17 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "build": "node prisma/fix-provider.js && npx prisma generate && npx prisma db push --force-reset && nest build && npx prisma db seed",
-    "build:prod": "node prisma/fix-provider.js && npx prisma generate && nest build",
-    "prisma:deploy": "node prisma/fix-provider.js && npx prisma generate && npx prisma db push",
-    "postinstall": "node prisma/fix-provider.js && (npx prisma generate || echo 'Prisma generate failed, will try at runtime')",
+    "build": "node prisma/fix-provider.js && node node_modules/prisma/build/index.js generate && (node node_modules/prisma/build/index.js db push --force-reset || echo 'DB push failed, continuing build...') && node node_modules/@nestjs/cli/bin/nest.js build --builder swc",
+    "build:prod": "node prisma/fix-provider.js && node node_modules/prisma/build/index.js generate && node node_modules/@nestjs/cli/bin/nest.js build",
+    "prisma:deploy": "node prisma/fix-provider.js && node node_modules/prisma/build/index.js generate && node node_modules/prisma/build/index.js db push",
+    "fix-permissions": "chmod +x node_modules/.bin/prisma node_modules/.bin/nest || true",
+    "postinstall": "node prisma/fix-provider.js && (node node_modules/prisma/build/index.js generate || echo 'Prisma generate failed, will try at runtime')",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "node dist/src/main",
-    "start:dev": "nest start --watch",
-    "start:debug": "nest start --debug --watch",
+    "start:dev": "node node_modules/@nestjs/cli/bin/nest.js start --watch",
+    "start:debug": "node node_modules/@nestjs/cli/bin/nest.js start --debug --watch",
     "start:prod": "node dist/src/main",
-    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
+    "lint": "node node_modules/eslint/bin/eslint.js \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
@@ -46,38 +47,41 @@
     "rxjs": "^7.8.1",
     "supertest": "^7.0.0",
     "ts-node": "^10.9.2",
-    "tsconfig-paths": "^4.2.0",
-    "typescript": "^5.9.3",
-    "uuid": "^13.0.0"
-  },
-  "devDependencies": {
-    "@eslint/eslintrc": "^3.2.0",
-    "@eslint/js": "^9.18.0",
+    "uuid": "^13.0.0",
     "@nestjs/cli": "^11.0.0",
     "@nestjs/schematics": "^11.0.0",
-    "@nestjs/testing": "^11.0.1",
+    "typescript": "^5.9.3",
+    "ts-loader": "^9.5.2",
+    "tsconfig-paths": "^4.2.0",
+    "prisma": "^7.4.2",
     "@types/bcrypt": "^6.0.0",
-    "@types/better-sqlite3": "^7.6.13",
     "@types/express": "^5.0.0",
-    "@types/jest": "^30.0.0",
     "@types/node": "^22.19.13",
     "@types/nodemailer": "^7.0.11",
     "@types/passport-jwt": "^4.0.1",
     "@types/pg": "^8.18.0",
-    "@types/supertest": "^6.0.2",
     "@types/uuid": "^10.0.0",
+    "dotenv": "^17.2.3",
+    "@swc/core": "^1.11.5",
+    "@swc/helpers": "^0.5.15",
+    "@swc/cli": "^0.5.2"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3.2.0",
+    "@eslint/js": "^9.18.0",
+    "@nestjs/testing": "^11.0.1",
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/jest": "^30.0.0",
+    "@types/supertest": "^6.0.2",
     "eslint": "^9.18.0",
     "eslint-config-prettier": "^10.0.1",
     "eslint-plugin-prettier": "^5.2.2",
     "globals": "^16.0.0",
     "jest": "^30.0.0",
     "prettier": "^3.4.2",
-    "prisma": "^7.4.2",
     "source-map-support": "^0.5.21",
     "supertest": "^7.0.0",
-    "ts-jest": "^29.2.5",
-    "ts-loader": "^9.5.2",
-    "typescript-eslint": "^8.20.0"
+    "ts-jest": "^29.2.5"
   },
   "jest": {
     "moduleFileExtensions": [
@@ -97,6 +101,6 @@
     "testEnvironment": "node"
   },
   "prisma": {
-    "seed": "ts-node prisma/seed.ts"
+    "seed": "node node_modules/ts-node/dist/bin.js prisma/seed.ts"
   }
 }

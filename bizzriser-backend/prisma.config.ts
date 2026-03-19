@@ -1,7 +1,11 @@
 const isRender = process.env.RENDER === 'true' || !!process.env.RENDER;
 
 if (!isRender) {
-  require("dotenv").config();
+  try {
+    require("dotenv").config();
+  } catch (e) {
+    console.warn("Dotenv load failed, skipping...");
+  }
 }
 
 import { defineConfig } from "prisma/config";

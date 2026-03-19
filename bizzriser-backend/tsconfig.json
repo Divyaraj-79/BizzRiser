@@ -3,6 +3,10 @@
     "module": "nodenext",
     "moduleResolution": "nodenext",
     "resolvePackageJsonExports": true,
+    "types": [
+      "multer",
+      "node"
+    ],
     "esModuleInterop": true,
     "isolatedModules": true,
     "declaration": true,

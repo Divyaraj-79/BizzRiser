@@ -54,21 +54,37 @@ In the Node.js App settings, find the **Environment Variables** section and add 
 ## Step 5: Deployment and Database Setup
 
 1.  Click **Connect & Deploy**. Hostinger will pull the code.
-2.  Once deployed, you need to install dependencies and build.
-3.  Navigate to the **Terminal** (SSH) or use the **Run Command** feature if available in the Node.js panel.
+2.  Once deployed, look for the **Terminal** icon in your hPanel (under Advanced) or the **Web Console** inside the Node.js application menu.
+3.  Alternatively, you can use **SSH** if you have it enabled in hPanel.
 4.  Run these commands in order:
+
     ```bash
-    cd bizzriser-backend
+    # 1. Navigate to the project folder
+    # Note: Hostinger usually puts the code in a subfolder like 'public_html' or '.builds'
+    # Use 'ls' to find where your files are!
+    ```
+    
+    # 1. Install dependencies
     npm install
+    
+    # 2. Fix permissions (Crucial for Hostinger)
+    chmod +x node_modules/.bin/prisma
+    
+    # 3. Build for production (Use ONLY build:prod!)
     npm run build:prod
+    
+    # 4. Push database schema safely
     npm run prisma:deploy
     ```
-    *Note: `prisma:deploy` will create the tables in your MySQL database without deleting data.*
+    *Note: `npm run build:prod` is safer as it won't wipe your data. `npm run prisma:deploy` will create tables in your MySQL database without deleting existing data.*
+
+> [!WARNING]
+> Always use `npm run build:prod` on Hostinger. The standard `npm run build` command is configured to **RESET** your database (delete all data) for development purposes.
 
 ## Step 6: Verify
 
 1.  Your API should be live at `https://your-api-domain.com/api/docs`.
-2.  Check the logs in the Node.js panel if you encounter any errors.
+2.  If you still see "Permission denied" or "Command not found", double-check Step 5.
 
 ---
 

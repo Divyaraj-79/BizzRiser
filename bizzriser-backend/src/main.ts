@@ -6,9 +6,16 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   // Enable CORS for Next.js frontend
+  const frontendUrl = process.env.FRONTEND_URL;
+  const allowedOrigins = frontendUrl 
+    ? frontendUrl.split(',').map(url => url.trim()) 
+    : ['http://localhost:3000', 'https://bizzriser.com', 'https://www.bizzriser.com'];
+
   app.enableCors({
-    origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+    origin: allowedOrigins,
     credentials: true,
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    allowedHeaders: 'Content-Type,Accept,Authorization',
   });
 
   // Global exception filter for better logging
