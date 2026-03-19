@@ -1,19 +1,35 @@
-// Root entry file for Hostinger
+// Root entry file for Hostinger - SELF-HEALING VERSION
+const { execSync } = require('child_process');
 const path = require('path');
+const fs = require('fs');
 
-// Seed DATABASE_URL if missing (Prisma requirement)
-// Use absolute path to ensure it works correctly on Hostinger regardless of CWD
+console.log(`🚀 BizzRiser Boot Sequence Initiated...`);
+
+// 1. Seed DATABASE_URL
 if (!process.env.DATABASE_URL) {
     process.env.DATABASE_URL = `file:${path.join(__dirname, 'dev.db')}`;
+    console.log(`🔑 Seeded DATABASE_URL: ${process.env.DATABASE_URL}`);
 }
 
+// 2. Self-Healing: Check Prisma Engine
+// If the engine for the current platform is missing, generate it.
+try {
+    const prismaDir = path.join(__dirname, 'node_modules', '.prisma', 'client');
+    const enginesExist = fs.existsSync(prismaDir);
+    
+    if (!enginesExist) {
+        console.log('⚠️ Prisma Client not found. Generating...');
+        execSync('npx prisma generate', { stdio: 'inherit' });
+    }
+} catch (e) {
+    console.warn('⚠️ Self-healing prisma generate failed (Expected on some read-only systems):', e.message);
+}
+
+// 3. Start App
 const port = process.env.PORT || 3000;
-console.log(`🚀 Starting BizzRiser Backend...`);
 console.log(`📍 Port: ${port}`);
-console.log(`🔑 Database: ${process.env.DATABASE_URL}`);
 
 try {
-    // Try different possible build locations
     const paths = ['./dist/src/main', './dist/main'];
     let loaded = false;
     
@@ -24,7 +40,7 @@ try {
             loaded = true;
             break;
         } catch (e) {
-            // Silently continue to next path
+            // Silently continue
         }
     }
 

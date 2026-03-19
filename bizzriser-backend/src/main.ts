@@ -6,12 +6,18 @@ import { AllExceptionsFilter } from './common/filters/http-exception.filter';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  // Basic request logger for troubleshooting
+  app.use((req: any, res: any, next: any) => {
+    console.log(`[Request] ${new Date().toISOString()} ${req.method} ${req.url}`);
+    next();
+  });
+
   // Enable CORS for all origins during deployment troubleshooting
   app.enableCors({
     origin: true,
-    credentials: true,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-    allowedHeaders: 'Content-Type,Accept,Authorization',
+    credentials: true,
+    allowedHeaders: 'Content-Type,Accept,Authorization,X-Requested-With',
   });
 
   // Global exception filter for better logging
