@@ -43,6 +43,7 @@ async function bootstrap() {
   SwaggerModule.setup('api/docs', app, document);
 
   const port = process.env.PORT || 3000;
+  console.log(`🚀 Active DB: ${process.env.DATABASE_URL}`);
   
   // Hostinger/Proxy Socket Awareness
   if (typeof port === 'string' && (port.startsWith('/') || port.startsWith('\\\\'))) {

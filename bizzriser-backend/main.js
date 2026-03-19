@@ -14,9 +14,12 @@ log(`🚀 BizzRiser API Booting...`);
 
 // 1. Seed DATABASE_URL
 try {
-    if (!process.env.DATABASE_URL) {
-        process.env.DATABASE_URL = `file:${path.join(__dirname, 'dev.db')}`;
-        log(`📂 Using local DB: ${process.env.DATABASE_URL}`);
+    if (!process.env.DATABASE_URL || process.env.DATABASE_URL.startsWith('file:.')) {
+        const dbName = (process.env.DATABASE_URL || 'file:./dev.db').replace(/^file:\.\/?/, '');
+        process.env.DATABASE_URL = `file:${path.join(__dirname, dbName)}`;
+        log(`📂 Sanitized DB URL to absolute: ${process.env.DATABASE_URL}`);
+    } else {
+        log(`📂 Using provided DB URL: ${process.env.DATABASE_URL}`);
     }
 } catch (e) {
     log(`⚠️ DB URL Seed Failed: ${e.message}`);
