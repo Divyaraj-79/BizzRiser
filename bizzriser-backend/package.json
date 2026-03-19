@@ -7,7 +7,7 @@
   "license": "UNLICENSED",
   "main": "main.js",
   "scripts": {
-    "build": "npx prisma generate && npx prisma migrate deploy && nest build",
+    "build": "npx prisma generate && npx prisma migrate deploy && node node_modules/@nestjs/cli/bin/nest.js build",
     "build:prod": "node node_modules/prisma/build/index.js generate && node node_modules/@nestjs/cli/bin/nest.js build",
     "prisma:deploy": "node node_modules/prisma/build/index.js generate && node node_modules/prisma/build/index.js db push",
     "fix-permissions": "chmod +x node_modules/.bin/prisma node_modules/.bin/nest || true",
