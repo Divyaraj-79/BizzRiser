@@ -219,11 +219,12 @@ export class DebugController {
 
     @Get('info')
     async getDbInfo() {
-        // Very simple endpoint to verify database connection string
         return {
-            render: process.env.RENDER,
-            prismaUrlSet: !!process.env.PRISMA_URL,
-            databaseUrlSet: !!process.env.DATABASE_URL
+            platform: process.platform,
+            nodeVersion: process.version,
+            cwd: process.cwd(),
+            databaseUrl: process.env.DATABASE_URL ? process.env.DATABASE_URL.replace(/:.*@/, ':***@') : 'NOT SET',
+            prismaUrl: process.env.PRISMA_URL ? 'SET' : 'NOT SET',
         }
     }
 }
