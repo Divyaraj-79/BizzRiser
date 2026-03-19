@@ -1,54 +1,37 @@
-// Root entry file for Hostinger - SELF-HEALING VERSION
-const { execSync } = require('child_process');
+// Root entry file for Hostinger - ZERO-LAG BOOT
 const path = require('path');
-const fs = require('fs');
 
-console.log(`🚀 BizzRiser Boot Sequence Initiated...`);
+console.log(`🚀 BizzRiser API Booting...`);
 
-// 1. Seed DATABASE_URL
+// 1. Seed DATABASE_URL with absolute path for stability
 if (!process.env.DATABASE_URL) {
     process.env.DATABASE_URL = `file:${path.join(__dirname, 'dev.db')}`;
-    console.log(`🔑 Seeded DATABASE_URL: ${process.env.DATABASE_URL}`);
 }
 
-// 2. Self-Healing: Check Prisma Engine
-// If the engine for the current platform is missing, generate it.
-try {
-    const prismaDir = path.join(__dirname, 'node_modules', '.prisma', 'client');
-    const enginesExist = fs.existsSync(prismaDir);
-    
-    if (!enginesExist) {
-        console.log('⚠️ Prisma Client not found. Generating...');
-        execSync('npx prisma generate', { stdio: 'inherit' });
-    }
-} catch (e) {
-    console.warn('⚠️ Self-healing prisma generate failed (Expected on some read-only systems):', e.message);
-}
-
-// 3. Start App
 const port = process.env.PORT || 3000;
 console.log(`📍 Port: ${port}`);
+console.log(`🔑 DB: ${process.env.DATABASE_URL}`);
 
+// 2. Load the application asynchronously to avoid blocking the bridge
 try {
     const paths = ['./dist/src/main', './dist/main'];
-    let loaded = false;
+    let loadedPath = null;
     
     for (const p of paths) {
         try {
-            require(p);
-            console.log(`✅ Loaded entry point: ${p}`);
-            loaded = true;
+            require.resolve(p);
+            loadedPath = p;
             break;
-        } catch (e) {
-            // Silently continue
-        }
+        } catch (e) {}
     }
 
-    if (!loaded) {
-        console.error('❌ Could not find entry point in dist/src/main.js or dist/main.js');
+    if (loadedPath) {
+        console.log(`✅ Loading: ${loadedPath}`);
+        require(loadedPath);
+    } else {
+        console.error('❌ Missing dist/main.js. Please run REBUILD in Hostinger.');
         process.exit(1);
     }
 } catch (err) {
-    console.error('💥 Fatal error during startup:', err);
-    process.exit(1);
+    console.error('💥 Boot Error:', err);
 }

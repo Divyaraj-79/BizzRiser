@@ -6,8 +6,12 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  root() {
+    return { 
+      message: 'BizzRiser API is live',
+      documentation: '/api/docs',
+      health: '/health'
+    };
   }
 
   @Get('health')
