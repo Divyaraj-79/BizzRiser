@@ -1,25 +1,20 @@
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
+import { AllExceptionsFilter } from './common/filters/http-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // Enable CORS for Next.js frontend
-  const frontendUrl = process.env.FRONTEND_URL;
-  const defaultOrigins = ['http://localhost:3000', 'https://bizzriser.com', 'https://www.bizzriser.com'];
-  const envOrigins = frontendUrl ? frontendUrl.split(',').map(url => url.trim()) : [];
-  const allowedOrigins = Array.from(new Set([...defaultOrigins, ...envOrigins]));
-
+  // Enable CORS for all origins during deployment troubleshooting
   app.enableCors({
-    origin: allowedOrigins,
+    origin: true,
     credentials: true,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     allowedHeaders: 'Content-Type,Accept,Authorization',
   });
 
   // Global exception filter for better logging
-  const { AllExceptionsFilter } = require('./common/filters/http-exception.filter');
   app.useGlobalFilters(new AllExceptionsFilter());
 
   const config = new DocumentBuilder()

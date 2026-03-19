@@ -1,7 +1,10 @@
 // Root entry file for Hostinger
+const path = require('path');
+
 // Seed DATABASE_URL if missing (Prisma requirement)
+// Use absolute path to ensure it works correctly on Hostinger regardless of CWD
 if (!process.env.DATABASE_URL) {
-    process.env.DATABASE_URL = 'file:./dev.db';
+    process.env.DATABASE_URL = `file:${path.join(__dirname, 'dev.db')}`;
 }
 
 const port = process.env.PORT || 3000;
