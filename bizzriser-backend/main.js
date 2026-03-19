@@ -1,37 +1,37 @@
-// Root entry file for Hostinger - ZERO-LAG BOOT
+// Root entry file for Hostinger - ULTIMATE STABLE BOOT
 const path = require('path');
+const fs = require('fs');
 
-console.log(`🚀 BizzRiser API Booting...`);
+const logFile = path.join(__dirname, 'boot-error.log');
+const log = (msg) => {
+    const time = new Date().toISOString();
+    const entry = `[${time}] ${msg}\n`;
+    console.log(msg);
+    fs.appendFileSync(logFile, entry);
+};
 
-// 1. Seed DATABASE_URL with absolute path for stability
-if (!process.env.DATABASE_URL) {
-    process.env.DATABASE_URL = `file:${path.join(__dirname, 'dev.db')}`;
+log(`🚀 BizzRiser API Booting...`);
+
+// 1. Seed DATABASE_URL
+try {
+    if (!process.env.DATABASE_URL) {
+        process.env.DATABASE_URL = `file:${path.join(__dirname, 'dev.db')}`;
+        log(`📂 Using local DB: ${process.env.DATABASE_URL}`);
+    }
+} catch (e) {
+    log(`⚠️ DB URL Seed Failed: ${e.message}`);
 }
 
-const port = process.env.PORT || 3000;
-console.log(`📍 Port: ${port}`);
-console.log(`🔑 DB: ${process.env.DATABASE_URL}`);
-
-// 2. Load the application asynchronously to avoid blocking the bridge
+// 2. Load and Start
 try {
-    const paths = ['./dist/src/main', './dist/main'];
-    let loadedPath = null;
-    
-    for (const p of paths) {
-        try {
-            require.resolve(p);
-            loadedPath = p;
-            break;
-        } catch (e) {}
-    }
-
-    if (loadedPath) {
-        console.log(`✅ Loading: ${loadedPath}`);
-        require(loadedPath);
+    const entryPoint = path.join(__dirname, 'dist', 'main.js');
+    if (fs.existsSync(entryPoint)) {
+        log(`✅ Entry found: ${entryPoint}`);
+        require(entryPoint);
     } else {
-        console.error('❌ Missing dist/main.js. Please run REBUILD in Hostinger.');
-        process.exit(1);
+        log(`❌ CRITICAL: ${entryPoint} not found! Run REBUILD.`);
     }
 } catch (err) {
-    console.error('💥 Boot Error:', err);
+    log(`💥 FATAL CRASH: ${err.stack || err.message}`);
+    process.exit(1);
 }
