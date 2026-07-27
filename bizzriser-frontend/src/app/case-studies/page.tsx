@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 
 import { useState, useEffect } from "react";
-import { adminFetch, ADMIN_API_BASE } from "@/lib/admin-api";
+import { fetchApi } from "@/lib/api";
 
 const filters = {
     industry: ["All Industries", "E-Commerce", "Real Estate", "Education", "Healthcare", "Retail", "Fintech"],
@@ -22,11 +22,9 @@ export default function CaseStudiesPage() {
     const [selectedGoal, setSelectedGoal] = useState("All Goals");
 
     useEffect(() => {
-        fetch(`${ADMIN_API_BASE}/case-studies`)
-            .then(res => res.json())
+        fetchApi("/case-studies")
             .then(data => {
-                // Filter for published ones if backend doesn't already
-                setCaseStudies(data.filter((cs: any) => cs.published));
+                setCaseStudies(data.filter((cs: any) => cs.published !== false));
             })
             .catch(err => console.error("Failed to fetch case studies:", err))
             .finally(() => setLoading(false));

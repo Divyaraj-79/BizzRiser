@@ -105,7 +105,7 @@ export default function PricingPage() {
                         >
 
                             <div className="absolute -top-4 -right-8 bg-white text-black text-xs font-bold px-3 py-1 rounded-full animate-bounce shadow-lg">
-                                Save 20%
+                                Save upto 15%
                             </div>
 
                             <TabsList className="grid w-full grid-cols-2 p-0.5 bg-card border border-border rounded-full h-12">
@@ -213,7 +213,7 @@ ${selectedPlan === i
                                             <div className="mb-8 flex items-baseline text-4xl font-extrabold truncate">
                                                 {typeof planPrice === "number" ? `$${planPrice}` : planPrice}
                                                 <span className="text-base text-muted-foreground ml-2 font-normal">
-                                                    {plan.name === "Enterprise" ? "" : billingCycle === "monthly" ? "/mo" : "/yr"}
+                                                    {plan.name === "Enterprise" ? "" : billingCycle === "monthly" ? "/mo" : "/mo"}
                                                 </span>
                                             </div>
 
@@ -338,17 +338,17 @@ ${selectedPlan === i
             </section>
 
             {/* CLIENT LOGOS (Infinite Scroll) */}
-            <section className="py-24 border-t border-border bg-background relative overflow-hidden group">
+            <section className="py-24 border-t border-border bg-background dark:bg-[#F8FAFC] dark:border-[#E2E8F0] relative overflow-hidden group">
                 <div className="container px-4 mx-auto text-center mb-16 relative z-10">
-                    <p className="text-sm font-bold text-foreground/60 mb-0 tracking-widest uppercase">
+                    <p className="text-sm font-bold text-foreground/60 dark:text-[#0F172A]/60 mb-0 tracking-widest uppercase">
                         POWERING AUTOMATION FOR PREMIUM BRANDS
                     </p>
                 </div>
 
                 <div className="flex relative items-center">
                     {/* Fading Edges */}
-                    <div className="absolute inset-y-0 left-0 w-48 bg-gradient-to-r from-background via-background/80 to-transparent z-10 pointer-events-none" />
-                    <div className="absolute inset-y-0 right-0 w-48 bg-gradient-to-l from-background via-background/80 to-transparent z-10 pointer-events-none" />
+                    <div className="absolute inset-y-0 left-0 w-48 bg-gradient-to-r from-background via-background/80 to-transparent dark:from-[#F8FAFC] dark:via-[#F8FAFC]/80 z-10 pointer-events-none" />
+                    <div className="absolute inset-y-0 right-0 w-48 bg-gradient-to-l from-background via-background/80 to-transparent dark:from-[#F8FAFC] dark:via-[#F8FAFC]/80 z-10 pointer-events-none" />
 
                     <motion.div
                         className="flex gap-24 items-center whitespace-nowrap"

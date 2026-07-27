@@ -119,9 +119,9 @@ export default function AboutPage() {
 
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
                         {(stats.length > 0 ? stats : [
-                            { label: "Years Experience", value: "10+" },
-                            { label: "Projects Delivered", value: "500+" },
-                            { label: "Technical Experts", value: "30+" },
+                            { label: "Years Experience", value: "5+" },
+                            { label: "Brands Served", value: "500+" },
+                            { label: "Technical Experts", value: "10+" },
                             { label: "Support Uptime", value: "99.9%" },
                         ]).map((stat, i) => (
                             <motion.div
